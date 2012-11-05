@@ -1,61 +1,64 @@
 package com.nyuen.test_fivehundred.adapter;
 
-import java.io.File;
+import com.nyuen.test_fivehundred.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
-    
-    private Context mContext;
-    private Bitmap[]mis_fotos;
 
-    public ImageAdapter(Context c) {
-        mContext = c;    }
+    private final Context mContext;
+    private final LayoutInflater mInflater;
+    
+    private Bitmap[] mPhotos;
+
+    public ImageAdapter(Context context) {
+        mContext = context;    
+        mInflater = LayoutInflater.from(context);
+    }
 
     public int getCount() {
-        get_images();
-        return mis_fotos.length;
-        }
+        return mPhotos.length;
+    }
 
     public Object getItem(int position) {
-        return null;    }
+        return mPhotos[position]; 
+    }
+    
+    public void setPhotos(Bitmap[] photos) {
+        mPhotos = photos;
+    }
 
     public long getItemId(int position) {
-        return 0;    }
+        return position;    
+    }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
-        if (convertView == null) {
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(200, 150));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(0, 0, 0, 0);
+        ImageHolder holder;
+        if(convertView == null) {
+            convertView = mInflater.inflate(R.layout.two_by_two, null, false);
+            holder = new ImageHolder();
+            holder.view[0] = (ImageView) convertView.findViewById(R.id.imageView1);
+            holder.view[1] = (ImageView) convertView.findViewById(R.id.imageView2);
+            holder.view[2] = (ImageView) convertView.findViewById(R.id.imageView3);
+            holder.view[3] = (ImageView) convertView.findViewById(R.id.imageView4);
         } else {
-            imageView = (ImageView) convertView;
+            holder = (ImageHolder) convertView.getTag();
         }
-        imageView.setImageBitmap(mis_fotos[position]);
-        return imageView;
+        
+        for(int i = 0; i < getCount(); i++ ) {
+            holder.view[i].setImageBitmap(mPhotos[i]);
+        }
+        
+        return convertView;
     }
 
-    private void get_images(){
-        File directory = new File("@android:drawable/picture_frame");   
-
-        File[] archivos =directory.listFiles();
-        mis_fotos= new Bitmap[archivos.length];
-
-        for (int cont=0; cont<archivos.length;cont++){
-
-            File imgFile = new  File(archivos[cont].toString());                
-            mis_fotos[cont] = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        }   
+    private class ImageHolder {
+        ImageView[] view;
     }
-
 }
