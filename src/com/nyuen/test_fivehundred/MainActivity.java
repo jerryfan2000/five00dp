@@ -2,7 +2,6 @@ package com.nyuen.test_fivehundred;
 
 import com.nyuen.test_fivehundred.adapter.ImageAdapter;
 
-import android.R;
 import android.os.Bundle;
 import android.app.ListActivity;
 import android.graphics.Bitmap;
@@ -15,15 +14,14 @@ public class MainActivity extends ListActivity {
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_content);
         
         test_adapter = new ImageAdapter(this);
-        Bitmap[] mPhotos = null;
+        Bitmap[] mPhotos = new Bitmap[4];
         
-        mPhotos[0] = BitmapFactory.decodeResource(getResources(), R.drawable.btn_plus);
-        mPhotos[1] = BitmapFactory.decodeResource(getResources(), R.drawable.btn_plus);
-        mPhotos[2] = BitmapFactory.decodeResource(getResources(), R.drawable.btn_plus);
-        mPhotos[3] = BitmapFactory.decodeResource(getResources(), R.drawable.btn_plus);
+        mPhotos[0] = BitmapFactory.decodeResource(getResources(), R.drawable.one);
+        mPhotos[1] = BitmapFactory.decodeResource(getResources(), R.drawable.one);
+        mPhotos[2] = BitmapFactory.decodeResource(getResources(), R.drawable.one);
+        mPhotos[3] = BitmapFactory.decodeResource(getResources(), R.drawable.one);
         
         
 //                new BitmapDrawable(getResources(), R.dr);
