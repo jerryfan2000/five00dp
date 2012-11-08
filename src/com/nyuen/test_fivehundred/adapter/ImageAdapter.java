@@ -1,13 +1,18 @@
 package com.nyuen.test_fivehundred.adapter;
 
 import com.nyuen.test_fivehundred.R;
+import com.nyuen.test_fivehundred.structure.Photo;
+import com.nyuen.test_fivehundred.util.ImageFetcher;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
@@ -15,12 +20,27 @@ public class ImageAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final LayoutInflater mInflater;
-    
-    private Bitmap[] mPhotos;
+    private ImageFetcher mImageFetcher;
+    private int mImageWidth;
 
-    public ImageAdapter(Context context) {
+    private Photo[] mPhotos;    
+
+    public ImageAdapter(Context context, ImageFetcher imageFetcher) {
         mContext = context;    
+        mImageFetcher = imageFetcher;
         mInflater = LayoutInflater.from(context);
+        calculateItemSize(context);
+    }
+    
+    private void calculateItemSize(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        //display.getSize(size);
+        int width = display.getWidth();
+        //int columnNum = context.getResources().getInteger(R.integer.grid_column_num);
+
+        mImageWidth = width / 2;
     }
 
     public int getCount() {
@@ -31,8 +51,8 @@ public class ImageAdapter extends BaseAdapter {
         return position; 
     }
     
-    public void setPhotos(Bitmap[] photos) {
-        mPhotos = photos;
+    public void setPhotos(Photo[] photo) {
+        mPhotos = photo;
     }
 
     public long getItemId(int position) {
@@ -48,27 +68,23 @@ public class ImageAdapter extends BaseAdapter {
         ImageHolder holder;
         if(convertView == null) {
             convertView = mInflater.inflate(R.layout.two_by_two, null, false);
-//            convertView = mInflater.inflate(R.layout.relative_two_by_two, null, false);
+            
             holder = new ImageHolder();
             holder.view = new ImageView[4];
             holder.view[0] = (ImageView) convertView.findViewById(R.id.imageView1);
             holder.view[1] = (ImageView) convertView.findViewById(R.id.imageView2);
             holder.view[2] = (ImageView) convertView.findViewById(R.id.imageView3);
             holder.view[3] = (ImageView) convertView.findViewById(R.id.imageView4);
-            
-//            holder.view[0] = (ImageView) convertView.findViewById(R.id.imageView5);
-//            holder.view[1] = (ImageView) convertView.findViewById(R.id.imageView6);
-//            holder.view[2] = (ImageView) convertView.findViewById(R.id.imageView7);
-//            holder.view[3] = (ImageView) convertView.findViewById(R.id.imageView8);
-//            
-            
+                
             convertView.setTag(holder);
         } else {
             holder = (ImageHolder) convertView.getTag();
         }
         
-        for(int i = 0; i < mPhotos.length; i++ ) {
-            holder.view[i].setImageBitmap(mPhotos[i]);
+        for(int i = 0; i < holder.view.length; i++ ) {
+            mImageFetcher.loadImage(getItem(position), holder.view[i]);
+            
+            //holder.view[i].setImageBitmap(mPhotos[i]);
             //holder.view[i].setLayoutParams(new LayoutParams(holder.view[i].getMeasuredWidth(), holder.view[i].getMeasuredWidth()));
         }
         
