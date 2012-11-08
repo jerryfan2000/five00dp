@@ -1,10 +1,16 @@
 package com.nyuen.test_fivehundred;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 import com.fivehundredpx.api.PxApi;
 import com.fivehundredpx.api.auth.AccessToken;
 import com.fivehundredpx.api.auth.OAuthAuthorization;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nyuen.test_fivehundred.adapter.ImageAdapter;
+import com.nyuen.test_fivehundred.structure.Photo;
+import com.nyuen.test_fivehundred.structure.PhotoResponse;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -62,12 +68,13 @@ public class MainActivity extends ListActivity {
             String key = "H44vO2VyWiCcW0RBlZ3EAEJU4o6nuI2MlNCLLDmx";
             String secret = "Ufi5Logkfwy0uujKpzZj729hQJQlIgUj5gOahmMj";
      
-            //PxApi pxapi = new PxApi(, key, secret);
-            PxApi pxapi = new PxApi(secret);
+            PxApi pxapi = new PxApi(key);
             Log.d("500px", "Ready!!");
             try {
-                Gson results = new Gson();    
-                Log.d("500px", pxapi.get("https://api.500px.com/v1/photos?feature=popular").toString() );
+                Gson results = new Gson();                    
+                PhotoResponse pr = results.fromJson(pxapi.get("/photos?feature=popular").toString(), PhotoResponse.class);
+                
+                Log.d("500px", pr.getPhotos()[0].getImage_url() );
             } catch (Exception e) {
                 Log.e("500px", e.toString());
             }
