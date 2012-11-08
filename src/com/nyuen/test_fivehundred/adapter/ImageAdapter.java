@@ -1,12 +1,20 @@
 package com.nyuen.test_fivehundred.adapter;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.nyuen.test_fivehundred.R;
+import com.nyuen.test_fivehundred.structure.ImagePatternContainer;
+import com.nyuen.test_fivehundred.structure.ImagePatternContainer.Pattern;
 import com.nyuen.test_fivehundred.structure.Photo;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
 
+import android.content.ClipData.Item;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +22,9 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class ImageAdapter extends BaseAdapter {
 
@@ -22,39 +32,67 @@ public class ImageAdapter extends BaseAdapter {
     private final LayoutInflater mInflater;
     private ImageFetcher mImageFetcher;
     private int mImageWidth;
+    private int mListItemCount;
+    private int photoCount;
 
-    private Photo[] mPhotos;    
-
+    private List<Photo> mPhotos;    
+    private List<ImagePatternContainer> mContainers;
+    private List<Pattern> mPatterns;
+    private List<ImageHolder> mHolders;
+    
+    private class ImageHolder {
+        ImageView[] view;
+    }
+    
     public ImageAdapter(Context context, ImageFetcher imageFetcher) {
         mContext = context;    
         mImageFetcher = imageFetcher;
         mInflater = LayoutInflater.from(context);
-        //calculateItemSize(context);
+        calculateItemSize(context);
+        
+        mPatterns = Pattern.getPatternList();
+        mContainers = new ArrayList<ImagePatternContainer>();
+        mHolders = new ArrayList<ImageHolder>();
     }
     
     private void calculateItemSize(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        //display.getSize(size);
         int width = display.getWidth();
-        //int columnNum = context.getResources().getInteger(R.integer.grid_column_num);
-
         mImageWidth = width / 2;
     }
 
     public int getCount() {
-        return 1;
+        return mListItemCount;
     }
 
     public Object getItem(int position) {
         return position; 
     }
     
-    public void setPhotos(Photo[] photo) {
-        mPhotos = photo;
+    public void setPhotos(List<Photo> photos) {
+        mPhotos = photos;
+        photoCount = 0;// photo.length;
+        
+        Iterator<Pattern> iterator = mPatterns.iterator();
+        while (iterator.hasNext()) {
+            Pattern p = iterator.next();
+            Log.d("setPhotos", "List: " + mListItemCount + " Pattern size: " + p.getCount());
+            ImagePatternContainer c = new ImagePatternContainer(p);
+            
+            mContainers.add(c);
+            
+            for(int i = 0; i < p.getCount(); i++) {
+                mContainers.get(mListItemCount).addPhotoID(photoCount);
+                photoCount++;
+                Log.d("setPhotos", "Load Photo: " + photoCount);
+            }
+            
+            mListItemCount++;
+        }
+        Log.d("ImageAdapter", "List: " + mListItemCount + " Photo: " + photoCount);
     }
-
+    
     public long getItemId(int position) {
         return position;    
     }
@@ -64,34 +102,53 @@ public class ImageAdapter extends BaseAdapter {
         return false;
     }
     
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ImageHolder holder;
-        if(convertView == null) {
-            convertView = mInflater.inflate(R.layout.two_by_two, null, false);
-            
-            holder = new ImageHolder();
-            holder.view = new ImageView[4];
-            holder.view[0] = (ImageView) convertView.findViewById(R.id.imageView1);
-            holder.view[1] = (ImageView) convertView.findViewById(R.id.imageView2);
-            holder.view[2] = (ImageView) convertView.findViewById(R.id.imageView3);
-            holder.view[3] = (ImageView) convertView.findViewById(R.id.imageView4);
-                
-            convertView.setTag(holder);
-        } else {
-            holder = (ImageHolder) convertView.getTag();
+    public View getView(int position, View convertView, ViewGroup parent) {  
+
+
+        Iterator<ImagePatternContainer> iterator = mContainers.iterator();
+        while (iterator.hasNext()) {
+            ImageHolder holder = new ImageHolder();
+            if(convertView == null) {
+                convertView = mInflater.inflate(R.layout.two_by_two, null, false);
+
+
+                ImagePatternContainer ipc = iterator.next();
+
+                holder.view = new ImageView[ipc.getPattern().getCount()];
+
+                //temp
+                int[] viewId =  {R.id.imageView1, R.id.imageView2, R.id.imageView3, R.id.imageView4};
+
+                for(int i = 0; i < holder.view.length; i++) {
+                    holder.view[i] = (ImageView) convertView.findViewById(viewId[i]);
+                    holder.view[i].setLayoutParams(new FrameLayout.LayoutParams(mImageWidth, mImageWidth));
+                }
+
+                convertView.setTag(holder);
+
+            }else {
+                holder = (ImageHolder) convertView.getTag();
+            }
+
+            mHolders.add(holder);
+
+        } 
+
+        for(int j = 0; j < mListItemCount; j++){
+            ImageView[] iv = mHolders.get(j).view;
+            ImagePatternContainer ipc = mContainers.get(j);
+            for(int i = 0; i < iv.length; i++) {
+                List<Integer> li = ipc.getPhotosID();
+                Log.d("ImageAdapter", "Fetch image: " + li.get(i));
+                mImageFetcher.loadImage(mPhotos.get(li.get(i)).getImage_url(), iv[i]);
+            }
+
         }
+
         
-        for(int i = 0; i < holder.view.length; i++ ) {
-            mImageFetcher.loadImage(mPhotos[i].getImage_url(), holder.view[i]);
-            
-            //holder.view[i].setImageBitmap(mPhotos[i]);
-            //holder.view[i].setLayoutParams(new LayoutParams(holder.view[i].getMeasuredWidth(), holder.view[i].getMeasuredWidth()));
-        }
         
         return convertView;
     }
 
-    private class ImageHolder {
-        ImageView[] view;
-    }
+    
 }

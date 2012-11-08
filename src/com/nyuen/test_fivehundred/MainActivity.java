@@ -1,5 +1,7 @@
 package com.nyuen.test_fivehundred;
 
+import java.util.Arrays;
+
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,13 +23,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Bitmap[] mPhotos = new Bitmap[4];
-//
-//        mPhotos[0] = BitmapFactory.decodeResource(getResources(), R.drawable.a);
-//        mPhotos[1] = BitmapFactory.decodeResource(getResources(), R.drawable.b);
-//        mPhotos[2] = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-//        mPhotos[3] = BitmapFactory.decodeResource(getResources(), R.drawable.d);
-
         Log.d("500px", "Ran!!");
         new loadEventTask().execute();
     }
@@ -39,7 +34,7 @@ public class MainActivity extends FragmentActivity {
     
     private void updateList(PhotoResponse response) {
         test_adapter = new ImageAdapter(this, getImageFetcher(this));
-    	test_adapter.setPhotos(response.getPhotos());
+    	test_adapter.setPhotos(Arrays.asList(response.getPhotos()));
         ListView view = (ListView) findViewById(R.id.listView1);
         view.setAdapter(test_adapter);
     }
@@ -58,7 +53,7 @@ public class MainActivity extends FragmentActivity {
         PhotoResponse photoResponse;
         try {
             Gson results = new Gson();                    
-            photoResponse = results.fromJson(pxapi.get("/photos?feature=popular&image_size=3").toString(), PhotoResponse.class);
+            photoResponse = results.fromJson(pxapi.get("/photos?feature=popular&rpp=15&image_size=3").toString(), PhotoResponse.class);
             Log.d("500px", photoResponse.getPhotos()[0].getImage_url() );
             
             return photoResponse;
