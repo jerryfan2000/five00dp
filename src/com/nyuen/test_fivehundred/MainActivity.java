@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity {
         PhotoResponse photoResponse;
         try {
             Gson results = new Gson();                    
-            photoResponse = results.fromJson(pxapi.get("/photos?feature=popular").toString(), PhotoResponse.class);
+            photoResponse = results.fromJson(pxapi.get("/photos?feature=popular&image_size=3").toString(), PhotoResponse.class);
             Log.d("500px", photoResponse.getPhotos()[0].getImage_url() );
             
             return photoResponse;

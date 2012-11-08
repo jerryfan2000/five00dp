@@ -29,7 +29,7 @@ public class ImageAdapter extends BaseAdapter {
         mContext = context;    
         mImageFetcher = imageFetcher;
         mInflater = LayoutInflater.from(context);
-        calculateItemSize(context);
+        //calculateItemSize(context);
     }
     
     private void calculateItemSize(Context context) {
@@ -82,7 +82,7 @@ public class ImageAdapter extends BaseAdapter {
         }
         
         for(int i = 0; i < holder.view.length; i++ ) {
-            mImageFetcher.loadImage(getItem(position), holder.view[i]);
+            mImageFetcher.loadImage(mPhotos[i].getImage_url(), holder.view[i]);
             
             //holder.view[i].setImageBitmap(mPhotos[i]);
             //holder.view[i].setLayoutParams(new LayoutParams(holder.view[i].getMeasuredWidth(), holder.view[i].getMeasuredWidth()));
