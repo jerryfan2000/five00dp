@@ -1,20 +1,17 @@
 package com.nyuen.test_fivehundred;
 
-import com.fivehundredpx.api.PxApi;
-import com.google.gson.Gson;
-import com.nyuen.test_fivehundred.adapter.ImageAdapter;
-import com.nyuen.test_fivehundred.structure.Photo;
-import com.nyuen.test_fivehundred.structure.PhotoResponse;
-import com.nyuen.test_fivehundred.util.ImageFetcher;
-
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ListView;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
+import com.fivehundredpx.api.PxApi;
+import com.google.gson.Gson;
+import com.nyuen.test_fivehundred.adapter.ImageAdapter;
+import com.nyuen.test_fivehundred.structure.PhotoResponse;
+import com.nyuen.test_fivehundred.util.ImageFetcher;
 
 public class MainActivity extends FragmentActivity {
 
@@ -23,7 +20,6 @@ public class MainActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        test_adapter = new ImageAdapter(this, getImageFetcher(this));
 
 //        Bitmap[] mPhotos = new Bitmap[4];
 //
@@ -32,17 +28,21 @@ public class MainActivity extends FragmentActivity {
 //        mPhotos[2] = BitmapFactory.decodeResource(getResources(), R.drawable.c);
 //        mPhotos[3] = BitmapFactory.decodeResource(getResources(), R.drawable.d);
 
-        test_adapter.setPhotos(getPhotosResponse().getPhotos());
-        ListView view = (ListView) findViewById(R.id.listView1);
-        view.setAdapter(test_adapter);
-        new loadEventTask().execute();
         Log.d("500px", "Ran!!");
+        new loadEventTask().execute();
     }
 
     //    public boolean onCreateOptionsMenu(Menu menu) {
     //        getMenuInflater().inflate(R.menu., menu);
     //        return true;
     //    }
+    
+    private void updateList(PhotoResponse response) {
+        test_adapter = new ImageAdapter(this, getImageFetcher(this));
+    	test_adapter.setPhotos(response.getPhotos());
+        ListView view = (ListView) findViewById(R.id.listView1);
+        view.setAdapter(test_adapter);
+    }
 
     public static ImageFetcher getImageFetcher(final FragmentActivity activity) {
         // The ImageFetcher takes care of loading remote images into our ImageView
@@ -68,7 +68,7 @@ public class MainActivity extends FragmentActivity {
         }   
     }
 
-    private class loadEventTask extends AsyncTask<String, Void, Void> {
+    private class loadEventTask extends AsyncTask<String, Void, PhotoResponse> {
         private final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
 
         protected void onPreExecute() {
@@ -77,13 +77,11 @@ public class MainActivity extends FragmentActivity {
             dialog.show();
         }
 
-        protected Void doInBackground(final String... args) {
-            MainActivity.getPhotosResponse();
-            
-            return null;
+        protected PhotoResponse doInBackground(final String... args) {
+            return MainActivity.getPhotosResponse();
         }
 
-        protected void onPostExecute(final Void unused) {
+        protected void onPostExecute(PhotoResponse response) {
             //Log.d("Main", "adapter size: " + m_adapter.getCount());
 
             if (this.dialog.isShowing()) {
@@ -96,6 +94,7 @@ public class MainActivity extends FragmentActivity {
             //                   m_adapter.add(m_event.get(i));
             //}
 
+            updateList(response);
         }
     }
 
