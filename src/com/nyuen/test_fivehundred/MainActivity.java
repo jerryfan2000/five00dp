@@ -14,39 +14,34 @@ import com.nyuen.test_fivehundred.structure.PhotoResponse;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.ListView;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends FragmentActivity {
 
     private ImageAdapter test_adapter;
     
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        setContentView(R.layout.activity_main);
         test_adapter = new ImageAdapter(this);
         
-        
-        
-                
         Bitmap[] mPhotos = new Bitmap[4];
         
         mPhotos[0] = BitmapFactory.decodeResource(getResources(), R.drawable.a);
         mPhotos[1] = BitmapFactory.decodeResource(getResources(), R.drawable.b);
         mPhotos[2] = BitmapFactory.decodeResource(getResources(), R.drawable.c);
         mPhotos[3] = BitmapFactory.decodeResource(getResources(), R.drawable.d);
-//        mPhotos[4] = BitmapFactory.decodeResource(getResources(), R.drawable.a);
-//        mPhotos[5] = BitmapFactory.decodeResource(getResources(), R.drawable.b);
-//        mPhotos[6] = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-//        mPhotos[7] = BitmapFactory.decodeResource(getResources(), R.drawable.d);
-        
-//                new BitmapDrawable(getResources(), R.dr);
+
         test_adapter.setPhotos(mPhotos);
-        setListAdapter(this.test_adapter);
+        ListView view = (ListView) findViewById(R.id.listView1);
+        view.setAdapter(test_adapter);
         new loadEventTask().execute();
         Log.d("500px", "Ran!!");
     }
@@ -55,6 +50,7 @@ public class MainActivity extends ListActivity {
 //        getMenuInflater().inflate(R.menu., menu);
 //        return true;
 //    }
+    
     private class loadEventTask extends AsyncTask<String, Void, Void> {
         private final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
 
