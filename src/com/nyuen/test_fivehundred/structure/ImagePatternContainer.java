@@ -31,12 +31,6 @@ public class ImagePatternContainer {
             list.add(Pattern.FOUR);
             list.add(Pattern.THREE_VERT);
             list.add(Pattern.THREE_HOR);
-//            list.add(Pattern.FOUR);
-//            list.add(Pattern.FOUR);
-//            list.add(Pattern.FOUR);
-//            list.add(Pattern.FOUR);
-//            list.add(Pattern.FOUR);
-//            list.add(Pattern.FOUR);
             Collections.shuffle(list);
             return list;
         }

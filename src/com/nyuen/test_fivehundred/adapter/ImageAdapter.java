@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.nyuen.test_fivehundred.R;
 import com.nyuen.test_fivehundred.structure.ImagePatternContainer;
@@ -102,13 +104,15 @@ public class ImageAdapter extends BaseAdapter {
             ImageHolder holder = new ImageHolder();
             
             if(convertView == null) { 
-                convertView = mInflater.inflate(R.layout.two_by_two, null, false);
+                convertView = mInflater.inflate(R.layout.image_grid, null, false);
                 ImagePatternContainer ipc = mContainers.get(position);
-
+                RelativeLayout r = (RelativeLayout) convertView.findViewById(R.id.imageGrid);
+                r.setLayoutParams(new AbsListView.LayoutParams(mImageWidth*2, mImageWidth*2));
+                
                 holder.view = new ImageView[4];//ipc.getPattern().getCount()];
 
                 //temp
-                int[] viewId =  {R.id.imageView1, R.id.imageView2, R.id.imageView3, R.id.imageView4};
+                int[] viewId =  {R.id.imageView0, R.id.imageView1, R.id.imageView2, R.id.imageView3};
 
                 for(int i = 0; i < holder.view.length; i++) {
                     holder.view[i] = (ImageView) convertView.findViewById(viewId[i]);
@@ -126,41 +130,93 @@ public class ImageAdapter extends BaseAdapter {
 
             ImageView[] iv = holder.view;
             ImagePatternContainer ipc = mContainers.get(position);
+            Pattern pattern = ipc.getPattern();
             List<Integer> li = ipc.getPhotosID();
             for(int i = 0; i < 4; i++) {
             	if (i < li.size()) {
             		iv[i].setVisibility(View.VISIBLE);
 	                Log.d("ImageAdapter", "Item: " + position + ", Fetch image: " + li.get(i) + " view: " + i);
-	                mImageFetcher.loadImage(mPhotos.get(li.get(i)).getImage_url(), iv[i]);
-            	} else {
+	                String url = mPhotos.get(li.get(i)).getImage_url();
+	                
+	                if(pattern == Pattern.FOUR) {
+	                    url.replace("4.jpg", "3.jpg");
+	                }
+	                
+    	                mImageFetcher.loadImage(url, iv[i]);
+                	} else {
             		iv[i].setVisibility(View.GONE);
             	}
             }
-
-            Pattern pattern = ipc.getPattern();
+            
+            RelativeLayout.LayoutParams param0 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);            
+            RelativeLayout.LayoutParams param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);
+            RelativeLayout.LayoutParams param2 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);
+            RelativeLayout.LayoutParams param3 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);
+              
+            
+            
+            
             if (pattern == Pattern.ONE) {
-            	iv[0].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth*2, mImageWidth*2));
-            	iv[1].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
-            	iv[2].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
-            	iv[3].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
+                param0 = new RelativeLayout.LayoutParams(mImageWidth*2, mImageWidth*2);   
+                
+            	iv[0].setLayoutParams(param0);	
             } else if (pattern == Pattern.TWO_VERT) {
-            	iv[0].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth*2));
-            	iv[1].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth*2));
-            	iv[2].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
-            	iv[3].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
+                param0 = new RelativeLayout.LayoutParams(mImageWidth,  mImageWidth*2);   
+                param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth*2);
+                
+                param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
+   
+            	iv[0].setLayoutParams(param0);
+            	iv[1].setLayoutParams(param1);
+            } else if (pattern == Pattern.TWO_HOR) {
+                param0 = new RelativeLayout.LayoutParams(mImageWidth*2,  mImageWidth);   
+                param1 = new RelativeLayout.LayoutParams(mImageWidth*2, mImageWidth);
+                
+                param1.addRule(RelativeLayout.BELOW, R.id.imageView0);
+   
+                iv[0].setLayoutParams(param0);
+                iv[1].setLayoutParams(param1);
             } else if (pattern == Pattern.THREE_HOR) {
-            	iv[0].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
-            	iv[1].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
-            	iv[2].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth*2, mImageWidth));
-            	iv[3].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
+                param0 = new RelativeLayout.LayoutParams(mImageWidth*2,  mImageWidth);   
+                
+                param1.addRule(RelativeLayout.BELOW, R.id.imageView0);
+                param2.addRule(RelativeLayout.BELOW, R.id.imageView0);
+                param2.addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
+                
+            	iv[0].setLayoutParams(param0);
+            	iv[1].setLayoutParams(param1);
+            	iv[2].setLayoutParams(param2);
+            } else if (pattern == Pattern.THREE_VERT) {
+                param0 = new RelativeLayout.LayoutParams(mImageWidth,  mImageWidth*2);
+                
+                param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
+                param2.addRule(RelativeLayout.BELOW, R.id.imageView1);
+                param2.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
+                
+                iv[0].setLayoutParams(param0);
+                iv[1].setLayoutParams(param1);
+                iv[2].setLayoutParams(param2);
             } else {
-            	// pattern == Pattern.FOUR
-            	iv[0].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
-            	iv[1].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
-            	iv[2].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
-            	iv[3].setLayoutParams(new LinearLayout.LayoutParams(mImageWidth, mImageWidth));
+                param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
+                param2.addRule(RelativeLayout.BELOW, R.id.imageView0);
+                param3.addRule(RelativeLayout.BELOW, R.id.imageView1);
+                param3.addRule(RelativeLayout.RIGHT_OF, R.id.imageView2);
+                
+            	iv[0].setLayoutParams(param0);
+            	iv[1].setLayoutParams(param1);
+            	iv[2].setLayoutParams(param2);
+            	iv[3].setLayoutParams(param3);
             }
-        
+            
+//            iv[0].setBackgroundResource(R.drawable.picture_frame);
+//            iv[0].setPadding(4, 4, 4, 4);
+//            //iv[1].setBackgroundResource(R.drawable.picture_frame);
+//            iv[1].setPadding(1, 1, 1, 1);
+//            //iv[2].setBackgroundResource(R.drawable.picture_frame);
+//            iv[2].setPadding(1, 4, 4, 4);
+//            //iv[3].setBackgroundResource(R.drawable.picture_frame);
+//            iv[3].setPadding(4, 4, 4, 4);
+            
         return convertView;
     }
     
@@ -175,7 +231,7 @@ public class ImageAdapter extends BaseAdapter {
 //                holder.view = new ImageView[ipc.getPattern().getCount()];
 //
 //                //temp
-//                int[] viewId =  {R.id.imageView1, R.id.imageView2, R.id.imageView3, R.id.imageView4};
+//                int[] viewId =  {R.id.imageView0, R.id.imageView1, R.id.imageView2, R.id.imageView3};
 //
 //                for(int i = 0; i < holder.view.length; i++) {
 //                    holder.view[i] = (ImageView) convertView.findViewById(viewId[i]);
