@@ -2,6 +2,7 @@ package com.nyuen.test_fivehundred;
 
 import java.util.Arrays;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.nyuen.test_fivehundred.adapter.ImageAdapter;
 import com.nyuen.test_fivehundred.structure.PhotoResponse;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
 
+@SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity {
 
     private ImageAdapter test_adapter;
@@ -22,6 +24,9 @@ public class MainActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        getActionBar().setDisplayUseLogoEnabled(true);
+        getActionBar().setTitle("Popular");
 
         Log.d("500px", "Ran!!");
         new loadEventTask().execute();
