@@ -40,6 +40,8 @@ public class ImageAdapter extends BaseAdapter {
     private List<Pattern> mPatterns;
     private List<ImageHolder> mHolders;
     
+    private int mPosition;
+    
     private class ImageHolder {
         ImageView[] view;
     }
@@ -73,13 +75,12 @@ public class ImageAdapter extends BaseAdapter {
     public void setPhotos(List<Photo> photos) {
         mPhotos = photos;
         photoCount = 0;// photo.length;
-        
+
         Iterator<Pattern> iterator = mPatterns.iterator();
         while (iterator.hasNext()) {
             Pattern p = iterator.next();
             Log.d("setPhotos", "List: " + mListItemCount + " Pattern size: " + p.getCount());
             ImagePatternContainer c = new ImagePatternContainer(p);
-            
             mContainers.add(c);
             
             for(int i = 0; i < p.getCount(); i++) {
@@ -103,25 +104,20 @@ public class ImageAdapter extends BaseAdapter {
     }
     
     public View getView(int position, View convertView, ViewGroup parent) {  
-
-
-        Iterator<ImagePatternContainer> iterator = mContainers.iterator();
-        while (iterator.hasNext()) {
             ImageHolder holder = new ImageHolder();
-            if(convertView == null) {
+            
+            if(convertView == null) { 
                 convertView = mInflater.inflate(R.layout.two_by_two, null, false);
+                ImagePatternContainer ipc = mContainers.get(position);
 
-
-                ImagePatternContainer ipc = iterator.next();
-
-                holder.view = new ImageView[ipc.getPattern().getCount()];
+                holder.view = new ImageView[4];//ipc.getPattern().getCount()];
 
                 //temp
                 int[] viewId =  {R.id.imageView1, R.id.imageView2, R.id.imageView3, R.id.imageView4};
 
                 for(int i = 0; i < holder.view.length; i++) {
                     holder.view[i] = (ImageView) convertView.findViewById(viewId[i]);
-                    holder.view[i].setLayoutParams(new FrameLayout.LayoutParams(mImageWidth, mImageWidth));
+                    //holder.view[i].setLayoutParams(new FrameLayout.LayoutParams(mImageWidth, mImageWidth));
                 }
 
                 convertView.setTag(holder);
@@ -132,23 +128,63 @@ public class ImageAdapter extends BaseAdapter {
 
             mHolders.add(holder);
 
-        } 
 
-        for(int j = 0; j < mListItemCount; j++){
-            ImageView[] iv = mHolders.get(j).view;
-            ImagePatternContainer ipc = mContainers.get(j);
-            for(int i = 0; i < iv.length; i++) {
-                List<Integer> li = ipc.getPhotosID();
-                Log.d("ImageAdapter", "Fetch image: " + li.get(i));
+            ImageView[] iv = holder.view;
+            ImagePatternContainer ipc = mContainers.get(position);
+            List<Integer> li = ipc.getPhotosID();
+            for(int i = 0; i < li.size(); i++) { 
+                Log.d("ImageAdapter", "Item: " + position + ", Fetch image: " + li.get(i) + " view: " + i);
                 mImageFetcher.loadImage(mPhotos.get(li.get(i)).getImage_url(), iv[i]);
             }
-
-        }
 
         
         
         return convertView;
     }
+    
+//    public View getView(int position, View convertView, ViewGroup parent) {  
+//        Iterator<ImagePatternContainer> iterator = mContainers.iterator();
+//        while (iterator.hasNext()) {
+//            ImageHolder holder = new ImageHolder();
+//            if(convertView == null) { 
+//                convertView = mInflater.inflate(R.layout.two_by_two, null, false);
+//                ImagePatternContainer ipc = iterator.next();
+//
+//                holder.view = new ImageView[ipc.getPattern().getCount()];
+//
+//                //temp
+//                int[] viewId =  {R.id.imageView1, R.id.imageView2, R.id.imageView3, R.id.imageView4};
+//
+//                for(int i = 0; i < holder.view.length; i++) {
+//                    holder.view[i] = (ImageView) convertView.findViewById(viewId[i]);
+//                    holder.view[i].setLayoutParams(new FrameLayout.LayoutParams(mImageWidth, mImageWidth));
+//                }
+//
+//                convertView.setTag(holder);
+//
+//            }else {
+//                holder = (ImageHolder) convertView.getTag();
+//            }
+//
+//            mHolders.add(holder);
+//
+//        } 
+//
+//        for(int j = 0; j < 5; j++){
+//            ImageView[] iv = mHolders.get(j).view;
+//            ImagePatternContainer ipc = mContainers.get(j);
+//            for(int i = 0; i < iv.length; i++) {
+//                List<Integer> li = ipc.getPhotosID();
+//                Log.d("ImageAdapter", "Fetch image: " + li.get(i));
+//                mImageFetcher.loadImage(mPhotos.get(li.get(i)).getImage_url(), iv[i]);
+//            }
+//
+//        }
+//
+//        
+//        
+//        return convertView;
+//    }
 
     
 }
