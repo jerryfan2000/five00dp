@@ -96,14 +96,14 @@ public class ImageAdapter extends BaseAdapter {
 		Iterator<Pattern> iterator = mPatterns.iterator();
 		while (iterator.hasNext()) {
 			Pattern p = iterator.next();
-			Log.d("setPhotos", "List: " + mListItemCount + " Pattern size: " + p.getCount());
+			//Log.d("setPhotos", "List: " + mListItemCount + " Pattern size: " + p.getCount());
 			ImagePatternContainer c = new ImagePatternContainer(p);
 			mContainers.add(c);
 
 			for (int i = 0; i < p.getCount(); i++) {
 				mContainers.get(mListItemCount).addPhotoID(mPhotoCount);
 				mPhotoCount++;
-				Log.d("setPhotos", "Load Photo: " + mPhotoCount);
+				//Log.d("setPhotos", "Load Photo: " + mPhotoCount);
 			}
 
 			mListItemCount++;
@@ -212,12 +212,8 @@ public class ImageAdapter extends BaseAdapter {
 		for (int i = 0; i < 4; i++) {
 			if (i < li.size()) {
 				iv[i].setVisibility(View.VISIBLE);
-//				Log.d("ImageAdapter", "Item: " + position + ", Fetch image: " + li.get(i)
-//						+ " view: " + i);
 				String url = mPhotos.get(li.get(i)).image_url;
-
 				url = url.replace("3.jpg", pattern.getSizes()[i] + ".jpg");
-
 				iv[i].setBackgroundColor(Color.WHITE);
 				mImageFetcher.loadImage(url, iv[i]);
 			} else {

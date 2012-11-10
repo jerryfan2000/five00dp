@@ -1,4 +1,4 @@
-package com.nyuen.test_fivehundred;
+package com.nyuen.test_fivehundred.fragment;
 
 import java.util.Arrays;
 
@@ -17,6 +17,10 @@ import android.widget.AbsListView;
 
 import com.fivehundredpx.api.PxApi;
 import com.google.gson.Gson;
+import com.nyuen.test_fivehundred.api.ApiHelper;
+import com.nyuen.test_fivehundred.api.FiveHundred;
+import com.nyuen.test_fivehundred.MainActivity;
+import com.nyuen.test_fivehundred.R;
 import com.nyuen.test_fivehundred.adapter.ImageAdapter;
 import com.nyuen.test_fivehundred.structure.PhotoResponse;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
@@ -87,17 +91,6 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     }
     
     @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-		// Pause disk cache access to ensure smoother scrolling
-		if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
-				|| scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-			mImageFetcher.setPauseWork(true);
-		} else {
-			mImageFetcher.setPauseWork(false);
-		}
-    }
-    
-    @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
             int totalItemCount) { 
         boolean loadMore = firstVisibleItem + visibleItemCount + 1 >= totalItemCount;
@@ -107,36 +100,29 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         }
     }
     
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// Pause disk cache access to ensure smoother scrolling
+		if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
+				|| scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+			mImageFetcher.setPauseWork(true);
+		} else {
+			mImageFetcher.setPauseWork(false);
+		}
+    }  
+    
     private void updateList(PhotoResponse response) {
         if(mPage == 1) {
             mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
-            mImageAdapter.setPhotos(Arrays.asList(response.getPhotos()));
+            mImageAdapter.setPhotos(Arrays.asList(response.photos));
             setListAdapter(mImageAdapter);    
             getListView().setOnScrollListener(this);
         } else {   
-            mImageAdapter.appendPhotos(Arrays.asList(response.getPhotos()));
+            mImageAdapter.appendPhotos(Arrays.asList(response.photos));
             mImageAdapter.notifyDataSetChanged();
         }
     }
     
-    public static PhotoResponse getPhotosResponse(int pageNumber) {
-        PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
-        
-        PhotoResponse photoResponse;
-        try {               
-            photoResponse = new Gson().fromJson(
-                    pxapi.get("/photos?feature=popular&rpp=15&image_size=3&page="+pageNumber).toString(), 
-                    PhotoResponse.class);
-            
-            Log.d(TAG, photoResponse.getPhotos()[0].image_url );
-            
-            return photoResponse;
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
-            return null;
-        }   
-    }
-
     private class LoadPhotoTask extends AsyncTask<Void, Void, PhotoResponse> {
         protected void onPreExecute() {
             mLoading = true;
@@ -144,7 +130,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         }
 
         protected PhotoResponse doInBackground(Void... params) {
-            return getPhotosResponse(mPage);
+            return ApiHelper.getPhotoStream("popular", 15, 4, mPage);
         }
 
         protected void onPostExecute(PhotoResponse response) {
