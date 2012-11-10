@@ -210,9 +210,10 @@ public class ImageAdapter extends BaseAdapter {
 	}
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ImageHolder holder = new ImageHolder();
+		ImageHolder holder;
 
 		if (convertView == null) {
+			holder = new ImageHolder();
 			convertView = mInflater.inflate(R.layout.image_grid, null, false);
 			RelativeLayout r = (RelativeLayout) convertView.findViewById(R.id.imageGrid);
 			r.setLayoutParams(new AbsListView.LayoutParams(mImageWidth * 2, mImageWidth * 2));
