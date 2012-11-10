@@ -14,12 +14,14 @@ import com.fivehundredpx.api.PxApi;
 import com.google.gson.Gson;
 import com.nyuen.test_fivehundred.adapter.ImageAdapter;
 import com.nyuen.test_fivehundred.structure.PhotoResponse;
-import com.nyuen.test_fivehundred.util.ImageFetcher;
+import com.nyuen.test_fivehundred.util.UIUtils;
 
 @SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity {
+	
+	private static final String TAG = MainActivity.class.getSimpleName();
 
-    private ImageAdapter test_adapter;
+    private ImageAdapter mImageAdapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +30,8 @@ public class MainActivity extends FragmentActivity {
         getActionBar().setDisplayUseLogoEnabled(true);
         getActionBar().setTitle("Popular");
 
-        Log.d("500px", "Ran!!");
-        new loadEventTask().execute();
+        Log.d(TAG, "Ran!!");
+        new LoadEventTask().execute();
     }
 
     //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -38,43 +40,37 @@ public class MainActivity extends FragmentActivity {
     //    }
     
     private void updateList(PhotoResponse response) {
-        test_adapter = new ImageAdapter(this, getImageFetcher(this));
-    	test_adapter.setPhotos(Arrays.asList(response.getPhotos()));
+        mImageAdapter = new ImageAdapter(this, UIUtils.getImageFetcher(this));
+    	mImageAdapter.setPhotos(Arrays.asList(response.getPhotos()));
         ListView view = (ListView) findViewById(R.id.listView1);
-        view.setAdapter(test_adapter);
-    }
-
-    public static ImageFetcher getImageFetcher(final FragmentActivity activity) {
-        // The ImageFetcher takes care of loading remote images into our ImageView
-        ImageFetcher fetcher = new ImageFetcher(activity);
-        fetcher.addImageCache(activity);
-        return fetcher;
+        view.setAdapter(mImageAdapter);
     }
     
     public static PhotoResponse getPhotosResponse() {
-        String key = "H44vO2VyWiCcW0RBlZ3EAEJU4o6nuI2MlNCLLDmx";
-        PxApi pxapi = new PxApi(key);
+        PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
         
         PhotoResponse photoResponse;
-        try {
-            Gson results = new Gson();                    
-            photoResponse = results.fromJson(pxapi.get("/photos?feature=popular&rpp=15&image_size=4").toString(), PhotoResponse.class);
-            Log.d("500px", photoResponse.getPhotos()[0].getImage_url() );
+        try {               
+            photoResponse = new Gson().fromJson(
+            		pxapi.get("/photos?feature=popular&rpp=15&image_size=4").toString(), 
+            		PhotoResponse.class);
+            
+            Log.d(TAG, photoResponse.getPhotos()[0].image_url );
             
             return photoResponse;
         } catch (Exception e) {
-            Log.e("500px", e.toString());
+            Log.e(TAG, e.toString());
             return null;
         }   
     }
 
-    private class loadEventTask extends AsyncTask<String, Void, PhotoResponse> {
-        private final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+    private class LoadEventTask extends AsyncTask<String, Void, PhotoResponse> {
+        private final ProgressDialog mDialog = new ProgressDialog(MainActivity.this);
 
         protected void onPreExecute() {
-            dialog.setTitle("Please wait...");
-            dialog.setMessage("Retrieving data...");
-            dialog.show();
+            mDialog.setTitle("Please wait...");
+            mDialog.setMessage("Retrieving data...");
+            mDialog.show();
         }
 
         protected PhotoResponse doInBackground(final String... args) {
@@ -84,8 +80,8 @@ public class MainActivity extends FragmentActivity {
         protected void onPostExecute(PhotoResponse response) {
             //Log.d("Main", "adapter size: " + m_adapter.getCount());
 
-            if (this.dialog.isShowing()) {
-                this.dialog.dismiss();
+            if (mDialog.isShowing()) {
+                mDialog.dismiss();
             }
 
             //if(m_event != null && m_event.size() > 0){
@@ -97,6 +93,4 @@ public class MainActivity extends FragmentActivity {
             updateList(response);
         }
     }
-
-
 }
