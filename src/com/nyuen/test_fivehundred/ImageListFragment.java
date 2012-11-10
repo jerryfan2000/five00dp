@@ -31,6 +31,8 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
 
     private ImageAdapter mImageAdapter;
     private ImageFetcher mImageFetcher;
+    
+    private int mPage = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new LoadEventTask().execute();
+        new LoadPhotoTask().execute();
     }
     
     @Override
@@ -98,22 +100,35 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-            int totalItemCount) { }
-    
-    private void updateList(PhotoResponse response) {
-        mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
-        mImageAdapter.setPhotos(Arrays.asList(response.getPhotos()));
-        getListView().setOnScrollListener(this);
-        setListAdapter(mImageAdapter);
+            int totalItemCount) { 
+        boolean loadMore = firstVisibleItem + visibleItemCount + 1 >= totalItemCount;
+        
+        if(loadMore) {
+            new LoadPhotoTask().execute();
+        }
     }
     
-    public static PhotoResponse getPhotosResponse() {
+    private void updateList(PhotoResponse response) {
+        getListView().setOnScrollListener(this);
+        Log.d(TAG, ""+mPage);
+        if(mPage == 1) {
+            mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
+            mImageAdapter.setPhotos(Arrays.asList(response.getPhotos()));
+            setListAdapter(mImageAdapter);    
+        } else {
+            mImageAdapter.appendPhotos(Arrays.asList(response.getPhotos()));
+            mImageAdapter.notifyDataSetChanged();
+        }
+        //mPage++;
+    }
+    
+    public static PhotoResponse getPhotosResponse(int pageNumber) {
         PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
         
         PhotoResponse photoResponse;
         try {               
             photoResponse = new Gson().fromJson(
-                    pxapi.get("/photos?feature=popular&rpp=15&image_size=4").toString(), 
+                    pxapi.get("/photos?feature=popular&rpp=15&image_size=4&page="+pageNumber).toString(), 
                     PhotoResponse.class);
             
             Log.d(TAG, photoResponse.getPhotos()[0].image_url );
@@ -125,7 +140,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         }   
     }
 
-    private class LoadEventTask extends AsyncTask<String, Void, PhotoResponse> {
+    private class LoadPhotoTask extends AsyncTask<Void, Void, PhotoResponse> {
         //private final ProgressDialog mDialog = new ProgressDialog(getActivity());
 
         protected void onPreExecute() {
@@ -134,8 +149,8 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
 //            mDialog.show();
         }
 
-        protected PhotoResponse doInBackground(final String... args) {
-            return getPhotosResponse();
+        protected PhotoResponse doInBackground(Void... params) {
+            return getPhotosResponse(mPage);
         }
 
         protected void onPostExecute(PhotoResponse response) {
@@ -150,8 +165,9 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
             //               for(int i=0;i<m_event.size();i++)
             //                   m_adapter.add(m_event.get(i));
             //}
-
-            updateList(response);
+            if(response != null) {
+                updateList(response);
+            }
         }
     }
 }
