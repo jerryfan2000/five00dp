@@ -1,19 +1,8 @@
 package com.nyuen.test_fivehundred;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import com.fivehundredpx.api.PxApi;
-import com.google.gson.Gson;
-import com.nyuen.test_fivehundred.adapter.ImageAdapter;
-import com.nyuen.test_fivehundred.structure.Photo;
-import com.nyuen.test_fivehundred.structure.PhotoResponse;
-import com.nyuen.test_fivehundred.util.ImageFetcher;
-import com.nyuen.test_fivehundred.util.UIUtils;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -24,8 +13,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.AbsListView;
+
+import com.fivehundredpx.api.PxApi;
+import com.google.gson.Gson;
+import com.nyuen.test_fivehundred.adapter.ImageAdapter;
+import com.nyuen.test_fivehundred.structure.PhotoResponse;
+import com.nyuen.test_fivehundred.util.ImageFetcher;
+import com.nyuen.test_fivehundred.util.UIUtils;
 
 @SuppressLint("NewApi")
 public class ImageListFragment extends ListFragment implements AbsListView.OnScrollListener {
@@ -97,13 +92,6 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // Pause disk cache access to ensure smoother scrolling
-        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
-                || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-            mImageFetcher.setPauseWork(true);
-        } else {
-            mImageFetcher.setPauseWork(false);
-        }
     }
     
     @Override
@@ -122,12 +110,11 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
             mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
             mImageAdapter.setPhotos(Arrays.asList(response.getPhotos()));
             setListAdapter(mImageAdapter);    
+            getListView().setOnScrollListener(this);
         } else {   
             mImageAdapter.appendPhotos(Arrays.asList(response.getPhotos()));
             mImageAdapter.notifyDataSetChanged();
         }
-        //mPage++;
-        getListView().setOnScrollListener(this);
     }
     
     public static PhotoResponse getPhotosResponse(int pageNumber) {
