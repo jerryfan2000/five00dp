@@ -103,7 +103,7 @@ public class ImageAdapter extends BaseAdapter {
 			RelativeLayout r = (RelativeLayout) convertView.findViewById(R.id.imageGrid);
 			r.setLayoutParams(new AbsListView.LayoutParams(mImageWidth * 2, mImageWidth * 2));
 
-			holder.view = new ImageView[4];// ipc.getPattern().getCount()];
+			holder.view = new ImageView[4];
 
 			// temp
 			int[] viewId = { R.id.imageView0, R.id.imageView1, R.id.imageView2, R.id.imageView3 };
@@ -145,17 +145,17 @@ public class ImageAdapter extends BaseAdapter {
 		}
 
 		RelativeLayout.LayoutParams param0 = new RelativeLayout.LayoutParams(mImageWidth,
-				mImageWidth);
-		RelativeLayout.LayoutParams param1 = new RelativeLayout.LayoutParams(mImageWidth,
-				mImageWidth);
-		RelativeLayout.LayoutParams param2 = new RelativeLayout.LayoutParams(mImageWidth,
-				mImageWidth);
-		RelativeLayout.LayoutParams param3 = new RelativeLayout.LayoutParams(mImageWidth,
-				mImageWidth);
+                mImageWidth);
+        RelativeLayout.LayoutParams param1 = new RelativeLayout.LayoutParams(mImageWidth,
+                mImageWidth);
+        RelativeLayout.LayoutParams param2 = new RelativeLayout.LayoutParams(mImageWidth,
+                mImageWidth);
+        RelativeLayout.LayoutParams param3 = new RelativeLayout.LayoutParams(mImageWidth,
+                mImageWidth);
 
 		if (pattern == Pattern.ONE) {
 			param0 = new RelativeLayout.LayoutParams(mImageWidth * 2, mImageWidth * 2);
-
+			
 			param0.setMargins(mMarginSize, mMarginSize, mMarginSize, 0);
 
 			iv[0].setLayoutParams(param0);

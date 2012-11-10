@@ -6,6 +6,7 @@ import com.fivehundredpx.api.PxApi;
 import com.google.gson.Gson;
 import com.nyuen.test_fivehundred.adapter.ImageAdapter;
 import com.nyuen.test_fivehundred.structure.PhotoResponse;
+import com.nyuen.test_fivehundred.util.ImageFetcher;
 import com.nyuen.test_fivehundred.util.UIUtils;
 
 import android.annotation.SuppressLint;
@@ -21,13 +22,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.AbsListView;
 
 @SuppressLint("NewApi")
-public class ImageListFragment extends ListFragment {
+public class ImageListFragment extends ListFragment implements AbsListView.OnScrollListener {
     
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private ImageAdapter mImageAdapter;
+    private ImageFetcher mImageFetcher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class ImageListFragment extends ListFragment {
         
         getActivity().getActionBar().setDisplayUseLogoEnabled(true);
         getActivity().getActionBar().setTitle("Popular");
+        
+        mImageFetcher = UIUtils.getImageFetcher(getActivity());
     
         Log.d(TAG, "Ran!!");
     }
@@ -68,9 +73,37 @@ public class ImageListFragment extends ListFragment {
         return super.onOptionsItemSelected(item);
     }
     
+    @Override
+    public void onPause() {
+        super.onPause();
+        mImageFetcher.flushCache();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mImageFetcher.closeCache();
+    }
+    
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // Pause disk cache access to ensure smoother scrolling
+        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
+                || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+            mImageFetcher.setPauseWork(true);
+        } else {
+            mImageFetcher.setPauseWork(false);
+        }
+    }
+    
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+            int totalItemCount) { }
+    
     private void updateList(PhotoResponse response) {
-        mImageAdapter = new ImageAdapter(getActivity(), UIUtils.getImageFetcher(getActivity()));
+        mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
         mImageAdapter.setPhotos(Arrays.asList(response.getPhotos()));
+        getListView().setOnScrollListener(this);
         setListAdapter(mImageAdapter);
     }
     
