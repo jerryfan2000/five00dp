@@ -65,7 +65,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
+        //inflater.inflate(R.menu.menu_main, menu);
     }
     
     @Override
@@ -105,7 +105,6 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     }
     
     private void updateList(PhotoResponse response) {
-        Log.d(TAG, ""+mPage);
         if(mPage == 1) {
             mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
             mImageAdapter.setPhotos(Arrays.asList(response.getPhotos()));
