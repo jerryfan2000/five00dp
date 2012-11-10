@@ -45,6 +45,7 @@ public class ImageAdapter extends BaseAdapter {
 		mPatterns = Pattern.getPatternList();
 		mContainers = new ArrayList<ImagePatternContainer>();
 		mHolders = new ArrayList<ImageHolder>();
+		mPhotos = new ArrayList<Photo>();
 	}
 
 	private void calculateItemSize(Context context) {
@@ -64,7 +65,9 @@ public class ImageAdapter extends BaseAdapter {
 	}
 
 	public void setPhotos(List<Photo> photos) {
-		mPhotos = photos;
+	    for(Photo ph:photos) {
+            mPhotos.add(ph); 
+        }
 		photoCount = 0;// photo.length;
 
 		Iterator<Pattern> iterator = mPatterns.iterator();
@@ -86,7 +89,9 @@ public class ImageAdapter extends BaseAdapter {
 	}
 
 	public void appendPhotos(List<Photo> photos) {
-	    mPhotos.addAll(photos);
+	    for(Photo ph:photos) {
+	        mPhotos.add(ph); 
+	    }
 	    
 	    Iterator<Pattern> iterator = mPatterns.iterator();
         while (iterator.hasNext()) {

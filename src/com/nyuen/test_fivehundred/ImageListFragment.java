@@ -1,10 +1,13 @@
 package com.nyuen.test_fivehundred;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.fivehundredpx.api.PxApi;
 import com.google.gson.Gson;
 import com.nyuen.test_fivehundred.adapter.ImageAdapter;
+import com.nyuen.test_fivehundred.structure.Photo;
 import com.nyuen.test_fivehundred.structure.PhotoResponse;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
 import com.nyuen.test_fivehundred.util.UIUtils;
@@ -32,6 +35,8 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     private ImageAdapter mImageAdapter;
     private ImageFetcher mImageFetcher;
     
+    
+    private boolean mLoading = false;
     private int mPage = 1;
 
     @Override
@@ -102,24 +107,26 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
             int totalItemCount) { 
         boolean loadMore = firstVisibleItem + visibleItemCount + 1 >= totalItemCount;
+//        Log.e("onScroll", ""+firstVisibleItem);
+//        Log.e("onScroll", ""+visibleItemCount);
         
-        if(loadMore) {
+        if(loadMore && !mLoading) {
             new LoadPhotoTask().execute();
         }
     }
     
     private void updateList(PhotoResponse response) {
-        getListView().setOnScrollListener(this);
         Log.d(TAG, ""+mPage);
         if(mPage == 1) {
             mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
             mImageAdapter.setPhotos(Arrays.asList(response.getPhotos()));
             setListAdapter(mImageAdapter);    
-        } else {
+        } else {   
             mImageAdapter.appendPhotos(Arrays.asList(response.getPhotos()));
             mImageAdapter.notifyDataSetChanged();
         }
         //mPage++;
+        getListView().setOnScrollListener(this);
     }
     
     public static PhotoResponse getPhotosResponse(int pageNumber) {
@@ -141,12 +148,8 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     }
 
     private class LoadPhotoTask extends AsyncTask<Void, Void, PhotoResponse> {
-        //private final ProgressDialog mDialog = new ProgressDialog(getActivity());
-
         protected void onPreExecute() {
-//            mDialog.setTitle("Please wait...");
-//            mDialog.setMessage("Retrieving data...");
-//            mDialog.show();
+            mLoading = true;
         }
 
         protected PhotoResponse doInBackground(Void... params) {
@@ -154,19 +157,10 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         }
 
         protected void onPostExecute(PhotoResponse response) {
-            //Log.d("Main", "adapter size: " + m_adapter.getCount());
-
-//            if (mDialog.isShowing()) {
-//                mDialog.dismiss();
-//            }
-
-            //if(m_event != null && m_event.size() > 0){
-            //m_adapter.clear();
-            //               for(int i=0;i<m_event.size();i++)
-            //                   m_adapter.add(m_event.get(i));
-            //}
             if(response != null) {
                 updateList(response);
+                mPage++;
+                mLoading = false;
             }
         }
     }
