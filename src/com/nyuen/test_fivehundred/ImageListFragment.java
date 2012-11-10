@@ -92,13 +92,13 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // Pause disk cache access to ensure smoother scrolling
-        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
-        || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-        mImageFetcher.setPauseWork(true);
-        } else {
-        mImageFetcher.setPauseWork(false);
-        }
+		// Pause disk cache access to ensure smoother scrolling
+		if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
+				|| scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+			mImageFetcher.setPauseWork(true);
+		} else {
+			mImageFetcher.setPauseWork(false);
+		}
     }
     
     @Override
