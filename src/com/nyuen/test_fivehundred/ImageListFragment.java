@@ -125,7 +125,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         PhotoResponse photoResponse;
         try {               
             photoResponse = new Gson().fromJson(
-                    pxapi.get("/photos?feature=popular&rpp=15&image_size=4&page="+pageNumber).toString(), 
+                    pxapi.get("/photos?feature=popular&rpp=15&image_size=3&page="+pageNumber).toString(), 
                     PhotoResponse.class);
             
             Log.d(TAG, photoResponse.getPhotos()[0].image_url );

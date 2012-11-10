@@ -214,7 +214,6 @@ public class ImageAdapter extends BaseAdapter {
 
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.image_grid, null, false);
-			ImagePatternContainer ipc = mContainers.get(position);
 			RelativeLayout r = (RelativeLayout) convertView.findViewById(R.id.imageGrid);
 			r.setLayoutParams(new AbsListView.LayoutParams(mImageWidth * 2, mImageWidth * 2));
 
@@ -244,11 +243,11 @@ public class ImageAdapter extends BaseAdapter {
 				Log.d("ImageAdapter", "Item: " + position + ", Fetch image: " + li.get(i)
 						+ " view: " + i);
 				String url = mPhotos.get(li.get(i)).image_url;
-
-				if (pattern == Pattern.FOUR) {
-					url.replace("4.jpg", "3.jpg");
-				}
-
+				
+				Log.e("URL", url);
+				url = url.replace("3.jpg", pattern.getSizes()[i] + ".jpg");
+				Log.e("URL-After", url);
+				
 				iv[i].setBackgroundColor(Color.WHITE);
 				mImageFetcher.loadImage(url, iv[i]);
 			} else {

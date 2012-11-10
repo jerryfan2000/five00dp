@@ -8,19 +8,25 @@ import java.util.List;
 public class ImagePatternContainer {
 
     public enum Pattern {
-        ONE(1),
-        TWO_VERT(2),
-        TWO_HOR(2),
-        FOUR(4),
-        THREE_VERT(3),
-        THREE_HOR(3);
+        ONE(1, 4, 0, 0, 0),
+        TWO_VERT(2, 4, 4, 0, 0),
+        TWO_HOR(2, 4, 4, 0, 0),
+        FOUR(4, 3, 3, 3, 3),
+        THREE_VERT(3, 4, 3, 3, 0),
+        THREE_HOR(3, 4, 3, 3, 0);
 
         private final int mImageCount;
-
+        private final int[] mImageSizes;
+        
         public int getCount() { return mImageCount; }
 
-        Pattern(int i) {
+        Pattern(int i, int... sizes) {
             mImageCount = i;
+            mImageSizes = sizes;
+        }
+        
+        public int[] getSizes() {
+            return mImageSizes;
         }
         
         public static List<Pattern> getPatternList() {
@@ -34,7 +40,6 @@ public class ImagePatternContainer {
             Collections.shuffle(list);
             return list;
         }
-        
     }
 
     private Pattern mPattern;
