@@ -59,7 +59,7 @@ public class ImageAdapter extends BaseAdapter {
 		Display display = wm.getDefaultDisplay();
 		int width = display.getWidth();
 		mImageWidth = width / 2;
-		mMarginSize = width / 36;
+		mMarginSize = context.getResources().getDimensionPixelSize(R.dimen.image_grid_margin);
 	}
 
 	public int getCount() {

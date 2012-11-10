@@ -30,7 +30,6 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     private ImageAdapter mImageAdapter;
     private ImageFetcher mImageFetcher;
     
-    
     private boolean mLoading = false;
     private View mLoadingView;
     private int mPage = 1;
@@ -40,15 +39,12 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        //setContentView(R.layout.activity_main);
         
         getActivity().getActionBar().setDisplayUseLogoEnabled(true);
-        getActivity().getActionBar().setTitle("Popular");
+        getActivity().getActionBar().setTitle(R.string.popular);
         
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
         mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, null);
-        
-        Log.d(TAG, "Ran!!");
     }
     
     @Override
