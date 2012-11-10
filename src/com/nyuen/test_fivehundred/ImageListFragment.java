@@ -37,6 +37,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     
     
     private boolean mLoading = false;
+    private View mLoadingView;
     private int mPage = 1;
 
     @Override
@@ -50,7 +51,8 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         getActivity().getActionBar().setTitle("Popular");
         
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
-    
+        mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, null);
+        
         Log.d(TAG, "Ran!!");
     }
     
@@ -62,6 +64,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getListView().addFooterView(mLoadingView);
         new LoadPhotoTask().execute();
     }
     
@@ -107,8 +110,6 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
             int totalItemCount) { 
         boolean loadMore = firstVisibleItem + visibleItemCount + 1 >= totalItemCount;
-//        Log.e("onScroll", ""+firstVisibleItem);
-//        Log.e("onScroll", ""+visibleItemCount);
         
         if(loadMore && !mLoading) {
             new LoadPhotoTask().execute();
@@ -150,6 +151,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     private class LoadPhotoTask extends AsyncTask<Void, Void, PhotoResponse> {
         protected void onPreExecute() {
             mLoading = true;
+            mLoadingView.setVisibility(View.VISIBLE);
         }
 
         protected PhotoResponse doInBackground(Void... params) {
@@ -157,6 +159,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         }
 
         protected void onPostExecute(PhotoResponse response) {
+            mLoadingView.setVisibility(View.GONE);
             if(response != null) {
                 updateList(response);
                 mPage++;
