@@ -164,10 +164,10 @@ public class ImageAdapter extends BaseAdapter {
 					mImageWidth * 2);
 			param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth * 2);
 
-			param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-
 			param0.setMargins(mMarginSize, mMarginSize, mMarginSize / 2, 0);
-			param1.setMargins(mMarginSize / 2, mMarginSize, mMarginSize, 0);
+            param1.setMargins(mMarginSize / 2, mMarginSize, mMarginSize, 0);
+			
+			param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
 
 			iv[0].setLayoutParams(param0);
 			iv[1].setLayoutParams(param1);
@@ -176,10 +176,10 @@ public class ImageAdapter extends BaseAdapter {
 					- (mMarginSize / 2 * 3));
 			param1 = new RelativeLayout.LayoutParams(mImageWidth * 2, mImageWidth);
 
-			param1.addRule(RelativeLayout.BELOW, R.id.imageView0);
-
 			param0.setMargins(mMarginSize, mMarginSize, mMarginSize, mMarginSize / 2);
 			param1.setMargins(mMarginSize, mMarginSize / 2, mMarginSize, 0);
+			
+			param1.addRule(RelativeLayout.BELOW, R.id.imageView0);
 
 			iv[0].setLayoutParams(param0);
 			iv[1].setLayoutParams(param1);
@@ -189,13 +189,13 @@ public class ImageAdapter extends BaseAdapter {
 			param1 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize / 2 * 3),
 					mImageWidth);
 
+			param0.setMargins(mMarginSize, mMarginSize, mMarginSize, mMarginSize / 2);
+            param1.setMargins(mMarginSize, mMarginSize / 2, mMarginSize / 2, 0);
+            param2.setMargins(mMarginSize / 2, mMarginSize / 2, mMarginSize, 0);
+			
 			param1.addRule(RelativeLayout.BELOW, R.id.imageView0);
 			param2.addRule(RelativeLayout.BELOW, R.id.imageView0);
 			param2.addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
-
-			param0.setMargins(mMarginSize, mMarginSize, mMarginSize, mMarginSize / 2);
-			param1.setMargins(mMarginSize, mMarginSize / 2, mMarginSize / 2, 0);
-			param2.setMargins(mMarginSize / 2, mMarginSize / 2, mMarginSize, 0);
 
 			iv[0].setLayoutParams(param0);
 			iv[1].setLayoutParams(param1);
