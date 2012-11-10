@@ -93,12 +93,12 @@ public class ImageListFragment extends ListFragment {
     }
 
     private class LoadEventTask extends AsyncTask<String, Void, PhotoResponse> {
-        private final ProgressDialog mDialog = new ProgressDialog(getActivity());
+        //private final ProgressDialog mDialog = new ProgressDialog(getActivity());
 
         protected void onPreExecute() {
-            mDialog.setTitle("Please wait...");
-            mDialog.setMessage("Retrieving data...");
-            mDialog.show();
+//            mDialog.setTitle("Please wait...");
+//            mDialog.setMessage("Retrieving data...");
+//            mDialog.show();
         }
 
         protected PhotoResponse doInBackground(final String... args) {
@@ -108,9 +108,9 @@ public class ImageListFragment extends ListFragment {
         protected void onPostExecute(PhotoResponse response) {
             //Log.d("Main", "adapter size: " + m_adapter.getCount());
 
-            if (mDialog.isShowing()) {
-                mDialog.dismiss();
-            }
+//            if (mDialog.isShowing()) {
+//                mDialog.dismiss();
+//            }
 
             //if(m_event != null && m_event.size() > 0){
             //m_adapter.clear();

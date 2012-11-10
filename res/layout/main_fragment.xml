@@ -13,5 +13,10 @@
         android:divider="@null"
         android:dividerHeight="0px" >
     </ListView>
-
+    
+    <include
+        android:id="@android:id/empty"
+        layout="@layout/empty" >
+    </include>
+    
 </RelativeLayout>
