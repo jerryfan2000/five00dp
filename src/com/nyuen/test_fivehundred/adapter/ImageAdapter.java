@@ -212,13 +212,11 @@ public class ImageAdapter extends BaseAdapter {
 		for (int i = 0; i < 4; i++) {
 			if (i < li.size()) {
 				iv[i].setVisibility(View.VISIBLE);
-				Log.d("ImageAdapter", "Item: " + position + ", Fetch image: " + li.get(i)
-						+ " view: " + i);
+//				Log.d("ImageAdapter", "Item: " + position + ", Fetch image: " + li.get(i)
+//						+ " view: " + i);
 				String url = mPhotos.get(li.get(i)).image_url;
 
-				Log.e("URL", url);
 				url = url.replace("3.jpg", pattern.getSizes()[i] + ".jpg");
-				Log.e("URL-After", url);
 
 				iv[i].setBackgroundColor(Color.WHITE);
 				mImageFetcher.loadImage(url, iv[i]);
