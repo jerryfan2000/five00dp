@@ -28,8 +28,9 @@ public class ImageAdapter extends BaseAdapter {
 	private final int WIDTH_ONE;
 	private final int WIDTH_HALF;
 	private final int MARGIN_ONE;
+	private final int MARGIN_TWO;
 	private final int MARGIN_HALF;
-	private final int MARGIN_TWO_THIRD;
+	private final int MARGIN_THREE_HALF;
 	
 	private final LayoutInflater mInflater;
 	private final ImageFetcher mImageFetcher;
@@ -58,8 +59,9 @@ public class ImageAdapter extends BaseAdapter {
 		WIDTH_ONE = display.getWidth();
 		WIDTH_HALF = WIDTH_ONE / 2;
 		MARGIN_ONE = resources.getDimensionPixelSize(R.dimen.image_grid_margin);
+		MARGIN_TWO = MARGIN_ONE + MARGIN_ONE;
 		MARGIN_HALF = MARGIN_ONE / 2;
-		MARGIN_TWO_THIRD = MARGIN_HALF * 3;
+		MARGIN_THREE_HALF = MARGIN_HALF * 3;
 		
 		// Instantiate members
 		mImageFetcher = imageFetcher;
@@ -119,13 +121,13 @@ public class ImageAdapter extends BaseAdapter {
 
 	public void setParams() {
 		// Pattern.ONE
-		mParams[0] = new RelativeLayout.LayoutParams(WIDTH_ONE, WIDTH_ONE);
+		mParams[0] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_ONE - MARGIN_TWO);
 
 		mParams[0].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_ONE, 0);
 
 		// Pattern.TWO_VERT
-		mParams[1] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_TWO_THIRD, WIDTH_ONE);
-		mParams[2] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_ONE);
+		mParams[1] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_ONE - MARGIN_TWO);
+		mParams[2] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_ONE - MARGIN_TWO);
 
 		mParams[1].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_HALF, 0);
 		mParams[2].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_ONE, 0);
@@ -133,11 +135,8 @@ public class ImageAdapter extends BaseAdapter {
 		mParams[2].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
 
 		// Pattern.TWO_HOR
-		mParams[3] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF);
-		mParams[4] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF);
-
-		mParams[3] = new RelativeLayout.LayoutParams(WIDTH_ONE, WIDTH_HALF - MARGIN_TWO_THIRD);
-		mParams[4] = new RelativeLayout.LayoutParams(WIDTH_ONE, WIDTH_HALF);
+		mParams[3] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
+		mParams[4] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
 
 		mParams[3].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
 		mParams[4].setMargins(MARGIN_ONE, MARGIN_HALF, MARGIN_ONE, 0);
@@ -145,9 +144,9 @@ public class ImageAdapter extends BaseAdapter {
 		mParams[4].addRule(RelativeLayout.BELOW, R.id.imageView0);
 
 		// Pattern.THREE_HOR
-		mParams[5] = new RelativeLayout.LayoutParams(WIDTH_ONE, WIDTH_HALF - MARGIN_TWO_THIRD);
-		mParams[6] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_TWO_THIRD, WIDTH_HALF);
-		mParams[7] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF);
+		mParams[5] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
+		mParams[6] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
+		mParams[7] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
 
 		mParams[5].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
 		mParams[6].setMargins(MARGIN_ONE, MARGIN_HALF, MARGIN_HALF, 0);
@@ -158,9 +157,9 @@ public class ImageAdapter extends BaseAdapter {
 		mParams[7].addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
 
 		// Pattern.THREE_VERT
-		mParams[8] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_TWO_THIRD, WIDTH_ONE);
-		mParams[9] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF - MARGIN_TWO_THIRD);
-		mParams[10] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF);
+		mParams[8] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_ONE - MARGIN_TWO);
+		mParams[9] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
+		mParams[10] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
 
 		mParams[8].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_HALF, 0);
 		mParams[9].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
@@ -171,15 +170,10 @@ public class ImageAdapter extends BaseAdapter {
 		mParams[10].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
 
 		// Pattern.FOUR
-		mParams[11] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF);
-		mParams[12] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF);
-		mParams[13] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF);
-		mParams[14] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF);
-
-		mParams[11] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_TWO_THIRD, WIDTH_HALF - MARGIN_TWO_THIRD);
-		mParams[12] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF - MARGIN_TWO_THIRD);
-		mParams[13] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_TWO_THIRD, WIDTH_HALF);
-		mParams[14] = new RelativeLayout.LayoutParams(WIDTH_HALF, WIDTH_HALF);
+		mParams[11] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
+		mParams[12] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
+		mParams[13] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
+		mParams[14] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
 
 		mParams[11].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_HALF, MARGIN_HALF);
 		mParams[12].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
