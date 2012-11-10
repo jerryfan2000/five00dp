@@ -67,27 +67,8 @@ public class ImageAdapter extends BaseAdapter {
 	}
 
 	public void setPhotos(List<Photo> photos) {
-	    for(Photo ph:photos) {
-            mPhotos.add(ph); 
-        }
-		photoCount = 0;// photo.length;
-
-		Iterator<Pattern> iterator = mPatterns.iterator();
-		while (iterator.hasNext()) {
-			Pattern p = iterator.next();
-			Log.d("setPhotos", "List: " + mListItemCount + " Pattern size: " + p.getCount());
-			ImagePatternContainer c = new ImagePatternContainer(p);
-			mContainers.add(c);
-
-			for (int i = 0; i < p.getCount(); i++) {
-				mContainers.get(mListItemCount).addPhotoID(photoCount);
-				photoCount++;
-				Log.d("setPhotos", "Load Photo: " + photoCount);
-			}
-
-			mListItemCount++;
-		}
-		Log.d("ImageAdapter", "List: " + mListItemCount + " Photo: " + photoCount);
+	    mPhotos.clear();
+	    appendPhotos(photos);
 	}
 
 	public void appendPhotos(List<Photo> photos) {
