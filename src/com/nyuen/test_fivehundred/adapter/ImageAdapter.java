@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.util.Log;
 import android.view.Display;
@@ -29,6 +30,7 @@ public class ImageAdapter extends BaseAdapter {
     private final LayoutInflater mInflater;
     private ImageFetcher mImageFetcher;
     private int mImageWidth;
+    private int mMarginSize;
     private int mListItemCount;
     private int photoCount;
 
@@ -59,6 +61,7 @@ public class ImageAdapter extends BaseAdapter {
         Display display = wm.getDefaultDisplay();
         int width = display.getWidth();
         mImageWidth = width / 2;
+        mMarginSize = width / 36;
     }
 
     public int getCount() {
@@ -152,51 +155,76 @@ public class ImageAdapter extends BaseAdapter {
             RelativeLayout.LayoutParams param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);
             RelativeLayout.LayoutParams param2 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);
             RelativeLayout.LayoutParams param3 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);
-              
-            
-            
-            
+   
             if (pattern == Pattern.ONE) {
                 param0 = new RelativeLayout.LayoutParams(mImageWidth*2, mImageWidth*2);   
                 
+                param0.setMargins(mMarginSize, mMarginSize, mMarginSize, 0);
+                
             	iv[0].setLayoutParams(param0);	
             } else if (pattern == Pattern.TWO_VERT) {
-                param0 = new RelativeLayout.LayoutParams(mImageWidth,  mImageWidth*2);   
+                param0 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize/2*3),  mImageWidth*2);   
                 param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth*2);
                 
                 param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
+                
+                param0.setMargins(mMarginSize, mMarginSize, mMarginSize/2, 0);
+                param1.setMargins(mMarginSize/2, mMarginSize, mMarginSize, 0);
    
             	iv[0].setLayoutParams(param0);
             	iv[1].setLayoutParams(param1);
             } else if (pattern == Pattern.TWO_HOR) {
-                param0 = new RelativeLayout.LayoutParams(mImageWidth*2,  mImageWidth);   
+                param0 = new RelativeLayout.LayoutParams(mImageWidth*2,  mImageWidth - (mMarginSize/2*3));   
                 param1 = new RelativeLayout.LayoutParams(mImageWidth*2, mImageWidth);
                 
                 param1.addRule(RelativeLayout.BELOW, R.id.imageView0);
    
+                param0.setMargins(mMarginSize, mMarginSize, mMarginSize, mMarginSize/2);
+                param1.setMargins(mMarginSize, mMarginSize/2, mMarginSize, 0);
+                
                 iv[0].setLayoutParams(param0);
                 iv[1].setLayoutParams(param1);
             } else if (pattern == Pattern.THREE_HOR) {
-                param0 = new RelativeLayout.LayoutParams(mImageWidth*2,  mImageWidth);   
+                param0 = new RelativeLayout.LayoutParams(mImageWidth*2,  mImageWidth - (mMarginSize/2*3));   
+                param1 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize/2*3), mImageWidth);
                 
                 param1.addRule(RelativeLayout.BELOW, R.id.imageView0);
                 param2.addRule(RelativeLayout.BELOW, R.id.imageView0);
                 param2.addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
                 
+                param0.setMargins(mMarginSize, mMarginSize, mMarginSize, mMarginSize/2);
+                param1.setMargins(mMarginSize, mMarginSize/2, mMarginSize/2, 0);
+                param2.setMargins(mMarginSize/2, mMarginSize/2, mMarginSize, 0);
+                
             	iv[0].setLayoutParams(param0);
             	iv[1].setLayoutParams(param1);
             	iv[2].setLayoutParams(param2);
             } else if (pattern == Pattern.THREE_VERT) {
-                param0 = new RelativeLayout.LayoutParams(mImageWidth,  mImageWidth*2);
+                param0 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize/2*3),  mImageWidth*2);
+                param1 = new RelativeLayout.LayoutParams(mImageWidth,  mImageWidth - (mMarginSize/2*3));
+                
+                param0.setMargins(mMarginSize, mMarginSize, mMarginSize/2, 0);
+                param1.setMargins(mMarginSize/2, mMarginSize, mMarginSize, mMarginSize/2);
+                param2.setMargins(mMarginSize/2, mMarginSize/2, mMarginSize, 0);
                 
                 param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
                 param2.addRule(RelativeLayout.BELOW, R.id.imageView1);
                 param2.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-                
+
                 iv[0].setLayoutParams(param0);
                 iv[1].setLayoutParams(param1);
                 iv[2].setLayoutParams(param2);
             } else {
+                param0 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize/2*3), mImageWidth - (mMarginSize/2*3));
+                param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth - (mMarginSize/2*3));
+                param2 = new RelativeLayout.LayoutParams(mImageWidth- (mMarginSize/2*3), mImageWidth);
+                param3 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);
+                
+                param0.setMargins(mMarginSize, mMarginSize, mMarginSize/2, mMarginSize/2);
+                param1.setMargins(mMarginSize/2, mMarginSize, mMarginSize, mMarginSize/2);
+                param2.setMargins(mMarginSize, mMarginSize/2, mMarginSize/2, 0);
+                param3.setMargins(mMarginSize/2, mMarginSize/2, mMarginSize, 0);
+
                 param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
                 param2.addRule(RelativeLayout.BELOW, R.id.imageView0);
                 param3.addRule(RelativeLayout.BELOW, R.id.imageView1);
@@ -207,15 +235,17 @@ public class ImageAdapter extends BaseAdapter {
             	iv[2].setLayoutParams(param2);
             	iv[3].setLayoutParams(param3);
             }
+         
+//            iv[0].setPadding(15, 15, 15, 0);
+////            iv[0].setCropToPadding(true);
+//            iv[1].setPadding(15, 15, 15, 0);
+////            iv[1].setCropToPadding(true);
+//            iv[2].setPadding(15, 15, 15, 0);
+////            iv[2].setCropToPadding(true);
+//            iv[3].setPadding(15, 15, 15, 0);
+////            iv[3].setCropToPadding(true);
             
-//            iv[0].setBackgroundResource(R.drawable.picture_frame);
-//            iv[0].setPadding(4, 4, 4, 4);
-//            //iv[1].setBackgroundResource(R.drawable.picture_frame);
-//            iv[1].setPadding(1, 1, 1, 1);
-//            //iv[2].setBackgroundResource(R.drawable.picture_frame);
-//            iv[2].setPadding(1, 4, 4, 4);
-//            //iv[3].setBackgroundResource(R.drawable.picture_frame);
-//            iv[3].setPadding(4, 4, 4, 4);
+            
             
         return convertView;
     }
