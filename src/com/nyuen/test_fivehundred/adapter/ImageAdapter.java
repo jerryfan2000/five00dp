@@ -50,7 +50,7 @@ public class ImageAdapter extends BaseAdapter {
 		mContainers = new ArrayList<ImagePatternContainer>();
 		mHolders = new ArrayList<ImageHolder>();
 		mPhotos = new ArrayList<Photo>();
-		mParams = new RelativeLayout.LayoutParams[15];
+		mParams = new RelativeLayout.LayoutParams[16];
 		setParams();
 	}
 
@@ -165,8 +165,8 @@ public class ImageAdapter extends BaseAdapter {
 	    mParams[6].setMargins(mMarginSize, mMarginSize / 2, mMarginSize / 2, 0);
 	    mParams[7].setMargins(mMarginSize / 2, mMarginSize / 2, mMarginSize, 0);
         
-	    mParams[5].addRule(RelativeLayout.BELOW, R.id.imageView0);
-        mParams[6].addRule(RelativeLayout.BELOW, R.id.imageView0);
+	    mParams[6].addRule(RelativeLayout.BELOW, R.id.imageView0);
+        mParams[7].addRule(RelativeLayout.BELOW, R.id.imageView0);
         mParams[7].addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
 	    
 	    //Pattern.THREE_VERT
@@ -180,26 +180,9 @@ public class ImageAdapter extends BaseAdapter {
 	    mParams[9].setMargins(mMarginSize / 2, mMarginSize, mMarginSize, mMarginSize / 2);
 	    mParams[10].setMargins(mMarginSize / 2, mMarginSize / 2, mMarginSize, 0);
 
-	    mParams[8].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-	    mParams[9].addRule(RelativeLayout.BELOW, R.id.imageView1);
+	    mParams[9].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
+	    mParams[10].addRule(RelativeLayout.BELOW, R.id.imageView1);
 	    mParams[10].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-	    
-//	    param0 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize / 2 * 3),
-//              mImageWidth * 2);
-//      param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth
-//              - (mMarginSize / 2 * 3));
-//
-//      param0.setMargins(mMarginSize, mMarginSize, mMarginSize / 2, 0);
-//      param1.setMargins(mMarginSize / 2, mMarginSize, mMarginSize, mMarginSize / 2);
-//      param2.setMargins(mMarginSize / 2, mMarginSize / 2, mMarginSize, 0);
-//
-//      param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-//      param2.addRule(RelativeLayout.BELOW, R.id.imageView1);
-//      param2.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-
-//      iv[0].setLayoutParams(param0);
-//      iv[1].setLayoutParams(param1);
-//      iv[2].setLayoutParams(param2);
   
 	    //Pattern.FOUR
 	    mParams[11]= new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);
@@ -220,11 +203,10 @@ public class ImageAdapter extends BaseAdapter {
 	    mParams[13].setMargins(mMarginSize, mMarginSize / 2, mMarginSize / 2, 0);
 	    mParams[14].setMargins(mMarginSize / 2, mMarginSize / 2, mMarginSize, 0);
 
-	    mParams[11].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-	    mParams[12].addRule(RelativeLayout.BELOW, R.id.imageView0);
-	    mParams[13].addRule(RelativeLayout.BELOW, R.id.imageView1);
+	    mParams[12].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
+	    mParams[13].addRule(RelativeLayout.BELOW, R.id.imageView0);
+	    mParams[14].addRule(RelativeLayout.BELOW, R.id.imageView1);
 	    mParams[14].addRule(RelativeLayout.RIGHT_OF, R.id.imageView2);
-	    
 	}
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -274,118 +256,23 @@ public class ImageAdapter extends BaseAdapter {
 			}
 		}
 
-//		RelativeLayout.LayoutParams param0 = new RelativeLayout.LayoutParams(mImageWidth,
-//                mImageWidth);
-//        RelativeLayout.LayoutParams param1 = new RelativeLayout.LayoutParams(mImageWidth,
-//                mImageWidth);
-//        RelativeLayout.LayoutParams param2 = new RelativeLayout.LayoutParams(mImageWidth,
-//                mImageWidth);
-//        RelativeLayout.LayoutParams param3 = new RelativeLayout.LayoutParams(mImageWidth,
-//                mImageWidth);
-
 		if (pattern == Pattern.ONE) {
-//			param0 = new RelativeLayout.LayoutParams(mImageWidth * 2, mImageWidth * 2);
-//			
-//			param0.setMargins(mMarginSize, mMarginSize, mMarginSize, 0);
-//
-//			iv[0].setLayoutParams(param0);
 		    iv[0].setLayoutParams(mParams[0]);
-		} else if (pattern == Pattern.TWO_VERT) {
-//			param0 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize/2*3),
-//					mImageWidth * 2);
-//			param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth*2);
-//
-//			param0.setMargins(mMarginSize, mMarginSize, mMarginSize/2, 0);
-//            param1.setMargins(mMarginSize/2, mMarginSize, mMarginSize, 0);
-//			
-//			param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-
-//			iv[0].setLayoutParams(param0);
-//			iv[1].setLayoutParams(param1);
-			
+		} else if (pattern == Pattern.TWO_VERT) {	
 			iv[0].setLayoutParams(mParams[1]);
             iv[1].setLayoutParams(mParams[2]);
 		} else if (pattern == Pattern.TWO_HOR) {
-//			param0 = new RelativeLayout.LayoutParams(mImageWidth * 2, mImageWidth
-//					- (mMarginSize / 2 * 3));
-//			param1 = new RelativeLayout.LayoutParams(mImageWidth * 2, mImageWidth);
-//
-//			param0.setMargins(mMarginSize, mMarginSize, mMarginSize, mMarginSize / 2);
-//			param1.setMargins(mMarginSize, mMarginSize / 2, mMarginSize, 0);
-//			
-//			param1.addRule(RelativeLayout.BELOW, R.id.imageView0);
-
-//			iv[0].setLayoutParams(param0);
-//			iv[1].setLayoutParams(param1);
-			
 			iv[0].setLayoutParams(mParams[3]);
 			iv[1].setLayoutParams(mParams[4]);
 		} else if (pattern == Pattern.THREE_HOR) {
-//			param0 = new RelativeLayout.LayoutParams(mImageWidth * 2, mImageWidth
-//					- (mMarginSize / 2 * 3));
-//			param1 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize / 2 * 3),
-//					mImageWidth);
-//
-//			param0.setMargins(mMarginSize, mMarginSize, mMarginSize, mMarginSize / 2);
-//            param1.setMargins(mMarginSize, mMarginSize / 2, mMarginSize / 2, 0);
-//            param2.setMargins(mMarginSize / 2, mMarginSize / 2, mMarginSize, 0);
-//			
-//			param1.addRule(RelativeLayout.BELOW, R.id.imageView0);
-//			param2.addRule(RelativeLayout.BELOW, R.id.imageView0);
-//			param2.addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
-
-//			iv[0].setLayoutParams(param0);
-//			iv[1].setLayoutParams(param1);
-//			iv[2].setLayoutParams(param2);
-			
 			iv[0].setLayoutParams(mParams[5]);
             iv[1].setLayoutParams(mParams[6]);
             iv[2].setLayoutParams(mParams[7]);
 		} else if (pattern == Pattern.THREE_VERT) {
-//			param0 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize / 2 * 3),
-//					mImageWidth * 2);
-//			param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth
-//					- (mMarginSize / 2 * 3));
-//
-//			param0.setMargins(mMarginSize, mMarginSize, mMarginSize / 2, 0);
-//			param1.setMargins(mMarginSize / 2, mMarginSize, mMarginSize, mMarginSize / 2);
-//			param2.setMargins(mMarginSize / 2, mMarginSize / 2, mMarginSize, 0);
-//
-//			param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-//			param2.addRule(RelativeLayout.BELOW, R.id.imageView1);
-//			param2.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-
-//			iv[0].setLayoutParams(param0);
-//			iv[1].setLayoutParams(param1);
-//			iv[2].setLayoutParams(param2);
-
 			iv[0].setLayoutParams(mParams[8]);
             iv[1].setLayoutParams(mParams[9]);
             iv[2].setLayoutParams(mParams[10]);
-		} else {
-//			param0 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize / 2 * 3),
-//					mImageWidth - (mMarginSize / 2 * 3));
-//			param1 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth
-//					- (mMarginSize / 2 * 3));
-//			param2 = new RelativeLayout.LayoutParams(mImageWidth - (mMarginSize / 2 * 3),
-//					mImageWidth);
-//			param3 = new RelativeLayout.LayoutParams(mImageWidth, mImageWidth);
-//
-//			param0.setMargins(mMarginSize, mMarginSize, mMarginSize / 2, mMarginSize / 2);
-//			param1.setMargins(mMarginSize / 2, mMarginSize, mMarginSize, mMarginSize / 2);
-//			param2.setMargins(mMarginSize, mMarginSize / 2, mMarginSize / 2, 0);
-//			param3.setMargins(mMarginSize / 2, mMarginSize / 2, mMarginSize, 0);
-//
-//			param1.addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-//			param2.addRule(RelativeLayout.BELOW, R.id.imageView0);
-//			param3.addRule(RelativeLayout.BELOW, R.id.imageView1);
-//			param3.addRule(RelativeLayout.RIGHT_OF, R.id.imageView2);
-//
-//			iv[0].setLayoutParams(param0);
-//			iv[1].setLayoutParams(param1);
-//			iv[2].setLayoutParams(param2);
-//			iv[3].setLayoutParams(param3);
-			
+		} else {			
 			iv[0].setLayoutParams(mParams[11]);
             iv[1].setLayoutParams(mParams[12]);
             iv[2].setLayoutParams(mParams[13]);
