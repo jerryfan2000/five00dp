@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.fivehundredpx.api.PxApi;
@@ -23,6 +25,7 @@ public class MainActivity extends FragmentActivity {
 
     private ImageAdapter mImageAdapter;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -34,10 +37,21 @@ public class MainActivity extends FragmentActivity {
         new LoadEventTask().execute();
     }
 
-    //    public boolean onCreateOptionsMenu(Menu menu) {
-    //        getMenuInflater().inflate(R.menu., menu);
-    //        return true;
-    //    }
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_main, menu);
+		return true;
+	}
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+		case R.id.menu_settings:
+			
+			return true;
+		}
+    	return super.onOptionsItemSelected(item);
+    }
     
     private void updateList(PhotoResponse response) {
         mImageAdapter = new ImageAdapter(this, UIUtils.getImageFetcher(this));
