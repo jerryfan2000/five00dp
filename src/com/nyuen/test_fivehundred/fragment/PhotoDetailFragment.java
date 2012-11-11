@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,23 +108,22 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
     
     private void updateHeaderView() {
         ImageView headerPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerPhotoView);
-        mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
-        
         ImageView headerUserPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerUserPhotoView);
-        mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
-        
         TextView headerUserNameView = (TextView) mHeaderView.findViewById(R.id.headerUserNameView);
-        headerUserNameView.setText(mPhoto.user.fullname);
-        
+        TextView headerDescriptionView = (TextView) mHeaderView.findViewById(R.id.headerDescriptionView);
         TextView viewsCountView = (TextView) mHeaderView.findViewById(R.id.viewsCountView);
-        viewsCountView.setText("" + mPhoto.times_viewed + " Views");
-        
         TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
-        votesCountView.setText("" + mPhoto.votes_count + " Votes");
-        
         TextView favsCountView = (TextView) mHeaderView.findViewById(R.id.favsCountView);
+        TextView ratingView = (TextView) mHeaderView.findViewById(R.id.ratingView);
+                
+        mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
+        mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
+        headerUserNameView.setText(mPhoto.user.fullname);
+        viewsCountView.setText("" + mPhoto.times_viewed + " Views");
+        votesCountView.setText("" + mPhoto.votes_count + " Votes");
         favsCountView.setText("" + mPhoto.favorites_count + " Favorites");
-        
+        headerDescriptionView.setText("Using the shutter speed to create a painterly effect with the moving water");//Html.fromHtml(mPhoto.description));       
+        ratingView.setText("" + mPhoto.rating);
     }
     
     private void updateList(CommentResponse response) {
