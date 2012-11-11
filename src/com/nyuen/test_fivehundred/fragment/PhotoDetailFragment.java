@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nyuen.test_fivehundred.R;
 import com.nyuen.test_fivehundred.adapter.PhotoDetailAdapter;
@@ -43,7 +45,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_fragment, container, false);
+        return inflater.inflate(R.layout.photo_detail_fragment, container, false);
     }
     
     @Override
@@ -51,6 +53,9 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         super.onActivityCreated(savedInstanceState);
         getListView().addFooterView(mLoadingView);
         getListView().addHeaderView(mHeaderView);
+        
+        updateHeaderView();
+        
         new LoadPhotoCommentsTask().execute();
     }
       
@@ -74,6 +79,17 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         } else {
             mImageFetcher.setPauseWork(false);
         }
+    }
+    
+    private void updateHeaderView() {
+        ImageView headerPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerPhotoView);
+        mImageFetcher.loadImage("http://pcdn.500px.net/4928401/16666558d7ba410f50922f86f736888d8cfaf9bb/4.jpg", headerPhotoView);
+        
+        ImageView headerUserPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerUserPhotoView);
+        mImageFetcher.loadImage("http://acdn.500px.net/164677.jpg", headerUserPhotoView);
+        
+        TextView headerUserNameView = (TextView) mHeaderView.findViewById(R.id.headerUserNameView);
+        headerUserNameView.setText("Axel Hildebrandt");
     }
     
     private void updateList(CommentResponse response) {

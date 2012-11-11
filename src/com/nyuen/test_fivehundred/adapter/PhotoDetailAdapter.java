@@ -89,7 +89,7 @@ public class PhotoDetailAdapter extends BaseAdapter {
         //holder.commentUserPhotoView
         Comment comment = getItem(position);
         User user = getItem(position).user;
-        mImageFetcher.loadImage(user.userpic_url, holder.commentUserPhotoView);
+        mImageFetcher.loadImage(user.userpic_url, holder.commentUserPhotoView, R.drawable.ic_userpic);
         
         holder.commentBodyView.setText(comment.body);
         holder.commentUserNameView.setText(user.fullname);
