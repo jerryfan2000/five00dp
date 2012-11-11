@@ -2,7 +2,14 @@ package com.nyuen.test_fivehundred.fragment;
 
 import java.util.Arrays;
 
-import com.nyuen.test_fivehundred.MainActivity;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+
 import com.nyuen.test_fivehundred.R;
 import com.nyuen.test_fivehundred.adapter.PhotoDetailAdapter;
 import com.nyuen.test_fivehundred.api.ApiHelper;
@@ -10,19 +17,9 @@ import com.nyuen.test_fivehundred.structure.CommentResponse;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
 import com.nyuen.test_fivehundred.util.UIUtils;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-
 public class PhotoDetailFragment extends ListFragment implements AbsListView.OnScrollListener {
     
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = PhotoDetailFragment.class.getSimpleName();
 
     private PhotoDetailAdapter mPhotoDetailAdapter;
     private ImageFetcher mImageFetcher;
@@ -54,12 +51,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         super.onActivityCreated(savedInstanceState);
         getListView().addFooterView(mLoadingView);
         getListView().addHeaderView(mHeaderView);
-        new LoadPhotoDetailTask().execute();
-    }
-    
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //inflater.inflate(R.menu.menu_main, menu);
+        new LoadPhotoCommentsTask().execute();
     }
       
     @Override
@@ -69,7 +61,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         boolean loadMore = firstVisibleItem + visibleItemCount + 2 >= totalItemCount;
         
         if(loadMore && !mLoading) {
-            new LoadPhotoDetailTask().execute();
+            new LoadPhotoCommentsTask().execute();
         }
     }
 
@@ -98,7 +90,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         }
     }
     
-    private class LoadPhotoDetailTask extends AsyncTask<Void, Void, CommentResponse> {
+    private class LoadPhotoCommentsTask extends AsyncTask<Void, Void, CommentResponse> {
         protected void onPreExecute() {
             mLoading = true;
             mLoadingView.setVisibility(View.VISIBLE);
