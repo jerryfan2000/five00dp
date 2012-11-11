@@ -3,16 +3,20 @@ package com.nyuen.test_fivehundred.fragment;
 import java.util.Arrays;
 
 import android.annotation.SuppressLint;
+import android.app.ApplicationErrorReport.AnrInfo;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nyuen.test_fivehundred.PhotoDetailActivity;
 import com.nyuen.test_fivehundred.R;
 import com.nyuen.test_fivehundred.adapter.PhotoDetailAdapter;
 import com.nyuen.test_fivehundred.api.ApiHelper;
@@ -50,6 +54,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         mPhoto = (Photo) getArguments().getParcelable(INTENT_EXTRA_PHOTO);
         
         getActivity().getActionBar().setTitle(mPhoto.name);
+        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
     }
     
     @Override
@@ -67,7 +72,17 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         
         new LoadPhotoCommentsTask().execute();
     }
-      
+     
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            getActivity().finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
             int totalItemCount) {

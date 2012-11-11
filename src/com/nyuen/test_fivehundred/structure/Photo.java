@@ -33,7 +33,7 @@ public class Photo implements Parcelable {
         description = ParcelUtils.readStringFromParcel(in);
         times_viewed = in.readInt();
         rating = in.readDouble();
-        created_at = in.readString();
+        created_at = ParcelUtils.readStringFromParcel(in);
         category = in.readInt();
         privacy = (in.readInt() == 0) ? false : true;    
         width = in.readInt();
