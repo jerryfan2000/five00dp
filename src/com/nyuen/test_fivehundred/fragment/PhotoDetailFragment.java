@@ -97,13 +97,13 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         }
 
         protected CommentResponse doInBackground(Void... params) {
-            return ApiHelper.getComments(mPhotoId, mPage);
+            return ApiHelper.getComments(4928401/*mPhotoId*/, mPage);
         }
 
         protected void onPostExecute(CommentResponse response) {
             mLoadingView.setVisibility(View.GONE);
             if(response != null) {
-                //updateList(response);
+                updateList(response);
                 mPage++;
                 mLoading = false;
             }

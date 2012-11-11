@@ -1,11 +1,13 @@
 package com.nyuen.test_fivehundred.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.nyuen.test_fivehundred.R;
 import com.nyuen.test_fivehundred.structure.Comment;
 import com.nyuen.test_fivehundred.structure.CommentResponse;
 import com.nyuen.test_fivehundred.structure.Photo;
+import com.nyuen.test_fivehundred.structure.User;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
 
 import android.content.Context;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class PhotoDetailAdapter extends BaseAdapter {
     
@@ -23,45 +27,42 @@ public class PhotoDetailAdapter extends BaseAdapter {
     private Photo mPhoto;
     private List<Comment> mComments;
     
-    private int mListItemCount;
-    
     public PhotoDetailAdapter(Context context, ImageFetcher imageFetcher) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         
         mImageFetcher = imageFetcher;
         mInflater = LayoutInflater.from(context);
+        mComments = new ArrayList<Comment>();
     }
 
     @Override
     public int getCount() {
-        return mListItemCount;
+        return mComments.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        // TODO Auto-generated method stub
-        return null;
+    public Comment getItem(int position) {
+        return mComments.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
-        return 0;
+        return position;
     }
     
     public void setDetails(CommentResponse response) {
-        // TODO Auto-generated method stub
         
     }
     
-    public void setComments(List<Comment> asList) {
-        // TODO Auto-generated method stub
-        
+    public void setComments(List<Comment> comments) {
+        mComments.clear();
+        appendComments(comments);
     }
     
-    public void appendComments(List<Comment> asList) {
-        // TODO Auto-generated method stub
-        
+    public void appendComments(List<Comment> comments) {
+        for (Comment c : comments) {
+            mComments.add(c);
+        }
     }
     
     @Override
@@ -72,13 +73,34 @@ public class PhotoDetailAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new PhotoDetailHolder();
             convertView = mInflater.inflate(R.layout.comment_list_item, null, false);
+            
+            holder.commentUserPhotoView = (ImageView) convertView.findViewById(R.id.commentUserPhotoView);
+            holder.likeImageView = (ImageView) convertView.findViewById(R.id.likeImageView);
+            
+            holder.commentBodyView = (TextView) convertView.findViewById(R.id.commentBodyView);
+            holder.commentUserNameView = (TextView) convertView.findViewById(R.id.commentUserNameView);
+            holder.likeCountView = (TextView) convertView.findViewById(R.id.likeCountView);
+            
+            convertView.setTag(holder);
+        } else {
+            holder = (PhotoDetailHolder) convertView.getTag();
         }
         
-        return null;
+        //holder.commentUserPhotoView
+        Comment comment = getItem(position);
+        User user = getItem(position).user;
+        mImageFetcher.loadImage(user.userpic_url, holder.commentUserPhotoView);
+        
+        holder.commentBodyView.setText(comment.body);
+        holder.commentUserNameView.setText(user.fullname);
+        //holder.likeCountView.setText(comment.);
+        
+        return convertView;
     }
         
     private class PhotoDetailHolder {
-        
+        ImageView commentUserPhotoView, likeImageView;
+        TextView likeCountView, commentUserNameView, commentBodyView;
     }
  
 }

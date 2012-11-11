@@ -12,13 +12,12 @@ public class ApiHelper {
 
     public static PhotoResponse getPhotoStream(String feature, int rpp, int size, int page){
         PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
-
+        String url = "/photos?feature=" + feature + "&rpp=" + rpp + 
+                "&image_size=" + size +
+                "&page="+page;
         try {
             PhotoResponse out = new Gson().fromJson(
-                    pxapi.get("/photos?feature=" + feature + 
-                            "&rpp=" + rpp + 
-                            "&image_size=" + size +
-                            "&page="+page).toString(), 
+                    pxapi.get(url).toString(), 
                             PhotoResponse.class);
             return out;
         } catch (Exception e) {
@@ -30,12 +29,11 @@ public class ApiHelper {
 
     public static CommentResponse getComments(int photoId, int page){
         PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
-
+        String url = "/photos/" + photoId + "/comments?page=" + page;
         try {
             //20 comments per page
             CommentResponse out = new Gson().fromJson(
-                    pxapi.get("v1/photos/" + photoId + 
-                            "/comments?page="+page).toString(), 
+                    pxapi.get(url).toString(), 
                             CommentResponse.class);
             return out;
         } catch (Exception e) {

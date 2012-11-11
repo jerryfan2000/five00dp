@@ -7,7 +7,7 @@
         android:id="@+id/commentUserPhotoView"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@android:drawable/alert_dark_frame" />
+        android:src="@drawable/ic_userpic" />
 
     <TextView
         android:id="@+id/commentUserNameView"
@@ -16,7 +16,8 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/commentUserPhotoView"
         android:text="User Name"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textStyle="bold"
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/commentBodyView"
@@ -25,7 +26,7 @@
         android:layout_alignLeft="@+id/commentUserNameView"
         android:layout_below="@+id/commentUserNameView"
         android:text="Comment Body"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/likeCountView"
@@ -33,9 +34,10 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/commentBodyView"
         android:layout_alignParentRight="true"
+        android:textColor="#979797"
         android:text="0"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
+        android:textSize="8sp" />
+    
     <ImageView
         android:id="@+id/likeImageView"
         android:layout_width="wrap_content"
