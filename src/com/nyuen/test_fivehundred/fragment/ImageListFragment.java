@@ -3,6 +3,7 @@ package com.nyuen.test_fivehundred.fragment;
 import java.util.Arrays;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -14,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
+import com.nyuen.test_fivehundred.PhotoDetailActivity;
 import com.nyuen.test_fivehundred.R;
 import com.nyuen.test_fivehundred.adapter.ImageAdapter;
 import com.nyuen.test_fivehundred.api.ApiHelper;
+import com.nyuen.test_fivehundred.structure.Photo;
 import com.nyuen.test_fivehundred.structure.PhotoResponse;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
 import com.nyuen.test_fivehundred.util.UIUtils;
@@ -32,6 +35,8 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     private boolean mLoading = false;
     private View mLoadingView;
     private int mPage = 1;
+    
+    private Photo mPhoto;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,14 +65,16 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_main, menu);
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.menu_settings:
-            
+            Intent photoDetailIntent = new Intent(getActivity(), PhotoDetailActivity.class);
+            photoDetailIntent.putExtra(PhotoDetailFragment.INTENT_EXTRA_PHOTO, mPhoto);
+            startActivity(photoDetailIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -110,6 +117,10 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         if(mPage == 1) {
             mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
             mImageAdapter.setPhotos(Arrays.asList(response.photos));
+            
+            //TEMP
+            mPhoto = response.photos[0];
+            
             setListAdapter(mImageAdapter);    
             getListView().setOnScrollListener(this);
         } else {   

@@ -11,7 +11,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected Fragment onCreatePane() {
         
-        return new PhotoDetailFragment();// ImageListFragment();
+        return new ImageListFragment();
     }
     
 }

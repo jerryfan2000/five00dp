@@ -20,7 +20,8 @@
         android:gravity="top"
         android:text="User Name"
         android:textSize="12sp"
-        android:textStyle="bold" />
+        android:textStyle="bold" 
+        android:textColor="#3589A7"/>
 
     <TextView
         android:id="@+id/commentBodyView"

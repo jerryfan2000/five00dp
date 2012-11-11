@@ -16,12 +16,15 @@ import com.nyuen.test_fivehundred.R;
 import com.nyuen.test_fivehundred.adapter.PhotoDetailAdapter;
 import com.nyuen.test_fivehundred.api.ApiHelper;
 import com.nyuen.test_fivehundred.structure.CommentResponse;
+import com.nyuen.test_fivehundred.structure.Photo;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
 import com.nyuen.test_fivehundred.util.UIUtils;
 
 public class PhotoDetailFragment extends ListFragment implements AbsListView.OnScrollListener {
     
     private static final String TAG = PhotoDetailFragment.class.getSimpleName();
+    
+    public static final String INTENT_EXTRA_PHOTO = TAG + ".INTENT_EXTRA_PHOTO";
 
     private PhotoDetailAdapter mPhotoDetailAdapter;
     private ImageFetcher mImageFetcher;
@@ -30,7 +33,9 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
     private View mHeaderView;
     private View mLoadingView;
     private int mPage = 1;
-    private int mPhotoId;
+    private int mTotalPage = 2;
+    private Photo mPhoto;
+    
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,11 +46,14 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.photo_header, null);
         mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, null);
+        mPhoto = (Photo) getArguments().getParcelable(INTENT_EXTRA_PHOTO);
+        
+        getActivity().getActionBar().setTitle(mPhoto.name);
     }
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.photo_detail_fragment, container, false);
+        return inflater.inflate(R.layout.photo_detail_fragment, container, false);   
     }
     
     @Override
@@ -53,7 +61,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         super.onActivityCreated(savedInstanceState);
         getListView().addFooterView(mLoadingView);
         getListView().addHeaderView(mHeaderView);
-        
+       
         updateHeaderView();
         
         new LoadPhotoCommentsTask().execute();
@@ -65,7 +73,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         // TODO Auto-generated method stub
         boolean loadMore = firstVisibleItem + visibleItemCount + 2 >= totalItemCount;
         
-        if(loadMore && !mLoading) {
+        if(loadMore && !mLoading && (mPage <= mTotalPage)) {
             new LoadPhotoCommentsTask().execute();
         }
     }
@@ -83,13 +91,13 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
     
     private void updateHeaderView() {
         ImageView headerPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerPhotoView);
-        mImageFetcher.loadImage("http://pcdn.500px.net/4928401/16666558d7ba410f50922f86f736888d8cfaf9bb/4.jpg", headerPhotoView);
+        mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
         
         ImageView headerUserPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerUserPhotoView);
-        mImageFetcher.loadImage("http://acdn.500px.net/164677.jpg", headerUserPhotoView);
+        mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
         
         TextView headerUserNameView = (TextView) mHeaderView.findViewById(R.id.headerUserNameView);
-        headerUserNameView.setText("Axel Hildebrandt");
+        headerUserNameView.setText(mPhoto.user.fullname);
     }
     
     private void updateList(CommentResponse response) {
@@ -98,6 +106,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
             //TODO
             //mPhotoDetailAdapter.setDetails(response);
             mPhotoDetailAdapter.setComments(Arrays.asList(response.comments));
+            mTotalPage = response.total_pages;
             setListAdapter(mPhotoDetailAdapter);    
             getListView().setOnScrollListener(this);
         } else {   
