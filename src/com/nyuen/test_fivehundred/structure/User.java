@@ -1,5 +1,7 @@
 package com.nyuen.test_fivehundred.structure;
 
+import com.nyuen.test_fivehundred.util.ParcelUtils;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -21,13 +23,13 @@ public class User implements Parcelable {
     
     private void readFromParcelable(Parcel in) {
         id = in.readInt();
-        username = in.readString();
-        firstname = in.readString();
-        lastname = in.readString();
-        city = in.readString();
-        country = in.readString();
-        fullname = in.readString();
-        userpic_url = in.readString();
+        username = ParcelUtils.readStringFromParcel(in);
+        firstname = ParcelUtils.readStringFromParcel(in);
+        lastname = ParcelUtils.readStringFromParcel(in);
+        city = ParcelUtils.readStringFromParcel(in);
+        country = ParcelUtils.readStringFromParcel(in);
+        fullname = ParcelUtils.readStringFromParcel(in);
+        userpic_url = ParcelUtils.readStringFromParcel(in);
         upgrade_status = in.readInt();
     }
     
@@ -39,14 +41,24 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(username);
-        dest.writeString(firstname);
-        dest.writeString(lastname);
-        dest.writeString(city);
-        dest.writeString(country);
-        dest.writeString(fullname);
-        dest.writeString(userpic_url);
+        ParcelUtils.writeStringToParcel(dest, username);
+        ParcelUtils.writeStringToParcel(dest, firstname);
+        ParcelUtils.writeStringToParcel(dest, lastname);
+        ParcelUtils.writeStringToParcel(dest, city);
+        ParcelUtils.writeStringToParcel(dest, country);
+        ParcelUtils.writeStringToParcel(dest, fullname);
+        ParcelUtils.writeStringToParcel(dest, userpic_url);
         dest.writeInt(upgrade_status);
     }
+    
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel in) {
+            return new User(in); 
+        }
 
+        @Override
+        public User[] newArray(int size) {
+            return new User [size];
+        }
+    };
 }

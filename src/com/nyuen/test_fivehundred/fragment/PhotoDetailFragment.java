@@ -2,6 +2,7 @@ package com.nyuen.test_fivehundred.fragment;
 
 import java.util.Arrays;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -20,6 +21,7 @@ import com.nyuen.test_fivehundred.structure.Photo;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
 import com.nyuen.test_fivehundred.util.UIUtils;
 
+@SuppressLint("NewApi")
 public class PhotoDetailFragment extends ListFragment implements AbsListView.OnScrollListener {
     
     private static final String TAG = PhotoDetailFragment.class.getSimpleName();
@@ -32,10 +34,9 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
     private boolean mLoading = false;
     private View mHeaderView;
     private View mLoadingView;
+    private Photo mPhoto;
     private int mPage = 1;
     private int mTotalPage = 2;
-    private Photo mPhoto;
-    
     
     @Override
     public void onCreate(Bundle savedInstanceState) {

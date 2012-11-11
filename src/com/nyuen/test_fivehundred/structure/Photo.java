@@ -28,9 +28,9 @@ public class Photo implements Parcelable {
     }
     
     private void readFromParcelable(Parcel in) {
-        id = ParcelUtils.readStringFromParcel(in);//in.readString();
-        name = ParcelUtils.readStringFromParcel(in);//in.readString();
-        description = ParcelUtils.readStringFromParcel(in);//in.readString();
+        id = ParcelUtils.readStringFromParcel(in);
+        name = ParcelUtils.readStringFromParcel(in);
+        description = ParcelUtils.readStringFromParcel(in);
         times_viewed = in.readInt();
         rating = in.readDouble();
         created_at = in.readString();
@@ -42,8 +42,8 @@ public class Photo implements Parcelable {
         favorites_count = in.readInt();
         comments_count = in.readInt();
         nsfw = (in.readInt() == 0) ? false : true;;
-        image_url = ParcelUtils.readStringFromParcel(in);//in.readString();
-        user = new User(in);    
+        image_url = ParcelUtils.readStringFromParcel(in);
+        user = in.readParcelable(User.class.getClassLoader());
     }
 
     @Override
@@ -53,21 +53,11 @@ public class Photo implements Parcelable {
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-//        ParcelUtils.writeStringToParcel(dest, id);
-//        ParcelUtils.writeStringToParcel(dest, name);
-//        ParcelUtils.writeStringToParcel(dest, description);
-//        ParcelUtils.writeStringToParcel(dest, created_at);
-//        ParcelUtils.writeStringToParcel(dest, image_url);      
-        
-//        dest.writeString(id);
         ParcelUtils.writeStringToParcel(dest, id);
-//        dest.writeString(name);
         ParcelUtils.writeStringToParcel(dest, name);
-//        dest.writeString(description);
         ParcelUtils.writeStringToParcel(dest, description);
         dest.writeInt(times_viewed);
         dest.writeDouble(rating);
-//        dest.writeString(created_at);
         ParcelUtils.writeStringToParcel(dest, created_at);
         dest.writeInt(category);
         dest.writeInt(privacy ? 1 : 0);
@@ -77,10 +67,8 @@ public class Photo implements Parcelable {
         dest.writeInt(favorites_count);
         dest.writeInt(comments_count);
         dest.writeInt(nsfw ? 1 : 0);
-//        dest.writeString(image_url);
         ParcelUtils.writeStringToParcel(dest, image_url); 
-        user.writeToParcel(dest, flags);
-        
+        dest.writeParcelable(user, flags);   
     }
     
     public static final Parcelable.Creator<Photo> CREATOR = new Parcelable.Creator<Photo>() {
