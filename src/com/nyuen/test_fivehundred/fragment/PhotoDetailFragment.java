@@ -114,6 +114,16 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         
         TextView headerUserNameView = (TextView) mHeaderView.findViewById(R.id.headerUserNameView);
         headerUserNameView.setText(mPhoto.user.fullname);
+        
+        TextView viewsCountView = (TextView) mHeaderView.findViewById(R.id.viewsCountView);
+        viewsCountView.setText("" + mPhoto.times_viewed + " Views");
+        
+        TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
+        votesCountView.setText("" + mPhoto.votes_count + " Votes");
+        
+        TextView favsCountView = (TextView) mHeaderView.findViewById(R.id.favsCountView);
+        favsCountView.setText("" + mPhoto.favorites_count + " Favorites");
+        
     }
     
     private void updateList(CommentResponse response) {
