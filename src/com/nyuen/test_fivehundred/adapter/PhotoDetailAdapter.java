@@ -24,12 +24,10 @@ public class PhotoDetailAdapter extends BaseAdapter {
     private final LayoutInflater mInflater;
     private final ImageFetcher mImageFetcher;
     
-    private Photo mPhoto;
     private List<Comment> mComments;
     
     public PhotoDetailAdapter(Context context, ImageFetcher imageFetcher) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        
+               
         mImageFetcher = imageFetcher;
         mInflater = LayoutInflater.from(context);
         mComments = new ArrayList<Comment>();
@@ -69,13 +67,11 @@ public class PhotoDetailAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         PhotoDetailHolder holder;
         
-        // TODO Auto-generated method stub
         if (convertView == null) {
             holder = new PhotoDetailHolder();
             convertView = mInflater.inflate(R.layout.comment_list_item, null, false);
             
             holder.commentUserPhotoView = (ImageView) convertView.findViewById(R.id.commentUserPhotoView);
-            holder.likeImageView = (ImageView) convertView.findViewById(R.id.likeImageView);
             
             holder.commentBodyView = (TextView) convertView.findViewById(R.id.commentBodyView);
             holder.commentUserNameView = (TextView) convertView.findViewById(R.id.commentUserNameView);
@@ -93,13 +89,13 @@ public class PhotoDetailAdapter extends BaseAdapter {
         
         holder.commentBodyView.setText(comment.body);
         holder.commentUserNameView.setText(user.fullname);
-        //holder.likeCountView.setText(comment.);
+        holder.likeCountView.setText(""+0);
         
         return convertView;
     }
         
     private class PhotoDetailHolder {
-        ImageView commentUserPhotoView, likeImageView;
+        ImageView commentUserPhotoView;
         TextView likeCountView, commentUserNameView, commentBodyView;
     }
  

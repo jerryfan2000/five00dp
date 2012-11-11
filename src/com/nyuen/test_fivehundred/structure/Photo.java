@@ -6,7 +6,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Photo implements Parcelable {
-    public String id;
+    public int id;
     public String name;
     public String description;
     public int times_viewed;
@@ -28,7 +28,7 @@ public class Photo implements Parcelable {
     }
     
     private void readFromParcelable(Parcel in) {
-        id = ParcelUtils.readStringFromParcel(in);
+        id = in.readInt();
         name = ParcelUtils.readStringFromParcel(in);
         description = ParcelUtils.readStringFromParcel(in);
         times_viewed = in.readInt();
@@ -53,7 +53,7 @@ public class Photo implements Parcelable {
     
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        ParcelUtils.writeStringToParcel(dest, id);
+        dest.writeInt(id);
         ParcelUtils.writeStringToParcel(dest, name);
         ParcelUtils.writeStringToParcel(dest, description);
         dest.writeInt(times_viewed);

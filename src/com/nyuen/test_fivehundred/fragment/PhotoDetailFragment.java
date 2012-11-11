@@ -3,12 +3,9 @@ package com.nyuen.test_fivehundred.fragment;
 import java.util.Arrays;
 
 import android.annotation.SuppressLint;
-import android.app.ApplicationErrorReport.AnrInfo;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +14,6 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nyuen.test_fivehundred.PhotoDetailActivity;
 import com.nyuen.test_fivehundred.R;
 import com.nyuen.test_fivehundred.adapter.PhotoDetailAdapter;
 import com.nyuen.test_fivehundred.api.ApiHelper;
@@ -67,7 +63,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getListView().addFooterView(mLoadingView);
-        getListView().addHeaderView(mHeaderView);
+        getListView().addHeaderView(mHeaderView, null, false);
        
         updateHeaderView();
         
@@ -87,7 +83,6 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
             int totalItemCount) {
-        // TODO Auto-generated method stub
         boolean loadMore = firstVisibleItem + visibleItemCount + 2 >= totalItemCount;
         
         if(loadMore && !mLoading && (mPage <= mTotalPage)) {
@@ -97,7 +92,6 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // TODO Auto-generated method stub
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING
                 || scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
             mImageFetcher.setPauseWork(true);
@@ -148,7 +142,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         }
 
         protected CommentResponse doInBackground(Void... params) {
-            return ApiHelper.getComments(4928401/*mPhotoId*/, mPage);
+            return ApiHelper.getComments(mPhoto.id, mPage);
         }
 
         protected void onPostExecute(CommentResponse response) {
