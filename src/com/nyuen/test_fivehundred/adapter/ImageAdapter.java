@@ -5,19 +5,24 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.nyuen.test_fivehundred.MainActivity;
+import com.nyuen.test_fivehundred.PhotoDetailActivity;
 import com.nyuen.test_fivehundred.R;
+import com.nyuen.test_fivehundred.fragment.PhotoDetailFragment;
 import com.nyuen.test_fivehundred.structure.ImagePatternContainer;
 import com.nyuen.test_fivehundred.structure.ImagePatternContainer.Pattern;
 import com.nyuen.test_fivehundred.structure.Photo;
@@ -49,8 +54,9 @@ public class ImageAdapter extends BaseAdapter {
 	
 	private int mListItemCount;
 	private int mPhotoCount;
+	private OnClickListener mOnPhotoClickListener;
 
-	public ImageAdapter(Context context, ImageFetcher imageFetcher) {
+	public ImageAdapter(final Context context, ImageFetcher imageFetcher) {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		Resources resources = context.getResources();
@@ -71,6 +77,15 @@ public class ImageAdapter extends BaseAdapter {
 		mPhotos = new ArrayList<Photo>();
 		mParams = new RelativeLayout.LayoutParams[16];
 
+		mOnPhotoClickListener = new OnClickListener() {
+	        public void onClick(View v) {
+	            Photo loadPhoto = (Photo) v.getTag();
+	            Intent photoDetailIntent = new Intent(context, PhotoDetailActivity.class);
+	            photoDetailIntent.putExtra(PhotoDetailFragment.INTENT_EXTRA_PHOTO, loadPhoto);
+	            context.startActivity(photoDetailIntent);
+	        }
+	    };   
+		
 		// Instantiate layout params
 		setParams();
 	}
@@ -197,6 +212,7 @@ public class ImageAdapter extends BaseAdapter {
 
 			for (int i = 0; i < holder.imageViews.length; i++) {
 				holder.imageViews[i] = (ImageView) convertView.findViewById(IMAGEVIEW_IDS[i]);
+				holder.imageViews[i].setOnClickListener(mOnPhotoClickListener);
 			}
 
 			convertView.setTag(holder);
@@ -212,9 +228,11 @@ public class ImageAdapter extends BaseAdapter {
 		for (int i = 0; i < 4; i++) {
 			if (i < li.size()) {
 				iv[i].setVisibility(View.VISIBLE);
-				String url = mPhotos.get(li.get(i)).image_url;
+				Photo loadPhoto = mPhotos.get(li.get(i));
+				String url = loadPhoto.image_url;
 				url = url.replace("3.jpg", pattern.getSizes()[i] + ".jpg");
 				iv[i].setBackgroundColor(Color.WHITE);
+				iv[i].setTag(loadPhoto);
 				mImageFetcher.loadImage(url, iv[i]);
 			} else {
 				iv[i].setVisibility(View.GONE);

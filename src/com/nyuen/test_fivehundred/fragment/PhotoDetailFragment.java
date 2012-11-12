@@ -6,12 +6,14 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nyuen.test_fivehundred.R;
@@ -67,7 +69,12 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
        
         updateHeaderView();
         
-        new LoadPhotoCommentsTask().execute();
+        if(UIUtils.isNetworkAvailable(getActivity()))
+            new LoadPhotoCommentsTask().execute();
+        else {
+            ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
+            ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
+        }        
     }
      
     @Override
@@ -116,14 +123,13 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         viewsCountView.setText("" + mPhoto.times_viewed + " Views");
         votesCountView.setText("" + mPhoto.votes_count + " Votes");
         favsCountView.setText("" + mPhoto.favorites_count + " Favorites");
-        headerDescriptionView.setText("Using the shutter speed to create a painterly effect with the moving water");//Html.fromHtml(mPhoto.description));       
+        headerDescriptionView.setText(Html.fromHtml(mPhoto.description));       
         ratingView.setText("" + mPhoto.rating);
     }
     
     private void updateList(CommentResponse response) {
         if(mPage == 1) {
             mPhotoDetailAdapter = new PhotoDetailAdapter(getActivity(), mImageFetcher);
-            //TODO
             //mPhotoDetailAdapter.setDetails(response);
             mPhotoDetailAdapter.setComments(Arrays.asList(response.comments));
             mTotalPage = response.total_pages;

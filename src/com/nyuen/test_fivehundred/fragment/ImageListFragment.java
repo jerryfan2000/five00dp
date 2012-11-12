@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.nyuen.test_fivehundred.PhotoDetailActivity;
 import com.nyuen.test_fivehundred.R;
@@ -36,8 +38,6 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     private View mLoadingView;
     private int mPage = 1;
     
-    private Photo mPhoto;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,21 +60,24 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getListView().addFooterView(mLoadingView);
-        new LoadPhotoTask().execute();
+        
+        if(UIUtils.isNetworkAvailable(getActivity()))
+            new LoadPhotoTask().execute();
+        else {
+            ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
+            ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
+        }
     }
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
+        //inflater.inflate(R.menu.menu_main, menu);
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.menu_settings:
-            Intent photoDetailIntent = new Intent(getActivity(), PhotoDetailActivity.class);
-            photoDetailIntent.putExtra(PhotoDetailFragment.INTENT_EXTRA_PHOTO, mPhoto);
-            startActivity(photoDetailIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -118,9 +121,6 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
             mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
             mImageAdapter.setPhotos(Arrays.asList(response.photos));
             
-            //TEMP
-            mPhoto = response.photos[0];
-            
             setListAdapter(mImageAdapter);    
             getListView().setOnScrollListener(this);
         } else {   
@@ -141,10 +141,14 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
 
         protected void onPostExecute(PhotoResponse response) {
             mLoadingView.setVisibility(View.GONE);
+            mLoading = false;
             if(response != null) {
                 updateList(response);
                 mPage++;
-                mLoading = false;
+                
+            } else {
+               this.cancel(false);
+               mLoadingView.setVisibility(View.GONE);
             }
         }
     }

@@ -2,6 +2,8 @@ package com.nyuen.test_fivehundred.util;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 
@@ -52,5 +54,12 @@ public class UIUtils {
         ImageFetcher fetcher = new ImageFetcher(activity);
         fetcher.addImageCache(activity);
         return fetcher;
+    }
+    
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager 
+              = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
     }
 }
