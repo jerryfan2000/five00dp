@@ -10,7 +10,7 @@
         android:id="@+id/headerPhotoView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginRight="8dp"
-            android:src="@android:drawable/alert_dark_frame" />
+            android:src="@drawable/ic_userpic" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -104,16 +104,21 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
-
+
     <TextView
         android:id="@+id/headerDescriptionView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="24dp"
+        android:layout_marginBottom="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="Description"
         android:textColor="#333"
         android:textSize="12sp" />
+    
+    <View 
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="#dbdbdb"/>
 
 </LinearLayout>

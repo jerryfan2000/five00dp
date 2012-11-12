@@ -49,7 +49,6 @@ public class ImageAdapter extends BaseAdapter {
 
 	private List<Photo> mPhotos;
 	private List<ImagePatternContainer> mContainers;
-	private List<Pattern> mPatterns;
 	private RelativeLayout.LayoutParams[] mParams;
 	
 	private int mListItemCount;
@@ -72,7 +71,6 @@ public class ImageAdapter extends BaseAdapter {
 		// Instantiate members
 		mImageFetcher = imageFetcher;
 		mInflater = LayoutInflater.from(context);
-		mPatterns = Pattern.getPatternList();
 		mContainers = new ArrayList<ImagePatternContainer>();
 		mPhotos = new ArrayList<Photo>();
 		mParams = new RelativeLayout.LayoutParams[16];
@@ -103,12 +101,13 @@ public class ImageAdapter extends BaseAdapter {
 		appendPhotos(photos);
 	}
 
-	public void appendPhotos(List<Photo> photos) {
+	public void appendPhotos(List<Photo> photos) {  
 		for (Photo ph : photos) {
 			mPhotos.add(ph);
 		}
-
-		Iterator<Pattern> iterator = mPatterns.iterator();
+		
+		List<Pattern> patterns = Pattern.getPatternList();
+		Iterator<Pattern> iterator = patterns.iterator();
 		while (iterator.hasNext()) {
 			Pattern p = iterator.next();
 			//Log.d("setPhotos", "List: " + mListItemCount + " Pattern size: " + p.getCount());

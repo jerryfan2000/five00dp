@@ -3,6 +3,8 @@ package com.nyuen.test_fivehundred.fragment;
 import java.util.Arrays;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -37,6 +40,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     private boolean mLoading = false;
     private View mLoadingView;
     private int mPage = 1;
+    private String mFeature ;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,35 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         setHasOptionsMenu(true);
         
         getActivity().getActionBar().setDisplayUseLogoEnabled(true);
-        getActivity().getActionBar().setTitle(R.string.popular);
+        getActivity().getActionBar().setDisplayShowTitleEnabled(false);
+        
+        mFeature = "Popular";
+        String[] featureString = {"Popular", "Editor's Choice", "Upcoming", "Fresh"};
+        ArrayAdapter<String> featureOptionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.feature_action_bar, featureString);
+        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getActivity().getActionBar().setListNavigationCallbacks(featureOptionAdapter, new OnNavigationListener() {
+            
+            @Override
+            public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+                mPage = 1;
+                switch (itemPosition) {
+                case 0:
+                    mFeature = "popular";
+                    break;
+                case 1:
+                    mFeature = "editors";
+                    break;
+                case 2:
+                    mFeature = "upcoming";
+                    break;
+                case 3:
+                    mFeature = "fresh_today";
+                    break;
+                }
+                new LoadPhotoTask().execute();
+                return false;
+            }
+        });
         
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
         mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, null);
@@ -136,7 +168,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         }
 
         protected PhotoResponse doInBackground(Void... params) {
-            return ApiHelper.getPhotoStream("popular", 15, 4, mPage);
+            return ApiHelper.getPhotoStream(mFeature, 15, 4, mPage);
         }
 
         protected void onPostExecute(PhotoResponse response) {
