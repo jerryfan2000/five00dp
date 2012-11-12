@@ -3,11 +3,14 @@ package com.nyuen.test_fivehundred.fragment;
 import java.util.Arrays;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,12 +79,26 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
             ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
         }        
     }
+    
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_photo_details, menu);
+    }  
      
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case android.R.id.home:
             getActivity().finish();
+            return true;
+        case R.id.menu_share:
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareTitle = mPhoto.name;
+            String shareBody = "http://500px.com/photo/" + mPhoto.id;
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareTitle);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
             return true;
         }
         return super.onOptionsItemSelected(item);
