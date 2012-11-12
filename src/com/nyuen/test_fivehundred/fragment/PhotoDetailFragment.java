@@ -54,6 +54,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.photo_header, null);
         mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, null);
         mPhoto = (Photo) getArguments().getParcelable(INTENT_EXTRA_PHOTO);
+        mPhotoDetailAdapter = new PhotoDetailAdapter(getActivity(), mImageFetcher);
         
         getActivity().getActionBar().setTitle(mPhoto.name);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -124,6 +125,18 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         }
     }
     
+    @Override
+    public void onPause() {
+        super.onPause();
+        mImageFetcher.flushCache();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mImageFetcher.closeCache();
+    }
+    
     private void updateHeaderView() {
         ImageView headerPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerPhotoView);
         ImageView headerUserPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerUserPhotoView);
@@ -146,7 +159,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
     
     private void updateList(CommentResponse response) {
         if(mPage == 1) {
-            mPhotoDetailAdapter = new PhotoDetailAdapter(getActivity(), mImageFetcher);
+             
             //mPhotoDetailAdapter.setDetails(response);
             mPhotoDetailAdapter.setComments(Arrays.asList(response.comments));
             mTotalPage = response.total_pages;

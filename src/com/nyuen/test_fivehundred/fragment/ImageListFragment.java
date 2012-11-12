@@ -81,6 +81,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
         
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
         mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, null);
+        mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
     }
     
     @Override
@@ -150,7 +151,7 @@ public class ImageListFragment extends ListFragment implements AbsListView.OnScr
     
     private void updateList(PhotoResponse response) {
         if(mPage == 1) {
-            mImageAdapter = new ImageAdapter(getActivity(), mImageFetcher);
+            
             mImageAdapter.setPhotos(Arrays.asList(response.photos));
             
             setListAdapter(mImageAdapter);    
