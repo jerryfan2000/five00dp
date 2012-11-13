@@ -189,6 +189,7 @@ public class PhotoAdapter extends BaseAdapter {
         mParams[7].addRule(RelativeLayout.BELOW, R.id.imageView0);
         mParams[7].addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
 
+
         // Pattern.FOUR
         mParams[11] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
         mParams[12] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
