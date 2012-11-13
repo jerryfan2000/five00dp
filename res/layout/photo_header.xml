@@ -6,7 +6,7 @@
     android:focusableInTouchMode="false"
     android:orientation="vertical" >
 
-    <com.nyuen.test_fivehundred.StretchImageView
+    <com.nyuen.test_fivehundred.view.StretchImageView
         android:id="@+id/headerPhotoView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

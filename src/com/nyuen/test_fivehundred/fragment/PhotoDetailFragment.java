@@ -58,6 +58,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         
         getActivity().getActionBar().setTitle(mPhoto.name);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActivity().getActionBar().setDisplayUseLogoEnabled(true);
     }
     
     @Override
@@ -99,7 +100,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
             String shareBody = "http://500px.com/photo/" + mPhoto.id;
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareTitle);
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            startActivity(Intent.createChooser(sharingIntent, "" + getString(R.string.share_via)));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -150,17 +151,15 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
         mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
         headerUserNameView.setText(mPhoto.user.fullname);
-        viewsCountView.setText("" + mPhoto.times_viewed + " Views");
-        votesCountView.setText("" + mPhoto.votes_count + " Votes");
-        favsCountView.setText("" + mPhoto.favorites_count + " Favorites");
+        viewsCountView.setText("" + mPhoto.times_viewed + " " + getString(R.string.views));
+        votesCountView.setText("" + mPhoto.votes_count + " " + getString(R.string.votes));
+        favsCountView.setText("" + mPhoto.favorites_count + " " + getString(R.string.favorites));
         headerDescriptionView.setText(Html.fromHtml(mPhoto.description));       
         ratingView.setText("" + mPhoto.rating);
     }
     
     private void updateList(CommentResponse response) {
         if(mPage == 1) {
-             
-            //mPhotoDetailAdapter.setDetails(response);
             mPhotoDetailAdapter.setComments(Arrays.asList(response.comments));
             mTotalPage = response.total_pages;
             setListAdapter(mPhotoDetailAdapter);    

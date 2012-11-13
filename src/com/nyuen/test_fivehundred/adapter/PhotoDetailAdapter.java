@@ -82,7 +82,6 @@ public class PhotoDetailAdapter extends BaseAdapter {
             holder = (PhotoDetailHolder) convertView.getTag();
         }
         
-        //holder.commentUserPhotoView
         Comment comment = getItem(position);
         User user = getItem(position).user;
         mImageFetcher.loadImage(user.userpic_url, holder.commentUserPhotoView, R.drawable.ic_userpic);
