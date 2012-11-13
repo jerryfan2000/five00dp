@@ -45,8 +45,8 @@
                 android:id="@+id/headerDateView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#333"
-                android:textSize="14sp"
+                android:textColor="#9C9A9B"
+                android:textSize="12sp"
                 android:textStyle="bold" />
         </LinearLayout>
 

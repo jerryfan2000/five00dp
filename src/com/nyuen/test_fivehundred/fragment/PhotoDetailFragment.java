@@ -1,9 +1,11 @@
 package com.nyuen.test_fivehundred.fragment;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -24,6 +26,7 @@ import com.nyuen.test_fivehundred.adapter.PhotoDetailAdapter;
 import com.nyuen.test_fivehundred.api.ApiHelper;
 import com.nyuen.test_fivehundred.structure.CommentResponse;
 import com.nyuen.test_fivehundred.structure.Photo;
+import com.nyuen.test_fivehundred.util.DateHelper;
 import com.nyuen.test_fivehundred.util.ImageFetcher;
 import com.nyuen.test_fivehundred.util.UIUtils;
 
@@ -143,19 +146,32 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         ImageView headerUserPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerUserPhotoView);
         TextView headerUserNameView = (TextView) mHeaderView.findViewById(R.id.headerUserNameView);
         TextView headerDescriptionView = (TextView) mHeaderView.findViewById(R.id.headerDescriptionView);
+        TextView headerDateView = (TextView) mHeaderView.findViewById(R.id.headerDateView);
         TextView viewsCountView = (TextView) mHeaderView.findViewById(R.id.viewsCountView);
         TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
         TextView favsCountView = (TextView) mHeaderView.findViewById(R.id.favsCountView);
         TextView ratingView = (TextView) mHeaderView.findViewById(R.id.ratingView);
-                
+
         mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
-        mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
+        if(!mPhoto.user.userpic_url.equals("/graphics/userpic.png"))
+            mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
         headerUserNameView.setText(mPhoto.user.fullname);
         viewsCountView.setText("" + mPhoto.times_viewed + " " + getString(R.string.views));
         votesCountView.setText("" + mPhoto.votes_count + " " + getString(R.string.votes));
         favsCountView.setText("" + mPhoto.favorites_count + " " + getString(R.string.favorites));
-        headerDescriptionView.setText(Html.fromHtml(mPhoto.description));       
+        headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
+        headerDateView.setText(DateHelper.DateDifference(DateHelper.parseISO8601(mPhoto.created_at)));
         ratingView.setText("" + mPhoto.rating);
+        
+        headerPhotoView.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                intent.setData(Uri.parse("http://500px.com/photo/" + mPhoto.id));
+                startActivity(intent);
+            }
+        });
     }
     
     private void updateList(CommentResponse response) {

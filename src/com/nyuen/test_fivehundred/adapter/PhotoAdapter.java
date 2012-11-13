@@ -96,15 +96,9 @@ public class PhotoAdapter extends BaseAdapter {
 	public Object getItem(int position) {
 		return position;
 	}
-
-	public void clearPhotos() {
-	    mPhotoCount = 0;
-	    //mListItemCount = 0;
-	    mPhotos.clear();
-	}
 	
 	public void setPhotos(List<Photo> photos) {
-	    //clearPhotos();
+	    mPhotoCount = 0;
 	    mPhotos.clear();
 		appendPhotos(photos);
 	}
