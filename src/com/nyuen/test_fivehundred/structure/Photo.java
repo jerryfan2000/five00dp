@@ -23,6 +23,15 @@ public class Photo implements Parcelable {
     public String image_url;
     public User user;
     
+    //extended members
+//    cameras
+//    lens
+//    focal_length
+//    iso
+//    shutter_speed
+//    aperture
+//    status
+//    
     public Photo (Parcel in) {
         readFromParcelable(in);
     }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -62,6 +63,7 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         getActivity().getActionBar().setTitle(mPhoto.name);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         getActivity().getActionBar().setDisplayUseLogoEnabled(true);
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     
     @Override

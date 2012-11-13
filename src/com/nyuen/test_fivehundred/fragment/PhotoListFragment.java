@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -53,7 +54,8 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
         
         getActivity().getActionBar().setDisplayUseLogoEnabled(true);
         getActivity().getActionBar().setDisplayShowTitleEnabled(false);
-        
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         mFeature = "Popular";
         String[] featureString = {getString(R.string.popular), getString(R.string.editor), getString(R.string.upcoming), getString(R.string.fresh)};
         ArrayAdapter<String> featureOptionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.feature_action_bar, featureString);

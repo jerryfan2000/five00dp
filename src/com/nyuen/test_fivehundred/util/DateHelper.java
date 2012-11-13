@@ -3,8 +3,6 @@ package com.nyuen.test_fivehundred.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.net.ParseException;
-
 public class DateHelper
 {
     private static SimpleDateFormat iso8601formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
@@ -20,7 +18,6 @@ public class DateHelper
             Date result = iso8601formatter.parse(date);
             return result;
         } catch (java.text.ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         }
