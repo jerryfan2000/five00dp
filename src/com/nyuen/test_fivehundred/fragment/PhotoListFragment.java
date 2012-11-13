@@ -54,12 +54,12 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
         
         getActivity().getActionBar().setDisplayUseLogoEnabled(true);
         getActivity().getActionBar().setDisplayShowTitleEnabled(false);
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
+        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        
         mFeature = "Popular";
         String[] featureString = {getString(R.string.popular), getString(R.string.editor), getString(R.string.upcoming), getString(R.string.fresh)};
         ArrayAdapter<String> featureOptionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.feature_action_bar, featureString);
-        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActivity().getActionBar().setListNavigationCallbacks(featureOptionAdapter, new OnNavigationListener() {
             
             @Override
@@ -81,7 +81,6 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
                 }
                 mImageAdapter = new PhotoAdapter(getActivity(), mImageFetcher);
                 new LoadPhotoTask().execute();
-                //mImageAdapter.
                 return false;
             }
         });
@@ -158,8 +157,7 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
     
     private void updateList(PhotoResponse response) {
         if(mPage == 1) {
-            mImageAdapter.setPhotos(Arrays.asList(response.photos));
-            
+            mImageAdapter.setPhotos(Arrays.asList(response.photos));     
             setListAdapter(mImageAdapter);    
             getListView().setOnScrollListener(this);
         } else {   
