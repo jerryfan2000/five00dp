@@ -11,11 +11,11 @@ public class PhotoPatternContainer {
         //First int = # of photos that a pattern can hold
         //Rest of the in = size of the image and should be loaded for each grid
         ONE(1, 4, 0, 0, 0),
-        TWO_VERT(2, 3, 3, 0, 0),
-        TWO_HOR(2, 3, 3, 0, 0),
+        TWO_VERTICAL(2, 3, 3, 0, 0),
+        TWO_HORIZONTAL(2, 3, 3, 0, 0),
         FOUR(4, 3, 3, 3, 3),
-        THREE_VERT(3, 3, 3, 3, 0),
-        THREE_HOR(3, 3, 3, 3, 0);
+        THREE_VERTICAL(3, 3, 3, 3, 0),
+        THREE_HORIZONTAL(3, 3, 3, 3, 0);
 
         private final int mImageCount;
         private final int[] mImageSizes;
@@ -34,22 +34,22 @@ public class PhotoPatternContainer {
         public static List<Pattern> getPatternList() {
             List<Pattern> list = new ArrayList<Pattern>();
             list.add(Pattern.ONE);
-            list.add(Pattern.TWO_VERT);
-            list.add(Pattern.TWO_HOR);
+            list.add(Pattern.TWO_VERTICAL);
+            list.add(Pattern.TWO_HORIZONTAL);
             list.add(Pattern.FOUR);
-            list.add(Pattern.THREE_VERT);
-            list.add(Pattern.THREE_HOR);
+            list.add(Pattern.THREE_VERTICAL);
+            list.add(Pattern.THREE_HORIZONTAL);
             Collections.shuffle(list);
             return list;
         }
     }
 
     private Pattern mPattern;
-    private List<Integer> mPhotosID;
+    private List<Integer> mPhotosIdx;
     
     public PhotoPatternContainer(Pattern p) {
         setPattern(p);
-        mPhotosID = new ArrayList<Integer>();
+        mPhotosIdx = new ArrayList<Integer>();
     }
 
     public Pattern getPattern() {
@@ -60,16 +60,16 @@ public class PhotoPatternContainer {
         this.mPattern = mPattern;
     }
 
-    public List<Integer> getPhotosID() {
-        return mPhotosID;
+    public List<Integer> getPhotosIdx() {
+        return mPhotosIdx;
     }
 
     public void setPhotos(List<Integer> list) {
-        this.mPhotosID = list;
+        this.mPhotosIdx = list;
     }
     
     public void addPhotoID(int i) {
-        mPhotosID.add(i);
+        mPhotosIdx.add(i);
     }
     
 

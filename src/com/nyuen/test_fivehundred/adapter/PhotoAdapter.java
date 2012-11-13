@@ -76,6 +76,7 @@ public class PhotoAdapter extends BaseAdapter {
 		mPhotos = new ArrayList<Photo>();
 		mParams = new RelativeLayout.LayoutParams[16];
 
+		// Attach click listener for each photo
 		mOnPhotoClickListener = new OnClickListener() {
 	        public void onClick(View v) {
 	            Photo loadPhoto = (Photo) v.getTag();
@@ -108,7 +109,11 @@ public class PhotoAdapter extends BaseAdapter {
 			mPhotos.add(ph);
 		}
 		
+		// Retrieve a list of patterns 
 		List<Pattern> patterns = Pattern.getPatternList();
+		
+		// Loop through the patterns, 
+		// create a container object that store a pattern and the respective photo index
 		Iterator<Pattern> iterator = patterns.iterator();
 		while (iterator.hasNext()) {
 			Pattern p = iterator.next();
@@ -133,13 +138,14 @@ public class PhotoAdapter extends BaseAdapter {
 		return false;
 	}
 
+	// Set the LayoutParams that will be used in getView() 
 	public void setParams() {
 		// Pattern.ONE
 		mParams[0] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_ONE - MARGIN_TWO);
 
 		mParams[0].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_ONE, 0);
 
-		// Pattern.TWO_VERT
+		// Pattern.TWO_VERTICAL
 		mParams[1] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_ONE - MARGIN_TWO);
 		mParams[2] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_ONE - MARGIN_TWO);
 
@@ -148,7 +154,7 @@ public class PhotoAdapter extends BaseAdapter {
 
 		mParams[2].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
 
-		// Pattern.TWO_HOR
+		// Pattern.TWO_HORIZONTAL
 		mParams[3] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
 		mParams[4] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
 
@@ -157,20 +163,7 @@ public class PhotoAdapter extends BaseAdapter {
 
 		mParams[4].addRule(RelativeLayout.BELOW, R.id.imageView0);
 
-		// Pattern.THREE_HOR
-		mParams[5] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
-		mParams[6] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-		mParams[7] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-
-		mParams[5].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
-		mParams[6].setMargins(MARGIN_ONE, MARGIN_HALF, MARGIN_HALF, 0);
-		mParams[7].setMargins(MARGIN_HALF, MARGIN_HALF, MARGIN_ONE, 0);
-
-		mParams[6].addRule(RelativeLayout.BELOW, R.id.imageView0);
-		mParams[7].addRule(RelativeLayout.BELOW, R.id.imageView0);
-		mParams[7].addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
-
-		// Pattern.THREE_VERT
+		// Pattern.THREE_VERTICAL
 		mParams[8] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_ONE - MARGIN_TWO);
 		mParams[9] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
 		mParams[10] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
@@ -182,6 +175,19 @@ public class PhotoAdapter extends BaseAdapter {
 		mParams[9].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
 		mParams[10].addRule(RelativeLayout.BELOW, R.id.imageView1);
 		mParams[10].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
+		
+		// Pattern.THREE_HORIZONTAL
+        mParams[5] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
+        mParams[6] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
+        mParams[7] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
+
+        mParams[5].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
+        mParams[6].setMargins(MARGIN_ONE, MARGIN_HALF, MARGIN_HALF, 0);
+        mParams[7].setMargins(MARGIN_HALF, MARGIN_HALF, MARGIN_ONE, 0);
+
+        mParams[6].addRule(RelativeLayout.BELOW, R.id.imageView0);
+        mParams[7].addRule(RelativeLayout.BELOW, R.id.imageView0);
+        mParams[7].addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
 
 		// Pattern.FOUR
 		mParams[11] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
@@ -204,61 +210,65 @@ public class PhotoAdapter extends BaseAdapter {
 		ImageHolder holder;
 
 		if (convertView == null) {
+		    // Infate the imageViews
 			holder = new ImageHolder();
-			convertView = mInflater.inflate(R.layout.image_grid, null, false);
-
 			holder.imageViews = new ImageView[4];
+			convertView = mInflater.inflate(R.layout.image_grid, null, false);	
 
+			// Set click listener for each imageView
 			for (int i = 0; i < holder.imageViews.length; i++) {
 				holder.imageViews[i] = (ImageView) convertView.findViewById(IMAGEVIEW_IDS[i]);
 				holder.imageViews[i].setOnClickListener(mOnPhotoClickListener);
 			}
 
 			convertView.setTag(holder);
-
 		} else {
 			holder = (ImageHolder) convertView.getTag();
 		}
 
-		ImageView[] iv = holder.imageViews;
-		PhotoPatternContainer ipc = mContainers.get(position);
-		Pattern pattern = ipc.getPattern();
-		List<Integer> li = ipc.getPhotosID();
+		ImageView[] imageViews = holder.imageViews;
+		PhotoPatternContainer photoContainer = mContainers.get(position);
+		Pattern pattern = photoContainer.getPattern();
+		List<Integer> photoIndices = photoContainer.getPhotosIdx();
+		
+		// Loop through each imageView and retrieve the specific photo url
+		// Then, load the image with imageFetcher
 		for (int i = 0; i < 4; i++) {
-			if (i < li.size()) {
-				iv[i].setVisibility(View.VISIBLE);
-				Photo loadPhoto = mPhotos.get(li.get(i));
+			if (i < photoIndices.size()) {
+				imageViews[i].setVisibility(View.VISIBLE);
+				Photo loadPhoto = mPhotos.get(photoIndices.get(i));
 				String url = loadPhoto.image_url;
 				url = url.replace(PhotoListFragment.IMAGE_SIZE + ".jpg", pattern.getSizes()[i] + ".jpg");
-				iv[i].setBackgroundColor(Color.WHITE);
-				iv[i].setTag(loadPhoto);
-				mImageFetcher.loadImage(url, iv[i]);
+				imageViews[i].setBackgroundColor(Color.WHITE);
+				imageViews[i].setTag(loadPhoto);
+				mImageFetcher.loadImage(url, imageViews[i]);
 			} else {
-				iv[i].setVisibility(View.GONE);
+				imageViews[i].setVisibility(View.GONE);
 			}
 		}
-
+		
+		// Set LayoutParams based on the pattern
 		if (pattern == Pattern.ONE) {
-			iv[0].setLayoutParams(mParams[0]);
-		} else if (pattern == Pattern.TWO_VERT) {
-			iv[0].setLayoutParams(mParams[1]);
-			iv[1].setLayoutParams(mParams[2]);
-		} else if (pattern == Pattern.TWO_HOR) {
-			iv[0].setLayoutParams(mParams[3]);
-			iv[1].setLayoutParams(mParams[4]);
-		} else if (pattern == Pattern.THREE_HOR) {
-			iv[0].setLayoutParams(mParams[5]);
-			iv[1].setLayoutParams(mParams[6]);
-			iv[2].setLayoutParams(mParams[7]);
-		} else if (pattern == Pattern.THREE_VERT) {
-			iv[0].setLayoutParams(mParams[8]);
-			iv[1].setLayoutParams(mParams[9]);
-			iv[2].setLayoutParams(mParams[10]);
+			imageViews[0].setLayoutParams(mParams[0]);
+		} else if (pattern == Pattern.TWO_VERTICAL) {
+			imageViews[0].setLayoutParams(mParams[1]);
+			imageViews[1].setLayoutParams(mParams[2]);
+		} else if (pattern == Pattern.TWO_HORIZONTAL) {
+			imageViews[0].setLayoutParams(mParams[3]);
+			imageViews[1].setLayoutParams(mParams[4]);
+		} else if (pattern == Pattern.THREE_HORIZONTAL) {
+			imageViews[0].setLayoutParams(mParams[5]);
+			imageViews[1].setLayoutParams(mParams[6]);
+			imageViews[2].setLayoutParams(mParams[7]);
+		} else if (pattern == Pattern.THREE_VERTICAL) {
+			imageViews[0].setLayoutParams(mParams[8]);
+			imageViews[1].setLayoutParams(mParams[9]);
+			imageViews[2].setLayoutParams(mParams[10]);
 		} else {
-			iv[0].setLayoutParams(mParams[11]);
-			iv[1].setLayoutParams(mParams[12]);
-			iv[2].setLayoutParams(mParams[13]);
-			iv[3].setLayoutParams(mParams[14]);
+			imageViews[0].setLayoutParams(mParams[11]);
+			imageViews[1].setLayoutParams(mParams[12]);
+			imageViews[2].setLayoutParams(mParams[13]);
+			imageViews[3].setLayoutParams(mParams[14]);
 		}
 
 		return convertView;
