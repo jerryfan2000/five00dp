@@ -79,12 +79,12 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
        
         updateHeaderView();
         
-        if(UIUtils.isNetworkAvailable(getActivity()))
+//        if(UIUtils.isNetworkAvailable(getActivity()))
             new LoadPhotoCommentsTask().execute();
-        else {
-            ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
-            ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
-        }        
+//        else {
+//            ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
+//            ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
+//        }        
     }
     
     @Override
@@ -200,10 +200,13 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
 
         protected void onPostExecute(CommentResponse response) {
             mLoadingView.setVisibility(View.GONE);
+            mLoading = false;
             if(response != null) {
                 updateList(response);
                 mPage++;
-                mLoading = false;
+            } else {
+                ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
+                ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
             }
         }
     }

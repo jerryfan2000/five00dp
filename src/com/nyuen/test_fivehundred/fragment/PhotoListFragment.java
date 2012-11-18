@@ -80,7 +80,7 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
                     break;
                 }
                 mImageAdapter = new PhotoAdapter(getActivity(), mImageFetcher);
-                new LoadPhotoTask().execute();
+                    new LoadPhotoTask().execute();
                 return false;
             }
         });
@@ -99,13 +99,6 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getListView().addFooterView(mLoadingView);
-        
-        if(UIUtils.isNetworkAvailable(getActivity()))
-            new LoadPhotoTask().execute();
-        else {
-            ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
-            ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
-        }
     }
     
     @Override
@@ -182,16 +175,14 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
 
         protected void onPostExecute(PhotoResponse response) {
             mLoadingView.setVisibility(View.GONE);
-            getActivity().findViewById(android.R.id.empty).setVisibility(View.GONE);
-            getActivity().findViewById(android.R.id.list).setVisibility(View.VISIBLE);
             mLoading = false;
             if(response != null) {
                 updateList(response);
                 mPage++;
-                
             } else {
                this.cancel(false);
-               mLoadingView.setVisibility(View.GONE);
+               ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
+               ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
             }
         }
     }
