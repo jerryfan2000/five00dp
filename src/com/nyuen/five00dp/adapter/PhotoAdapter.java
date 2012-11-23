@@ -60,7 +60,7 @@ public class PhotoAdapter extends BaseAdapter {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Resources resources = context.getResources();
-
+        
         // Calculate sizes
         WIDTH_ONE = display.getWidth();
         WIDTH_HALF = WIDTH_ONE / 2;
