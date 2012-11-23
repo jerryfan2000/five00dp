@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -32,7 +34,7 @@ import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
 @SuppressLint("NewApi")
-public class PhotoDetailFragment extends ListFragment implements AbsListView.OnScrollListener {
+public class PhotoDetailFragment extends SherlockListFragment implements AbsListView.OnScrollListener {
     
     private static final String TAG = PhotoDetailFragment.class.getSimpleName();
     
@@ -60,10 +62,10 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
         mPhoto = (Photo) getArguments().getParcelable(INTENT_EXTRA_PHOTO);
         mPhotoDetailAdapter = new PhotoDetailAdapter(getActivity(), mImageFetcher);
         
-        getActivity().getActionBar().setTitle(mPhoto.name);
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActivity().getActionBar().setDisplayUseLogoEnabled(true);
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getSherlockActivity().getSupportActionBar().setTitle(mPhoto.name);
+        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSherlockActivity().getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     
     @Override
@@ -205,8 +207,8 @@ public class PhotoDetailFragment extends ListFragment implements AbsListView.OnS
                 updateList(response);
                 mPage++;
             } else {
-                ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
-                ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
+                ((ProgressBar) getSherlockActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
+                ((TextView) getSherlockActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
             }
         }
     }

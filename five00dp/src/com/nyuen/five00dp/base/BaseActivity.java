@@ -1,5 +1,6 @@
 package com.nyuen.five00dp.base;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nyuen.five00dp.R;
 
 import android.content.Intent;
@@ -8,7 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
-public abstract class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends SherlockFragmentActivity {
     private Fragment mFragment;
 
     @Override
@@ -59,4 +60,6 @@ public abstract class BaseActivity extends FragmentActivity {
 
         return arguments;
     }
+    
+
 }

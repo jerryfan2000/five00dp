@@ -3,17 +3,18 @@ package com.nyuen.five00dp.fragment;
 import java.util.Arrays;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.app.SherlockListFragment;
+
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
@@ -32,7 +33,7 @@ import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
 @SuppressLint("NewApi")
-public class PhotoListFragment extends ListFragment implements AbsListView.OnScrollListener {
+public class PhotoListFragment extends SherlockListFragment implements AbsListView.OnScrollListener {
     
     private static final String TAG = PhotoListFragment.class.getSimpleName();
     public final int IMAGE_PER_PAGE = 15;
@@ -44,7 +45,7 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
     private boolean mLoading = false;
     private View mLoadingView;
     private int mPage = 1;
-    private String mFeature ;
+    private String mFeature = "popular";
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,15 +53,15 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
         setRetainInstance(true);
         setHasOptionsMenu(true);
         
-        getActivity().getActionBar().setDisplayUseLogoEnabled(true);
-        getActivity().getActionBar().setDisplayShowTitleEnabled(false);
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
-        getActivity().getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getSherlockActivity().getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSherlockActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
+        getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         
         mFeature = "Popular";
         String[] featureString = {getString(R.string.popular), getString(R.string.editor), getString(R.string.upcoming), getString(R.string.fresh)};
         ArrayAdapter<String> featureOptionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.feature_action_bar, featureString);
-        getActivity().getActionBar().setListNavigationCallbacks(featureOptionAdapter, new OnNavigationListener() {
+        getSherlockActivity().getSupportActionBar().setListNavigationCallbacks(featureOptionAdapter, new OnNavigationListener() {
             
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
@@ -164,8 +165,8 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
             mLoading = true;
             mLoadingView.setVisibility(View.VISIBLE);
             if(mPage == 1) {
-                getActivity().findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
-                getActivity().findViewById(android.R.id.list).setVisibility(View.INVISIBLE);
+                getSherlockActivity().findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
+                getSherlockActivity().findViewById(android.R.id.list).setVisibility(View.INVISIBLE);
             }
         }
 
@@ -181,8 +182,8 @@ public class PhotoListFragment extends ListFragment implements AbsListView.OnScr
                 mPage++;
             } else {
                this.cancel(false);
-               ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
-               ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
+               ((ProgressBar) getSherlockActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
+               ((TextView) getSherlockActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
             }
         }
     }
