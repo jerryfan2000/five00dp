@@ -5,20 +5,21 @@ import android.util.Log;
 import com.fivehundredpx.api.PxApi;
 import com.google.gson.Gson;
 import com.nyuen.five00dp.structure.CommentResponse;
-import com.nyuen.five00dp.structure.PhotoResponse;
+import com.nyuen.five00dp.structure.PhotoDetailResponse;
+import com.nyuen.five00dp.structure.PhotoListResponse;
 
 public class ApiHelper {
     private static final String TAG = ApiHelper.class.getSimpleName();
 
-    public static PhotoResponse getPhotoStream(String feature, int rpp, int size, int page){
+    public static PhotoListResponse getPhotoStream(String feature, int rpp, int size, int page){
         PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
         String url = "/photos?feature=" + feature + "&rpp=" + rpp + 
                 "&image_size=" + size +
                 "&page="+page;
         try {
-            PhotoResponse out = new Gson().fromJson(
+            PhotoListResponse out = new Gson().fromJson(
                     pxapi.get(url).toString(), 
-                            PhotoResponse.class);
+                            PhotoListResponse.class);
             return out;
         } catch (Exception e) {
             Log.e(TAG, e.toString());
@@ -26,6 +27,20 @@ public class ApiHelper {
         }
     }
 
+    public static PhotoDetailResponse getFullPhoto(int photoId){
+        PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
+        String url = "/photos/" + photoId + "?";
+        
+        try {
+            PhotoDetailResponse out = new Gson().fromJson(
+                    pxapi.get(url).toString(), 
+                    PhotoDetailResponse.class);
+            return out;
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+            return null;
+        }
+    }
 
     public static CommentResponse getComments(int photoId, int page){
         PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);

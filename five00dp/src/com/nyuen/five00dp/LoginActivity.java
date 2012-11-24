@@ -36,7 +36,6 @@ public class LoginActivity extends AccountAuthenticatorActivity implements XAuth
             Toast.makeText(this, "Can only have 1 account", Toast.LENGTH_SHORT).show();
             finish();
         }
-
         initUi();
     }
 

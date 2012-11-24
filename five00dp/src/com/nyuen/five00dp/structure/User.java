@@ -16,6 +16,22 @@ public class User implements Parcelable {
     public String fullname;
     public String userpic_url;
     public int upgrade_status;
+    public boolean fotomoto_on; 
+    public String locale;
+    public boolean show_nude;
+    public boolean store_on;
+    //public Contacts contacts; 
+    //public equipment
+    public String email;
+    public int photo_count;
+    public int affection;
+    public int in_favorites_count;
+    public int friends_count;
+    public int followers_count;
+    public int upload_limit;
+    public String upload_limit_expiry;
+    public String upgrade_status_expiry;
+    //auth
     
     public User (Parcel in) {
         readFromParcelable(in);
@@ -31,6 +47,24 @@ public class User implements Parcelable {
         fullname = ParcelUtils.readStringFromParcel(in);
         userpic_url = ParcelUtils.readStringFromParcel(in);
         upgrade_status = in.readInt();
+        
+//        fotomoto_on 
+//        locale
+//        show_nude
+//        store_on
+//        contacts
+//        equipment
+//        email
+//        photo_count
+//        affection
+//        in_favorites_count
+//        friends_count
+//        followers_count
+//        upload_limit
+//        upload_limit_expiry
+//        upgrade_status_expiry
+//        auth
+        
     }
     
     @Override
@@ -49,6 +83,24 @@ public class User implements Parcelable {
         ParcelUtils.writeStringToParcel(dest, fullname);
         ParcelUtils.writeStringToParcel(dest, userpic_url);
         dest.writeInt(upgrade_status);
+        
+//        fotomoto_on 
+//        locale
+//        show_nude
+//        store_on
+//        contacts
+//        equipment
+//        email
+//        photo_count
+//        affection
+//        in_favorites_count
+//        friends_count
+//        followers_count
+//        upload_limit
+//        upload_limit_expiry
+//        upgrade_status_expiry
+//        auth
+        
     }
     
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
@@ -61,4 +113,6 @@ public class User implements Parcelable {
             return new User [size];
         }
     };
+    
+    
 }

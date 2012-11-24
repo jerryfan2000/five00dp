@@ -6,6 +6,7 @@ import java.util.Arrays;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,7 +20,9 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,71 +32,72 @@ import com.nyuen.five00dp.adapter.PhotoDetailAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
 import com.nyuen.five00dp.structure.CommentResponse;
 import com.nyuen.five00dp.structure.Photo;
+import com.nyuen.five00dp.structure.PhotoDetailResponse;
 import com.nyuen.five00dp.util.DateHelper;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
 @SuppressLint("NewApi")
 public class PhotoDetailFragment extends SherlockListFragment implements AbsListView.OnScrollListener {
-    
+
     private static final String TAG = PhotoDetailFragment.class.getSimpleName();
-    
+
     public static final String INTENT_EXTRA_PHOTO = TAG + ".INTENT_EXTRA_PHOTO";
 
     private PhotoDetailAdapter mPhotoDetailAdapter;
     private ImageFetcher mImageFetcher;
-    
-    private boolean mLoading = false;
+
+    private boolean mLoadingComments = false;
     private View mHeaderView;
     private View mLoadingView;
     private Photo mPhoto;
     private int mPage = 1;
     private int mTotalPage = 2;
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        
+
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.photo_header, null);
         mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, null);
         mPhoto = (Photo) getArguments().getParcelable(INTENT_EXTRA_PHOTO);
         mPhotoDetailAdapter = new PhotoDetailAdapter(getActivity(), mImageFetcher);
-        
+
         getSherlockActivity().getSupportActionBar().setTitle(mPhoto.name);
         getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSherlockActivity().getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.photo_detail_fragment, container, false);   
     }
-    
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getListView().addFooterView(mLoadingView);
         getListView().addHeaderView(mHeaderView, null, false);
-       
+
         updateHeaderView();
-        
-//        if(UIUtils.isNetworkAvailable(getActivity()))
-            new LoadPhotoCommentsTask().execute();
-//        else {
-//            ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
-//            ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
-//        }        
+
+        //        if(UIUtils.isNetworkAvailable(getActivity()))
+        new LoadPhotoCommentsTask().execute();
+        //        else {
+        //            ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
+        //            ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
+        //        }        
     }
-    
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_photo_details, menu);
     }  
-     
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -112,13 +116,13 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
             int totalItemCount) {
         boolean loadMore = firstVisibleItem + visibleItemCount + 2 >= totalItemCount;
-        
-        if(loadMore && !mLoading && (mPage <= mTotalPage)) {
+
+        if(loadMore && !mLoadingComments && (mPage <= mTotalPage)) {
             new LoadPhotoCommentsTask().execute();
         }
     }
@@ -132,7 +136,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             mImageFetcher.setPauseWork(false);
         }
     }
-    
+
     @Override
     public void onPause() {
         super.onPause();
@@ -144,7 +148,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         super.onDestroy();
         mImageFetcher.closeCache();
     }
-    
+
     private void updateHeaderView() {
         ImageView headerPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerPhotoView);
         ImageView headerUserPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerUserPhotoView);
@@ -155,6 +159,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
         TextView favsCountView = (TextView) mHeaderView.findViewById(R.id.favsCountView);
         TextView ratingView = (TextView) mHeaderView.findViewById(R.id.ratingView);
+        Button moreInfoButton = (Button) mHeaderView.findViewById(R.id.headerMoreInfoButton);
 
         mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
         if(!mPhoto.user.userpic_url.equals("/graphics/userpic.png"))
@@ -166,7 +171,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
         headerDateView.setText(DateHelper.DateDifference(DateHelper.parseISO8601(mPhoto.created_at)));
         ratingView.setText("" + mPhoto.rating);
-        
+
         headerPhotoView.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent intent = new Intent();
@@ -176,8 +181,30 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 startActivity(intent);
             }
         });
+
+        moreInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View parent = (View)v.getParent();
+                View infoBox = parent.findViewById(R.id.moreInfoBox);
+                Drawable icon;
+                if(infoBox.getVisibility() == View.GONE) {                
+                    icon = v.getResources().getDrawable(R.drawable.ic_arrow_up);
+                    parent.findViewById(R.id.moreInfoBox).setVisibility(View.VISIBLE);
+                } else {
+                    icon= v.getResources().getDrawable(R.drawable.ic_arrow_down);         
+                    parent.findViewById(R.id.moreInfoBox).setVisibility(View.GONE);
+                }
+                ((Button) v).setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
+            }
+        });
+    }
+
+    private void updateDetails(PhotoDetailResponse response) {
+        Photo photo = response.photo;        
     }
     
+
     private void updateList(CommentResponse response) {
         if(mPage == 1) {
             mPhotoDetailAdapter.setComments(Arrays.asList(response.comments));
@@ -189,10 +216,26 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             mPhotoDetailAdapter.notifyDataSetChanged();
         }
     }
+
+    private class LoadPhotoDetailTask extends AsyncTask<Void, Void, PhotoDetailResponse> {
+        protected void onPreExecute() {
+            
+        }
+
+        protected PhotoDetailResponse doInBackground(Void... params) {
+            return ApiHelper.getFullPhoto(mPhoto.id);
+        }
+
+        protected void onPostExecute(PhotoDetailResponse response) {
+            if(response != null) {
+                updateDetails(response);
+            } 
+        }
+    }
     
     private class LoadPhotoCommentsTask extends AsyncTask<Void, Void, CommentResponse> {
         protected void onPreExecute() {
-            mLoading = true;
+            mLoadingComments = true;
             mLoadingView.setVisibility(View.VISIBLE);
         }
 
@@ -202,7 +245,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 
         protected void onPostExecute(CommentResponse response) {
             mLoadingView.setVisibility(View.GONE);
-            mLoading = false;
+            mLoadingComments = false;
             if(response != null) {
                 updateList(response);
                 mPage++;

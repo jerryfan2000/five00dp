@@ -28,7 +28,7 @@ import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.adapter.PhotoAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
 import com.nyuen.five00dp.structure.Photo;
-import com.nyuen.five00dp.structure.PhotoResponse;
+import com.nyuen.five00dp.structure.PhotoListResponse;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
@@ -149,7 +149,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
 		}
     }  
     
-    private void updateList(PhotoResponse response) {
+    private void updateList(PhotoListResponse response) {
         if(mPage == 1) {
             mImageAdapter.setPhotos(Arrays.asList(response.photos));     
             setListAdapter(mImageAdapter);    
@@ -160,7 +160,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         }
     }
     
-    private class LoadPhotoTask extends AsyncTask<Void, Void, PhotoResponse> {
+    private class LoadPhotoTask extends AsyncTask<Void, Void, PhotoListResponse> {
         protected void onPreExecute() {
             mLoading = true;
             mLoadingView.setVisibility(View.VISIBLE);
@@ -170,11 +170,11 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
             }
         }
 
-        protected PhotoResponse doInBackground(Void... params) {
+        protected PhotoListResponse doInBackground(Void... params) {
             return ApiHelper.getPhotoStream(mFeature, IMAGE_PER_PAGE, IMAGE_SIZE, mPage);
         }
 
-        protected void onPostExecute(PhotoResponse response) {
+        protected void onPostExecute(PhotoListResponse response) {
             mLoadingView.setVisibility(View.GONE);
             mLoading = false;
             if(response != null) {
