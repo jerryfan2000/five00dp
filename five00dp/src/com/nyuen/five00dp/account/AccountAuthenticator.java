@@ -1,6 +1,7 @@
 package com.nyuen.five00dp.account;
 
 import com.nyuen.five00dp.LoginActivity;
+import com.nyuen.five00dp.util.AccountUtils;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
@@ -19,12 +20,13 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
     public AccountAuthenticator(Context context) {
         super(context);
         mContext = context;
+
     }
 
     @Override
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType,
             String authTokenType, String[] requiredFeatures, Bundle options)
-            throws NetworkErrorException {
+                    throws NetworkErrorException {
         Bundle result = new Bundle();
         Intent intent = new Intent(mContext, LoginActivity.class);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);

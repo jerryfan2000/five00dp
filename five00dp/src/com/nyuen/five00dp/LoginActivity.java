@@ -7,15 +7,11 @@ import com.fivehundredpx.api.tasks.XAuth500pxTask.Delegate;
 import com.fivehundredpx.api.auth.AccessToken;
 import com.nyuen.five00dp.api.FiveHundred;
 import com.nyuen.five00dp.util.AccountUtils;
-import com.nyuen.five00dp.util.Toaster;
 import com.nyuen.five00dp.util.UIUtils;
 
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,16 +24,16 @@ import android.widget.Toast;
 
 public class LoginActivity extends AccountAuthenticatorActivity implements XAuth500pxTask.Delegate{
     private static final String TAG = "LoginActivity";
-    
+
     AccessToken accessToken;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_fragment);
 
         if (AccountUtils.hasAccount(this)) {
-            Toaster.get().showShortText("Can only have 1 account");
+            Toast.makeText(this, "Can only have 1 account", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -80,7 +76,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements XAuth
         }
 
         if (TextUtils.isEmpty(password)) {
-            tvUsername.setError(getString(R.string.no_password));
+            tvPassword.setError(getString(R.string.no_password));
             return;
         }
 
@@ -95,92 +91,48 @@ public class LoginActivity extends AccountAuthenticatorActivity implements XAuth
 
     @Override
     public void onSuccess(AccessToken result) {
-       Log.w(TAG, "success "+result);
-       
+        TextView tvUsername = (TextView) findViewById(R.id.inputEmail);
+        TextView tvPassword = (TextView) findViewById(R.id.inputPassword);
+
+        String username = tvUsername.getText().toString();
+        String password = tvPassword.getText().toString();
+        Log.w(TAG, "success "+result);
+
+        Bundle userData = new Bundle();
+        userData.putString("token", result.getToken());
+        userData.putString("tokenSecret", result.getTokenSecret());
+
+        Account account = new Account(username, getString(R.string.account_type));
+        AccountManager am = AccountManager.get(this);
+
+        if (am.addAccountExplicitly(account, password, userData)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
+            bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
+            setAccountAuthenticatorResult(bundle);        
+            
+            setResult(RESULT_OK);
+
+            finish();
+        }else {
+            this.runOnUiThread(new Runnable() {
+                public void run() {
+                    initUi();
+                    Toast.makeText(LoginActivity.this , "Login Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override
     public void onFail(FiveHundredException e) {
-        //initUi();
-        Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
-    }
+        e.printStackTrace();
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                initUi();
+                Toast.makeText(LoginActivity.this , "Login Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-    
-    //    private class LoginTask extends AsyncTask<String, Void, LoginResponse> {
-    //        
-    //        Context mContext;
-    //        String mUsername;
-    //        String mPassword;
-    //        
-    //        LoginTask(Context context) {
-    //            mContext = context;
-    //        }
-    //
-    //        @Override
-    //        protected LoginResponse doInBackground(String... params) {
-    //            
-    //            try {
-    //                mUsername = params[0];
-    //                mPassword = params[1];
-    //                
-    //                String json = Http.get().httpGet(MaizeApi.BASE_URL + "/api",
-    //                        new BasicNameValuePair("a", "l"),
-    //                        new BasicNameValuePair("u", mUsername),
-    //                        new BasicNameValuePair("p", mPassword)
-    //                );
-    //                
-    //                return new Gson().fromJson(json, LoginResponse.class);
-    //                
-    //            } catch (Exception e) {
-    //                e.printStackTrace();
-    //            }
-    //            
-    //            return null;
-    //        }
-    //        
-    //        @Override
-    //        protected void onPostExecute(LoginResponse result) {
-    //            if (result == null) {
-    //                initUi();
-    //                Toast.makeText(mContext, R.string.login_failed, Toast.LENGTH_SHORT).show();
-    //                return;
-    //            }
-    //            
-    //            if (result.success) {
-    //                Bundle userData = new Bundle();
-    //                userData.putString("nickname", result._userinfo.nickname);
-    //                userData.putString("userid", String.valueOf(result._userinfo.id_key));
-    //                
-    //                Account account = new Account(mUsername, getString(R.string.ACCOUNT_TYPE));
-    //                AccountManager am = AccountManager.get(mContext);
-    //                
-    //                if (am.addAccountExplicitly(account, mPassword, userData)) {
-    //                    Bundle bundle = new Bundle();
-    //                    bundle.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
-    //                    bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
-    //                    setAccountAuthenticatorResult(bundle);
-    //                    Toast.makeText(mContext, getString(R.string.welcome, result._userinfo.nickname), Toast.LENGTH_SHORT).show();
-    //                    
-    //                    // Set syncable
-    //                    ContentResolver.setIsSyncable(account, FavoriteProvider.AUTHORITY, 1);
-    //                    // Start periodic sync
-    //                    ContentResolver.addPeriodicSync(account, FavoriteProvider.AUTHORITY, new Bundle(), 14400);
-    //                    // Enable sync
-    //                    ContentResolver.setSyncAutomatically(account, FavoriteProvider.AUTHORITY, true);
-    //                    // Make it start right now
-    //                    ContentResolver.requestSync(account, FavoriteProvider.AUTHORITY, new Bundle());
-    //                    
-    //                    setResult(RESULT_OK);
-    //                    
-    //                    finish();
-    //                } else {
-    //                    initUi();
-    //                    Toast.makeText(mContext, R.string.login_failed, Toast.LENGTH_SHORT).show();
-    //                }
-    //            } else {
-    //                initUi();
-    //                Toast.makeText(mContext, result.error_msg, Toast.LENGTH_SHORT).show();
-    //            }
-    //        }
-    //    }
+    }
 }
