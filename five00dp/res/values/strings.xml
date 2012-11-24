@@ -11,4 +11,11 @@
     <string name="views">Views</string>
     <string name="votes">Votes</string>
     <string name="favorites">Favorites</string>
+    <string name="account_type">com.nyuen.five00dp.account</string>
+   	<string name="enter_credentials">Please enter your credentials</string>
+   	<string name="account_email">Username or email</string>
+   	<string name="account_password">Password</string>
+   	<string name="login">Login</string>
+   	<string name="no_name">Username?</string>
+    <string name="no_password">Password?</string>
 </resources>

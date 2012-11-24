@@ -6,6 +6,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
 
 public class UIUtils {
 
@@ -61,5 +64,19 @@ public class UIUtils {
               = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null;
+    }
+
+    public static void showKeyboard(Context context, View v) {
+        // Show keyboard
+        InputMethodManager imm = (InputMethodManager) (context
+                .getSystemService(Context.INPUT_METHOD_SERVICE));
+        imm.toggleSoftInputFromWindow(v.getWindowToken(), 0, 0);
+    }
+
+    public static void hideKeyboard(Context context, View v) {
+        // Hide keyboard
+        InputMethodManager imm = (InputMethodManager) (context
+                .getSystemService(Context.INPUT_METHOD_SERVICE));
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 }
