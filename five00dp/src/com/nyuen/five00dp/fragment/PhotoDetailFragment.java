@@ -1,32 +1,24 @@
 package com.nyuen.five00dp.fragment;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.adapter.PhotoDetailAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
@@ -37,7 +29,8 @@ import com.nyuen.five00dp.util.DateHelper;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
-@SuppressLint("NewApi")
+import java.util.Arrays;
+
 public class PhotoDetailFragment extends SherlockListFragment implements AbsListView.OnScrollListener {
 
     private static final String TAG = PhotoDetailFragment.class.getSimpleName();
@@ -82,8 +75,10 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         super.onActivityCreated(savedInstanceState);
         getListView().addFooterView(mLoadingView);
         getListView().addHeaderView(mHeaderView, null, false);
-
+        
         updateHeaderView();
+        
+        setListAdapter(mPhotoDetailAdapter);
 
         //        if(UIUtils.isNetworkAvailable(getActivity()))
         new LoadPhotoCommentsTask().execute();
@@ -160,7 +155,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         TextView favsCountView = (TextView) mHeaderView.findViewById(R.id.favsCountView);
         TextView ratingView = (TextView) mHeaderView.findViewById(R.id.ratingView);
         Button moreInfoButton = (Button) mHeaderView.findViewById(R.id.headerMoreInfoButton);
-
+        
         mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
         if(!mPhoto.user.userpic_url.equals("/graphics/userpic.png"))
             mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
@@ -249,9 +244,6 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             if(response != null) {
                 updateList(response);
                 mPage++;
-            } else {
-                ((ProgressBar) getSherlockActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
-                ((TextView) getSherlockActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
             }
         }
     }
