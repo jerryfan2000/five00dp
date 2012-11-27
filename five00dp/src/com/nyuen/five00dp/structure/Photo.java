@@ -1,9 +1,9 @@
 package com.nyuen.five00dp.structure;
 
-import com.nyuen.five00dp.util.ParcelUtils;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.nyuen.five00dp.util.ParcelUtils;
 
 public class Photo implements Parcelable {
     public int id;
@@ -35,7 +35,7 @@ public class Photo implements Parcelable {
     public float latitude;
     public float longitude;
     public String taken_at;
-    public boolean hi_res_uploaded;
+    public int hi_res_uploaded;
     public boolean for_sale;
     public int sales_count;
     public String for_sale_date;
@@ -59,13 +59,13 @@ public class Photo implements Parcelable {
         rating = in.readDouble();
         created_at = ParcelUtils.readStringFromParcel(in);
         category = in.readInt();
-        privacy = (in.readInt() == 0) ? false : true;    
+        privacy = in.readInt() == 0; 
         width = in.readInt();
         height = in.readInt();
         votes_count = in.readInt();
         favorites_count = in.readInt();
         comments_count = in.readInt();
-        nsfw = (in.readInt() == 0) ? false : true;;
+        nsfw = in.readInt() == 0;
         image_url = ParcelUtils.readStringFromParcel(in);
         user = in.readParcelable(User.class.getClassLoader());
 
@@ -81,17 +81,17 @@ public class Photo implements Parcelable {
         latitude = in.readFloat();
         longitude = in.readFloat();
         taken_at = ParcelUtils.readStringFromParcel(in);
-        hi_res_uploaded = (in.readInt() == 0) ? false : true;
-        for_sale = (in.readInt() == 0) ? false : true;
+        hi_res_uploaded = in.readInt();
+        for_sale = in.readInt() == 0;
         sales_count = in.readInt();
         for_sale_date = ParcelUtils.readStringFromParcel(in);
         highest_rating = in.readDouble();
         highest_rating_date = ParcelUtils.readStringFromParcel(in);
-        store_download = (in.readInt() == 0) ? false : true;
-        store_print = (in.readInt() == 0) ? false : true;
-        voted = (in.readInt() == 0) ? false : true;
-        favorited = (in.readInt() == 0) ? false : true;
-        purchased = (in.readInt() == 0) ? false : true;
+        store_download = in.readInt() == 0;
+        store_print = in.readInt() == 0;
+        voted = in.readInt() == 0;
+        favorited = in.readInt() == 0;
+        purchased = in.readInt() == 0;
     }
 
     @Override
@@ -116,7 +116,7 @@ public class Photo implements Parcelable {
         dest.writeInt(comments_count);
         dest.writeInt(nsfw ? 1 : 0);
         ParcelUtils.writeStringToParcel(dest, image_url); 
-        dest.writeParcelable(user, flags);   
+        dest.writeParcelable(user, flags);
 
         ParcelUtils.writeStringToParcel(dest, camera);
         ParcelUtils.writeStringToParcel(dest, lens);
@@ -129,7 +129,7 @@ public class Photo implements Parcelable {
         dest.writeFloat(latitude);
         dest.writeFloat(longitude);
         ParcelUtils.writeStringToParcel(dest, taken_at);
-        dest.writeInt(hi_res_uploaded ? 1 : 0);
+        dest.writeInt(hi_res_uploaded);
         dest.writeInt(for_sale ? 1 : 0);
         dest.writeInt(sales_count);
         ParcelUtils.writeStringToParcel(dest, for_sale_date);

@@ -5,5 +5,5 @@ public class PhotoListResponse {
     public int current_page;
     public int total_pages;
     public int total_items;
-    public Photo photos[];
+    public Photo[] photos;
 }

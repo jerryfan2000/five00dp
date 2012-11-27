@@ -22,6 +22,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.adapter.PhotoDetailAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
+import com.nyuen.five00dp.structure.Comment;
 import com.nyuen.five00dp.structure.CommentResponse;
 import com.nyuen.five00dp.structure.Photo;
 import com.nyuen.five00dp.structure.PhotoDetailResponse;
@@ -86,12 +87,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         
         setListAdapter(mPhotoDetailAdapter);
 
-        //        if(UIUtils.isNetworkAvailable(getActivity()))
-        new LoadPhotoCommentsTask().execute();
-        //        else {
-        //            ((ProgressBar) getActivity().findViewById(R.id.emptyProgressBar)).setVisibility(View.GONE);
-        //            ((TextView) getActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
-        //        }        
+        new LoadPhotoDetailTask().execute();
     }
 
     @Override
@@ -206,16 +202,11 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     }
     
 
-    private void updateList(CommentResponse response) {
-        if(mPage == 1) {
-            mPhotoDetailAdapter.setComments(Arrays.asList(response.comments));
-            mTotalPage = response.total_pages;
-            setListAdapter(mPhotoDetailAdapter);    
-            getListView().setOnScrollListener(this);
-        } else {   
-            mPhotoDetailAdapter.appendComments(Arrays.asList(response.comments));
-            mPhotoDetailAdapter.notifyDataSetChanged();
-        }
+    private void updateCommentsList(Comment[] comments, int totalPages) {
+        mPhotoDetailAdapter.appendComments(Arrays.asList(comments));
+        mPhotoDetailAdapter.notifyDataSetChanged();
+        mTotalPage = totalPages;
+        getListView().setOnScrollListener(this);
     }
 
     private class LoadPhotoDetailTask extends AsyncTask<Void, Void, PhotoDetailResponse> {
@@ -232,6 +223,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 mPhoto = response.photo;
                 updateHeaderView();
                 updateHeaderExifView();
+                updateCommentsList(response.comments, 2);
             } 
         }
     }
@@ -250,7 +242,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             mLoadingView.setVisibility(View.GONE);
             mLoadingComments = false;
             if(response != null) {
-                updateList(response);
+                updateCommentsList(response.comments, response.total_pages);
                 mPage++;
             }
         }

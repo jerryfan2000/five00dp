@@ -5,5 +5,5 @@ public class CommentResponse {
     public int current_page;
     public int total_pages;
     public int total_items;
-    public Comment comments[];
+    public Comment[] comments;
 }

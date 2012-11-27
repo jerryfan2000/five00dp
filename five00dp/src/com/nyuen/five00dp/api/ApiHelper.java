@@ -29,7 +29,7 @@ public class ApiHelper {
 
     public static PhotoDetailResponse getFullPhoto(int photoId){
         PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
-        String url = "/photos/" + photoId + "?";
+        String url = "/photos/" + photoId + "?comments";
         
         try {
             PhotoDetailResponse out = new Gson().fromJson(
