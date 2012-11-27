@@ -18,7 +18,6 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/commentUserPhotoView"
         android:gravity="top"
-        android:text="User Name"
         android:textColor="#3589A7"
         android:textSize="12sp"
         android:textStyle="bold" />
@@ -29,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/commentUserNameView"
         android:layout_below="@+id/commentUserNameView"
-        android:text="Comment Body"
         android:textSize="12sp" />
 
     <TextView
