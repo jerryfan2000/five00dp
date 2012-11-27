@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -64,9 +65,13 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         mPhoto = (Photo) getArguments().getParcelable(INTENT_EXTRA_PHOTO);
         mPhotoDetailAdapter = new PhotoDetailAdapter(getActivity(), mImageFetcher);
 
-        getSherlockActivity().getSupportActionBar().setTitle(mPhoto.name);
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSherlockActivity().getSupportActionBar().setDisplayUseLogoEnabled(true);
+        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(mPhoto.name);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayUseLogoEnabled(true);
+        }
+        
         getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
