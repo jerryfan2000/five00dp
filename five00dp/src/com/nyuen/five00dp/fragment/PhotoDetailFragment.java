@@ -42,6 +42,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 
     private boolean mLoadingComments = false;
     private View mHeaderView;
+    private View mHeaderExifView;
     private View mLoadingView;
     private Photo mPhoto;
     private int mPage = 1;
@@ -53,9 +54,12 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
-        mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.photo_header, null);
-        mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, null);
+        mHeaderView = inflater.inflate(R.layout.photo_header, null);
+        mHeaderExifView = inflater.inflate(R.layout.photo_header_exif, null);
+        mLoadingView = inflater.inflate(R.layout.loading_footer, null);
         mPhoto = (Photo) getArguments().getParcelable(INTENT_EXTRA_PHOTO);
         mPhotoDetailAdapter = new PhotoDetailAdapter(getActivity(), mImageFetcher);
 
@@ -73,10 +77,12 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getListView().addFooterView(mLoadingView);
         getListView().addHeaderView(mHeaderView, null, false);
+        getListView().addHeaderView(mHeaderExifView, null, false);
+        getListView().addFooterView(mLoadingView);
         
         updateHeaderView();
+        updateHeaderExifView();
         
         setListAdapter(mPhotoDetailAdapter);
 
@@ -154,15 +160,15 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
         TextView favsCountView = (TextView) mHeaderView.findViewById(R.id.favsCountView);
         TextView ratingView = (TextView) mHeaderView.findViewById(R.id.ratingView);
-        Button moreInfoButton = (Button) mHeaderView.findViewById(R.id.headerMoreInfoButton);
         
         mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
-        if(!mPhoto.user.userpic_url.equals("/graphics/userpic.png"))
+        if (!mPhoto.user.userpic_url.equals("/graphics/userpic.png")) {
             mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
+        }
         headerUserNameView.setText(mPhoto.user.fullname);
-        viewsCountView.setText("" + mPhoto.times_viewed + " " + getString(R.string.views));
-        votesCountView.setText("" + mPhoto.votes_count + " " + getString(R.string.votes));
-        favsCountView.setText("" + mPhoto.favorites_count + " " + getString(R.string.favorites));
+        viewsCountView.setText(getString(R.string.num_views, mPhoto.times_viewed));
+        votesCountView.setText(getString(R.string.num_votes, mPhoto.votes_count));
+        favsCountView.setText(getString(R.string.num_favorites, mPhoto.favorites_count));
         headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
         headerDateView.setText(DateHelper.DateDifference(DateHelper.parseISO8601(mPhoto.created_at)));
         ratingView.setText("" + mPhoto.rating);
@@ -176,6 +182,10 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 startActivity(intent);
             }
         });
+    }
+    
+    private void updateHeaderExifView() {
+        Button moreInfoButton = (Button) mHeaderExifView.findViewById(R.id.headerMoreInfoButton);
 
         moreInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +193,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 View parent = (View)v.getParent();
                 View infoBox = parent.findViewById(R.id.moreInfoBox);
                 Drawable icon;
-                if(infoBox.getVisibility() == View.GONE) {                
+                if (infoBox.getVisibility() == View.GONE) {                
                     icon = v.getResources().getDrawable(R.drawable.ic_arrow_up);
                     parent.findViewById(R.id.moreInfoBox).setVisibility(View.VISIBLE);
                 } else {
@@ -193,10 +203,6 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 ((Button) v).setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
             }
         });
-    }
-
-    private void updateDetails(PhotoDetailResponse response) {
-        Photo photo = response.photo;        
     }
     
 
@@ -223,7 +229,9 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 
         protected void onPostExecute(PhotoDetailResponse response) {
             if(response != null) {
-                updateDetails(response);
+                mPhoto = response.photo;
+                updateHeaderView();
+                updateHeaderExifView();
             } 
         }
     }

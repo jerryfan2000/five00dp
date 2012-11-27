@@ -30,6 +30,9 @@ public class StretchImageView extends ImageView {
 			int height = (int) Math.ceil((float) width 
 					* (float) d.getIntrinsicHeight()
 					/ (float) d.getIntrinsicWidth());
+			
+			height = Math.max(height, getSuggestedMinimumHeight());
+			
 			setMeasuredDimension(width, height);
 		} else {
 			super.onMeasure(widthMeasureSpec, heightMeasureSpec);

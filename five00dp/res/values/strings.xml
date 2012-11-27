@@ -8,9 +8,9 @@
     <string name="upcoming">Upcoming</string>
     <string name="fresh">Fresh</string>
     <string name="share_via">Share via</string>
-    <string name="views">Views</string>
-    <string name="votes">Votes</string>
-    <string name="favorites">Favorites</string>
+    <string name="num_views">%s Views</string>
+    <string name="num_votes">%s Votes</string>
+    <string name="num_favorites">%s Favorites</string>
     <string name="account_type">com.nyuen.five00dp.account</string>
    	<string name="enter_credentials">Please enter your credentials</string>
    	<string name="account_email">Username or email</string>
