@@ -21,14 +21,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PhotoDetailAdapter extends BaseAdapter {
+public class CommentAdapter extends BaseAdapter {
     
     private final LayoutInflater mInflater;
     private final ImageFetcher mImageFetcher;
     
     private List<Comment> mComments;
     
-    public PhotoDetailAdapter(Context context, ImageFetcher imageFetcher) {
+    public CommentAdapter(Context context, ImageFetcher imageFetcher) {
                
         mImageFetcher = imageFetcher;
         mInflater = LayoutInflater.from(context);
@@ -94,6 +94,8 @@ public class PhotoDetailAdapter extends BaseAdapter {
             if(user.upgrade_status == 1)
                 holder.imageViewUserAwesome.setImageResource(R.drawable.ic_plus);
             holder.imageViewUserAwesome.setVisibility(View.VISIBLE);
+        } else {
+            holder.imageViewUserAwesome.setVisibility(View.GONE);
         }
         
         holder.commentBodyView.setText(Html.fromHtml(comment.body));

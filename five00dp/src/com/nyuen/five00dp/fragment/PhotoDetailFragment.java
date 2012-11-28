@@ -23,7 +23,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.nyuen.five00dp.R;
-import com.nyuen.five00dp.adapter.PhotoDetailAdapter;
+import com.nyuen.five00dp.adapter.CommentAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
 import com.nyuen.five00dp.structure.Comment;
 import com.nyuen.five00dp.structure.CommentResponse;
@@ -42,7 +42,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 
     public static final String INTENT_EXTRA_PHOTO = TAG + ".INTENT_EXTRA_PHOTO";
 
-    private PhotoDetailAdapter mPhotoDetailAdapter;
+    private CommentAdapter mPhotoDetailAdapter;
     private ImageFetcher mImageFetcher;
 
     private boolean mLoadingComments = false;
@@ -66,7 +66,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         mHeaderExifView = inflater.inflate(R.layout.photo_header_exif, null);
         mLoadingView = inflater.inflate(R.layout.loading_footer, null);
         mPhoto = (Photo) getArguments().getParcelable(INTENT_EXTRA_PHOTO);
-        mPhotoDetailAdapter = new PhotoDetailAdapter(getActivity(), mImageFetcher);
+        mPhotoDetailAdapter = new CommentAdapter(getActivity(), mImageFetcher);
 
         ActionBar actionBar = getSherlockActivity().getSupportActionBar();
         if (actionBar != null) {
@@ -174,6 +174,8 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             if(mPhoto.user.upgrade_status == 1)
                 imageViewStatus.setImageResource(R.drawable.ic_plus);
             imageViewStatus.setVisibility(View.VISIBLE);
+        } else {
+            imageViewStatus.setVisibility(View.GONE);
         }
         
         headerUserNameView.setText(mPhoto.user.fullname);
