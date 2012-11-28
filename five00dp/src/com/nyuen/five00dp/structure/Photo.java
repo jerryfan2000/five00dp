@@ -6,6 +6,47 @@ import android.os.Parcelable;
 import com.nyuen.five00dp.util.ParcelUtils;
 
 public class Photo implements Parcelable {
+    public enum Category {
+        Uncategorized("Uncategorized"),
+        Celebrities("Celebrities"),
+        Film("Film"),
+        Journalism("Journalism"),
+        Nude("Nude"),
+        BlackAndWhite("Black and White"),
+        StillLife("Still Life"),
+        People("People"),
+        Landscapes("Landscapes"),
+        CityAndArchitecture("City and Architecture"),
+        Abstract("Abstract"),
+        Animals("Animals"),
+        Macro("Macro"),
+        Travel("Travel"),
+        Fashion("Fashion"),
+        Commercial("Commercial"),
+        Concert("Concert"),
+        Sport("Sport"),
+        Nature("Nature"),
+        PerformingArts("Performing Arts"),
+        Family("Family"),
+        Street("Family"),
+        Underwater("Underwater"),
+        Food("Food"),
+        FineArt("Fine Art"),
+        Wedding("Wedding"),
+        Transporation("Transporation"),
+        UrbanExploration("Urban Exploration");
+        
+        private final String mValue;
+        
+        Category(String value) {
+            mValue = value;
+        }
+        
+        public String getString() {
+            return mValue;
+        }
+    }
+    
     public int id;
     public String name;
     public String description;

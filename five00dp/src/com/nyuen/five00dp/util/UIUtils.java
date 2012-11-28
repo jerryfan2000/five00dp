@@ -79,4 +79,5 @@ public class UIUtils {
                 .getSystemService(Context.INPUT_METHOD_SERVICE));
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
+    
 }

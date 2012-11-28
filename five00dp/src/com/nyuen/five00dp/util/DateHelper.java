@@ -6,11 +6,18 @@ import java.util.Date;
 public class DateHelper
 {
     private static SimpleDateFormat iso8601formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+    private static SimpleDateFormat exifHeaderFormatter = new SimpleDateFormat("MMMM dd yyyy");
+    
     
     private static final int SECOND = 1000;
     private static final int MINUTE = 60 * SECOND;
     private static final int HOUR = 60 * MINUTE;
     private static final int DAY = 24 * HOUR;
+    
+    public static String getHeaderDate(String date) {
+        Date parsedDate = parseISO8601(date);
+        return exifHeaderFormatter.format(parsedDate);
+    }
     
     public static Date parseISO8601(String date)
     {
@@ -23,8 +30,9 @@ public class DateHelper
         }
     }
     
-    public static String DateDifference(Date a) {
-        long ms = System.currentTimeMillis() - a.getTime();
+    public static String DateDifference(String date) {
+        Date parsedDate = parseISO8601(date);
+        long ms = System.currentTimeMillis() - parsedDate.getTime();
                 
         StringBuffer text = new StringBuffer("");
         if (ms > DAY) {

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.nyuen.five00dp.structure.Comment;
 import com.nyuen.five00dp.structure.CommentResponse;
 import com.nyuen.five00dp.structure.Photo;
 import com.nyuen.five00dp.structure.PhotoDetailResponse;
+import com.nyuen.five00dp.structure.Photo.Category;
 import com.nyuen.five00dp.util.DateHelper;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
@@ -154,9 +156,9 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     private void updateHeaderView() {
         ImageView headerPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerPhotoView);
         ImageView headerUserPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerUserPhotoView);
+        ImageView imageViewAwesome = (ImageView) mHeaderView.findViewById(R.id.imageViewAwesome);
         TextView headerUserNameView = (TextView) mHeaderView.findViewById(R.id.headerUserNameView);
         TextView headerDescriptionView = (TextView) mHeaderView.findViewById(R.id.headerDescriptionView);
-        TextView headerDateView = (TextView) mHeaderView.findViewById(R.id.headerDateView);
         TextView viewsCountView = (TextView) mHeaderView.findViewById(R.id.viewsCountView);
         TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
         TextView favsCountView = (TextView) mHeaderView.findViewById(R.id.favsCountView);
@@ -166,12 +168,13 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         if (!mPhoto.user.userpic_url.equals("/graphics/userpic.png")) {
             mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
         }
+        if(mPhoto.user.upgrade_status > 0)
+            imageViewAwesome.setVisibility(View.VISIBLE);
         headerUserNameView.setText(mPhoto.user.fullname);
         viewsCountView.setText(getString(R.string.num_views, mPhoto.times_viewed));
         votesCountView.setText(getString(R.string.num_votes, mPhoto.votes_count));
         favsCountView.setText(getString(R.string.num_favorites, mPhoto.favorites_count));
         headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
-        headerDateView.setText(DateHelper.DateDifference(DateHelper.parseISO8601(mPhoto.created_at)));
         ratingView.setText("" + mPhoto.rating);
 
         headerPhotoView.setOnClickListener(new View.OnClickListener(){
@@ -186,7 +189,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     }
     
     private void updateHeaderExifView() {
-        Button moreInfoButton = (Button) mHeaderExifView.findViewById(R.id.headerMoreInfoButton);
+        Button moreInfoButton = (Button) mHeaderExifView.findViewById(R.id.buttonMoreInfo);
 
         moreInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,6 +207,66 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 ((Button) v).setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
             }
         });
+        
+        TextView textView;
+        if(!TextUtils.isEmpty(mPhoto.camera)) {
+            textView = (TextView) mHeaderExifView.findViewById(R.id.textViewCamera);
+            textView.setText(mPhoto.camera);
+            mHeaderExifView.findViewById(R.id.tableRowCamera).setVisibility(View.VISIBLE);
+        }
+        
+        if(!TextUtils.isEmpty(mPhoto.lens)) {
+            textView = (TextView) mHeaderExifView.findViewById(R.id.textViewLens);
+            textView.setText(mPhoto.lens);
+            mHeaderExifView.findViewById(R.id.tableRowLens).setVisibility(View.VISIBLE);
+        }
+        
+        if(!TextUtils.isEmpty(mPhoto.focal_length)) {
+            textView = (TextView) mHeaderExifView.findViewById(R.id.textViewFocalLength);
+            textView.setText(mPhoto.focal_length);
+            mHeaderExifView.findViewById(R.id.tableRowFocalLength).setVisibility(View.VISIBLE);
+        }
+        
+        if(!TextUtils.isEmpty(mPhoto.shutter_speed)) {
+            textView = (TextView) mHeaderExifView.findViewById(R.id.textViewShutterSpeed);
+            textView.setText(mPhoto.shutter_speed);
+            mHeaderExifView.findViewById(R.id.tableRowShutterSpeed).setVisibility(View.VISIBLE);
+        }
+        
+        if(!TextUtils.isEmpty(mPhoto.aperture)) {
+            textView = (TextView) mHeaderExifView.findViewById(R.id.textViewAperture);
+            textView.setText(mPhoto.aperture);
+            mHeaderExifView.findViewById(R.id.tableRowAperture).setVisibility(View.VISIBLE);
+        }
+        
+        if(!TextUtils.isEmpty(mPhoto.iso)) {
+            textView = (TextView) mHeaderExifView.findViewById(R.id.textViewISO);
+            textView.setText(mPhoto.iso);
+            mHeaderExifView.findViewById(R.id.tableRowISO).setVisibility(View.VISIBLE);
+        }
+        
+        if(!TextUtils.isEmpty("" + mPhoto.category)) {
+            String cat = Category.values()[mPhoto.category].getString();
+            textView = (TextView) mHeaderExifView.findViewById(R.id.textViewCategory);
+            textView.setText(cat);
+            mHeaderExifView.findViewById(R.id.tableRowCategory).setVisibility(View.VISIBLE);
+        }
+        
+        if(!TextUtils.isEmpty(mPhoto.created_at)) {
+            textView = (TextView) mHeaderExifView.findViewById(R.id.textViewUploaded);
+            textView.setText(DateHelper.DateDifference(mPhoto.created_at));
+            mHeaderExifView.findViewById(R.id.tableRowUploaded).setVisibility(View.VISIBLE);
+        }
+
+        if(!TextUtils.isEmpty(mPhoto.taken_at)) {
+            textView = (TextView) mHeaderExifView.findViewById(R.id.textViewUploaded);
+            textView.setText(DateHelper.getHeaderDate(mPhoto.taken_at));
+            mHeaderExifView.findViewById(R.id.tableRowUploaded).setVisibility(View.VISIBLE);
+        }
+        
+//       Copy Right?
+
+        
     }
     
 
@@ -215,9 +278,6 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     }
 
     private class LoadPhotoDetailTask extends AsyncTask<Void, Void, PhotoDetailResponse> {
-        protected void onPreExecute() {
-            
-        }
 
         protected PhotoDetailResponse doInBackground(Void... params) {
             return ApiHelper.getFullPhoto(mPhoto.id);

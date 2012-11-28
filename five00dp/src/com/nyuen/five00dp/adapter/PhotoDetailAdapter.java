@@ -11,6 +11,7 @@ import com.nyuen.five00dp.structure.User;
 import com.nyuen.five00dp.util.ImageFetcher;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,7 @@ public class PhotoDetailAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.comment_list_item, null, false);
             
             holder.commentUserPhotoView = (ImageView) convertView.findViewById(R.id.commentUserPhotoView);
+            holder.imageViewUserAwesome = (ImageView) convertView.findViewById(R.id.imageViewUserAwesome);
             
             holder.commentBodyView = (TextView) convertView.findViewById(R.id.commentBodyView);
             holder.commentUserNameView = (TextView) convertView.findViewById(R.id.commentUserNameView);
@@ -86,7 +88,10 @@ public class PhotoDetailAdapter extends BaseAdapter {
         User user = getItem(position).user;
         mImageFetcher.loadImage(user.userpic_url, holder.commentUserPhotoView, R.drawable.ic_userpic);
         
-        holder.commentBodyView.setText(comment.body);
+        if(user.upgrade_status > 0)
+            holder.imageViewUserAwesome.setVisibility(View.VISIBLE);
+        
+        holder.commentBodyView.setText(Html.fromHtml(comment.body));
         holder.commentUserNameView.setText(user.fullname);
         holder.likeCountView.setText(""+0);
         
@@ -94,7 +99,7 @@ public class PhotoDetailAdapter extends BaseAdapter {
     }
         
     private class PhotoDetailHolder {
-        ImageView commentUserPhotoView;
+        ImageView commentUserPhotoView, imageViewUserAwesome;
         TextView likeCountView, commentUserNameView, commentBodyView;
     }
  

@@ -4,7 +4,7 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/headerMoreInfoButton"
+        android:id="@+id/buttonMoreInfo"
         android:layout_width="fill_parent"
         android:layout_height="48dp"
         android:background="@drawable/drawer_button"
@@ -22,15 +22,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
+        android:paddingRight="8dp" 
+        android:visibility="gone">
 
         <TableRow
-            android:id="@+id/tableRow1"
+            android:id="@+id/tableRowCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
             android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp" >
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,20 +43,21 @@
                 android:textColor="#9C9A9B" />
 
             <TextView
-                android:id="@+id/cameraTextView"
+                android:id="@+id/textViewCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="TextView" />
+                android:textStyle="bold" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow2"
+            android:id="@+id/tableRowLens"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
             android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp" >
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,20 +68,22 @@
                 android:textColor="#9C9A9B" />
 
             <TextView
-                android:id="@+id/lensTextView"
+                android:id="@+id/textViewLens"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="TextView" />
+                android:textStyle="bold" />
+
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow3"
+            android:id="@+id/tableRowFocalLength"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
             android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp" >
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -89,17 +94,21 @@
                 android:textColor="#9C9A9B" />
 
             <TextView
-                android:id="@+id/flTextView"
+                android:id="@+id/textViewFocalLength"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="TextView" />
+                android:textStyle="bold" />
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow4"
+            android:id="@+id/tableRowShutterSpeed"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -110,11 +119,161 @@
                 android:textColor="#9C9A9B" />
 
             <TextView
-                android:id="@+id/ssTextView"
+                android:id="@+id/textViewShutterSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="TextView" />
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowAperture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Aperture"
+                android:textColor="#9C9A9B" />
+
+            <TextView
+                android:id="@+id/textViewAperture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowISO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="ISO/Film"
+                android:textColor="#9C9A9B" />
+
+            <TextView
+                android:id="@+id/textViewISO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Category"
+                android:textColor="#9C9A9B" />
+
+            <TextView
+                android:id="@+id/textViewCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowUploaded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Uploaded"
+                android:textColor="#9C9A9B" />
+
+            <TextView
+                android:id="@+id/textViewUploaded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowTaken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Taken"
+                android:textColor="#9C9A9B" />
+
+            <TextView
+                android:id="@+id/textViewTaken"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textStyle="bold" />
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRowCopyright"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Copyright"
+                android:textColor="#9C9A9B" />
+
+            <TextView
+                android:id="@+id/textViewCopyright"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textStyle="bold" />
         </TableRow>
     </TableLayout>
 
