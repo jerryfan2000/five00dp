@@ -1,42 +1,35 @@
 package com.nyuen.five00dp.fragment;
 
-import java.util.Arrays;
-
-import android.annotation.SuppressLint;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.app.SherlockListFragment;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.nyuen.five00dp.LoginActivity;
-import com.nyuen.five00dp.PhotoDetailActivity;
 import com.nyuen.five00dp.ProfileActivity;
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.adapter.PhotoAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
-import com.nyuen.five00dp.structure.Photo;
 import com.nyuen.five00dp.structure.PhotoListResponse;
 import com.nyuen.five00dp.util.AccountUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
-@SuppressLint("NewApi")
+import java.util.Arrays;
+
 public class PhotoListFragment extends SherlockListFragment implements AbsListView.OnScrollListener {
     
     private static final String TAG = PhotoListFragment.class.getSimpleName();
@@ -57,8 +50,12 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         setRetainInstance(true);
         setHasOptionsMenu(true);
         
-        getSherlockActivity().getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSherlockActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayUseLogoEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+        
         getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
         getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         
@@ -116,7 +113,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         Intent nextIntent;
         switch (item.getItemId()) {        
             case R.id.menu_profile:
-                if(AccountUtils.hasAccount(getActivity())){
+                if (AccountUtils.hasAccount(getActivity())){
                     nextIntent = new Intent(getActivity(), ProfileActivity.class);
                 } else {
                     nextIntent = new Intent(getActivity(), LoginActivity.class);
@@ -144,7 +141,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
             int totalItemCount) { 
         boolean loadMore = firstVisibleItem + visibleItemCount + 1 >= totalItemCount;
         
-        if(loadMore && !mLoading) {
+        if (loadMore && !mLoading) {
             new LoadPhotoTask().execute();
         }
     }
@@ -161,7 +158,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
     }  
     
     private void updateList(PhotoListResponse response) {
-        if(mPage == 1) {
+        if (mPage == 1) {
             mImageAdapter.setPhotos(Arrays.asList(response.photos));     
             setListAdapter(mImageAdapter);    
             getListView().setOnScrollListener(this);
@@ -175,7 +172,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         protected void onPreExecute() {
             mLoading = true;
             mLoadingView.setVisibility(View.VISIBLE);
-            if(mPage == 1) {
+            if (mPage == 1) {
                 getSherlockActivity().findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
                 getSherlockActivity().findViewById(android.R.id.list).setVisibility(View.INVISIBLE);
             }
@@ -188,7 +185,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         protected void onPostExecute(PhotoListResponse response) {
             mLoadingView.setVisibility(View.GONE);
             mLoading = false;
-            if(response != null) {
+            if (response != null) {
                 updateList(response);
                 mPage++;
             } else {

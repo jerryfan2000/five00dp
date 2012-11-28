@@ -28,8 +28,8 @@ import com.nyuen.five00dp.api.ApiHelper;
 import com.nyuen.five00dp.structure.Comment;
 import com.nyuen.five00dp.structure.CommentResponse;
 import com.nyuen.five00dp.structure.Photo;
-import com.nyuen.five00dp.structure.PhotoDetailResponse;
 import com.nyuen.five00dp.structure.Photo.Category;
+import com.nyuen.five00dp.structure.PhotoDetailResponse;
 import com.nyuen.five00dp.util.DateHelper;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
@@ -127,7 +127,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             int totalItemCount) {
         boolean loadMore = firstVisibleItem + visibleItemCount + 2 >= totalItemCount;
 
-        if(loadMore && !mLoadingComments && (mPage <= mTotalPage)) {
+        if (loadMore && !mLoadingComments && (mPage <= mTotalPage)) {
             new LoadPhotoCommentsTask().execute();
         }
     }
@@ -170,9 +170,10 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView, R.drawable.ic_userpic);
         }
 
-        if(mPhoto.user.upgrade_status > 0) {
-            if(mPhoto.user.upgrade_status == 1)
+        if (mPhoto.user.upgrade_status > 0) {
+            if (mPhoto.user.upgrade_status == 1) {
                 imageViewStatus.setImageResource(R.drawable.ic_plus);
+            }
             imageViewStatus.setVisibility(View.VISIBLE);
         } else {
             imageViewStatus.setVisibility(View.GONE);
@@ -218,56 +219,56 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         });
         
         TextView textView;
-        if(!TextUtils.isEmpty(mPhoto.camera)) {
+        if (!TextUtils.isEmpty(mPhoto.camera)) {
             textView = (TextView) mHeaderExifView.findViewById(R.id.textViewCamera);
             textView.setText(mPhoto.camera);
             mHeaderExifView.findViewById(R.id.tableRowCamera).setVisibility(View.VISIBLE);
         }
         
-        if(!TextUtils.isEmpty(mPhoto.lens)) {
+        if (!TextUtils.isEmpty(mPhoto.lens)) {
             textView = (TextView) mHeaderExifView.findViewById(R.id.textViewLens);
             textView.setText(mPhoto.lens);
             mHeaderExifView.findViewById(R.id.tableRowLens).setVisibility(View.VISIBLE);
         }
         
-        if(!TextUtils.isEmpty(mPhoto.focal_length)) {
+        if (!TextUtils.isEmpty(mPhoto.focal_length)) {
             textView = (TextView) mHeaderExifView.findViewById(R.id.textViewFocalLength);
             textView.setText(mPhoto.focal_length);
             mHeaderExifView.findViewById(R.id.tableRowFocalLength).setVisibility(View.VISIBLE);
         }
         
-        if(!TextUtils.isEmpty(mPhoto.shutter_speed)) {
+        if (!TextUtils.isEmpty(mPhoto.shutter_speed)) {
             textView = (TextView) mHeaderExifView.findViewById(R.id.textViewShutterSpeed);
             textView.setText(mPhoto.shutter_speed);
             mHeaderExifView.findViewById(R.id.tableRowShutterSpeed).setVisibility(View.VISIBLE);
         }
         
-        if(!TextUtils.isEmpty(mPhoto.aperture)) {
+        if (!TextUtils.isEmpty(mPhoto.aperture)) {
             textView = (TextView) mHeaderExifView.findViewById(R.id.textViewAperture);
             textView.setText(mPhoto.aperture);
             mHeaderExifView.findViewById(R.id.tableRowAperture).setVisibility(View.VISIBLE);
         }
         
-        if(!TextUtils.isEmpty(mPhoto.iso)) {
+        if (!TextUtils.isEmpty(mPhoto.iso)) {
             textView = (TextView) mHeaderExifView.findViewById(R.id.textViewISO);
             textView.setText(mPhoto.iso);
             mHeaderExifView.findViewById(R.id.tableRowISO).setVisibility(View.VISIBLE);
         }
         
-        if(!TextUtils.isEmpty("" + mPhoto.category)) {
+        if (!TextUtils.isEmpty("" + mPhoto.category)) {
             String cat = Category.values()[mPhoto.category].getString();
             textView = (TextView) mHeaderExifView.findViewById(R.id.textViewCategory);
             textView.setText(cat);
             mHeaderExifView.findViewById(R.id.tableRowCategory).setVisibility(View.VISIBLE);
         }
         
-        if(!TextUtils.isEmpty(mPhoto.created_at)) {
+        if (!TextUtils.isEmpty(mPhoto.created_at)) {
             textView = (TextView) mHeaderExifView.findViewById(R.id.textViewUploaded);
             textView.setText(DateHelper.DateDifference(mPhoto.created_at));
             mHeaderExifView.findViewById(R.id.tableRowUploaded).setVisibility(View.VISIBLE);
         }
 
-        if(!TextUtils.isEmpty(mPhoto.taken_at)) {
+        if (!TextUtils.isEmpty(mPhoto.taken_at)) {
             textView = (TextView) mHeaderExifView.findViewById(R.id.textViewUploaded);
             textView.setText(DateHelper.getHeaderDate(mPhoto.taken_at));
             mHeaderExifView.findViewById(R.id.tableRowUploaded).setVisibility(View.VISIBLE);
@@ -293,7 +294,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         }
 
         protected void onPostExecute(PhotoDetailResponse response) {
-            if(response != null) {
+            if (response != null) {
                 mPhoto = response.photo;
                 updateHeaderView();
                 updateHeaderExifView();
@@ -315,7 +316,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         protected void onPostExecute(CommentResponse response) {
             mLoadingView.setVisibility(View.GONE);
             mLoadingComments = false;
-            if(response != null) {
+            if (response != null) {
                 updateCommentsList(response.comments, response.total_pages);
                 mPage++;
             }
