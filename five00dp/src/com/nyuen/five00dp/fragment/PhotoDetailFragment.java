@@ -34,6 +34,7 @@ import com.nyuen.five00dp.structure.Photo;
 import com.nyuen.five00dp.structure.Photo.Category;
 import com.nyuen.five00dp.structure.PhotoDetailResponse;
 import com.nyuen.five00dp.util.DateHelper;
+import com.nyuen.five00dp.util.FontUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
@@ -196,7 +197,9 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         favsCountView.setText(getString(R.string.num_favorites, mPhoto.favorites_count));
         headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
         headerDescriptionView.setMovementMethod(LinkMovementMethod.getInstance());
-        ratingView.setText("" + mPhoto.rating);
+        ratingView.setText(String.valueOf(mPhoto.rating));
+
+        FontUtils.setTypefaceRobotoLight(getActivity(), headerDescriptionView, ratingView);
 
         headerPhotoView.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){

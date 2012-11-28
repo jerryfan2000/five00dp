@@ -40,7 +40,6 @@
                 android:layout_alignLeft="@+id/headerUserPhotoView"
                 android:src="@drawable/ic_awesome"
                 android:visibility="visible" />
-
         </RelativeLayout>
 
         <LinearLayout
@@ -59,7 +58,6 @@
                 android:textColor="#333"
                 android:textSize="14sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
         <TextView
@@ -71,9 +69,8 @@
             android:drawableBottom="@drawable/pulse"
             android:gravity="center_horizontal"
             android:text="99.9"
-            android:textColor="#9C9A9B"
-            android:textSize="21sp"
-            android:textStyle="bold" />
+            android:textColor="#333333"
+            android:textSize="21sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -121,6 +118,7 @@
         android:id="@+id/headerDescriptionView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="Description"
