@@ -32,6 +32,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/Theme.five00dp.NoActionBar"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity android:name="com.nyuen.five00dp.ProfileActivity" >

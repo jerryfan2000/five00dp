@@ -1,15 +1,5 @@
 package com.nyuen.five00dp;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.fivehundredpx.api.FiveHundredException;
-import com.fivehundredpx.api.auth.AccessToken;
-import com.fivehundredpx.api.tasks.XAuth500pxTask;
-import com.fivehundredpx.api.tasks.XAuth500pxTask.Delegate;
-import com.fivehundredpx.api.auth.AccessToken;
-import com.nyuen.five00dp.api.FiveHundred;
-import com.nyuen.five00dp.util.AccountUtils;
-import com.nyuen.five00dp.util.UIUtils;
-
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
@@ -23,6 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fivehundredpx.api.FiveHundredException;
+import com.fivehundredpx.api.auth.AccessToken;
+import com.fivehundredpx.api.tasks.XAuth500pxTask;
+import com.nyuen.five00dp.api.FiveHundred;
+import com.nyuen.five00dp.util.AccountUtils;
+import com.nyuen.five00dp.util.UIUtils;
+
 public class LoginActivity extends AccountAuthenticatorActivity implements XAuth500pxTask.Delegate{
     private static final String TAG = "LoginActivity";
 
@@ -31,7 +28,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements XAuth
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_fragment);
+        setContentView(R.layout.login_activity);
 
         if (AccountUtils.hasAccount(this)) {
             Toast.makeText(this, "Can only have 1 account", Toast.LENGTH_SHORT).show();

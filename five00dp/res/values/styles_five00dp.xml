@@ -39,6 +39,10 @@
         <item name="android:actionBarWidgetTheme">@style/Theme.five00dp.widget</item>
 
     </style>
+    
+    <style name="Theme.five00dp.NoActionBar" parent="@style/Theme.Sherlock.Light.NoActionBar">
+        
+    </style>
 
     <style name="five00dp_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_five00dp</item>
