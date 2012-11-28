@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -156,7 +157,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     private void updateHeaderView() {
         ImageView headerPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerPhotoView);
         ImageView headerUserPhotoView = (ImageView) mHeaderView.findViewById(R.id.headerUserPhotoView);
-        ImageView imageViewAwesome = (ImageView) mHeaderView.findViewById(R.id.imageViewAwesome);
+        ImageView imageViewStatus = (ImageView) mHeaderView.findViewById(R.id.imageViewStatus);
         TextView headerUserNameView = (TextView) mHeaderView.findViewById(R.id.headerUserNameView);
         TextView headerDescriptionView = (TextView) mHeaderView.findViewById(R.id.headerDescriptionView);
         TextView viewsCountView = (TextView) mHeaderView.findViewById(R.id.viewsCountView);
@@ -168,13 +169,19 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         if (!mPhoto.user.userpic_url.equals("/graphics/userpic.png")) {
             mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
         }
-        if(mPhoto.user.upgrade_status > 0)
-            imageViewAwesome.setVisibility(View.VISIBLE);
+
+        if(mPhoto.user.upgrade_status > 0) {
+            if(mPhoto.user.upgrade_status == 1)
+                imageViewStatus.setImageResource(R.drawable.ic_plus);
+            imageViewStatus.setVisibility(View.VISIBLE);
+        }
+        
         headerUserNameView.setText(mPhoto.user.fullname);
         viewsCountView.setText(getString(R.string.num_views, mPhoto.times_viewed));
         votesCountView.setText(getString(R.string.num_votes, mPhoto.votes_count));
         favsCountView.setText(getString(R.string.num_favorites, mPhoto.favorites_count));
         headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
+        headerDescriptionView.setMovementMethod(LinkMovementMethod.getInstance());
         ratingView.setText("" + mPhoto.rating);
 
         headerPhotoView.setOnClickListener(new View.OnClickListener(){

@@ -46,14 +46,12 @@
         android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/imageViewUserAwesome"
+        android:id="@+id/imageViewUserStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/commentUserNameView"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="3dp"
-        android:layout_toRightOf="@+id/commentUserNameView"
-        android:src="@drawable/awesome_square"
+        android:layout_alignBottom="@+id/commentUserPhotoView"
+        android:layout_alignLeft="@+id/commentUserPhotoView"
+        android:src="@drawable/ic_awesome"
         android:visibility="gone" />
 
 </RelativeLayout>

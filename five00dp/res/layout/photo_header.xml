@@ -22,12 +22,27 @@
         android:paddingRight="8dp"
         android:paddingTop="8dp" >
 
-        <ImageView
-            android:id="@+id/headerUserPhotoView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_userpic" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/headerUserPhotoView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_userpic" />
+
+            <ImageView
+                android:id="@+id/imageViewStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/headerUserPhotoView"
+                android:layout_alignLeft="@+id/headerUserPhotoView"
+                android:src="@drawable/ic_awesome"
+                android:visibility="visible" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -43,14 +58,6 @@
                 android:textColor="#333"
                 android:textSize="14sp"
                 android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/imageViewAwesome"
-                android:layout_width="40dp"
-                android:layout_height="10dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/awesome"
-                android:visibility="invisible" />
 
         </LinearLayout>
 
