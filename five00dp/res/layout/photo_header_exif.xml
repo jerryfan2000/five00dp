@@ -12,7 +12,8 @@
         android:gravity="left|center_vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:text="MORE INFO"
+        android:text="More Info"
+        android:textAllCaps="true"
         android:textColor="#333"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -21,9 +22,8 @@
         android:id="@+id/moreInfoBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" 
-        android:visibility="gone">
+        android:padding="8dp"
+        android:visibility="gone" >
 
         <TableRow
             android:id="@+id/tableRowCamera"
@@ -73,7 +73,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:textStyle="bold" />
-
         </TableRow>
 
         <TableRow
@@ -250,7 +249,7 @@
                 android:layout_weight="3"
                 android:textStyle="bold" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/tableRowCopyright"
             android:layout_width="wrap_content"
