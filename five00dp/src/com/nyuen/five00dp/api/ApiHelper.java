@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import com.nyuen.five00dp.structure.CommentResponse;
 import com.nyuen.five00dp.structure.PhotoDetailResponse;
 import com.nyuen.five00dp.structure.PhotoListResponse;
+import com.nyuen.five00dp.structure.User;
+import com.nyuen.five00dp.util.AccountUtils;
 
 public class ApiHelper {
     private static final String TAG = ApiHelper.class.getSimpleName();
@@ -50,6 +52,21 @@ public class ApiHelper {
             CommentResponse out = new Gson().fromJson(
                     pxapi.get(url).toString(), 
                             CommentResponse.class);
+            return out;
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+            return null;
+        }
+    }
+    
+    public static User getProfile(int userId){        
+        PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
+        String url = "/user/" + userId + "?";
+        try {
+            //20 comments per page
+            User out = new Gson().fromJson(
+                    pxapi.get(url).toString(), 
+                    User.class);
             return out;
         } catch (Exception e) {
             Log.e(TAG, e.toString());

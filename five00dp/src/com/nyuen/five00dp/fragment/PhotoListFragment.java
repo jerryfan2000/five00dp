@@ -22,13 +22,17 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.nyuen.five00dp.LoginActivity;
 import com.nyuen.five00dp.PhotoDetailActivity;
+import com.nyuen.five00dp.ProfileActivity;
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.adapter.PhotoAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
 import com.nyuen.five00dp.structure.Photo;
 import com.nyuen.five00dp.structure.PhotoListResponse;
+import com.nyuen.five00dp.util.AccountUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
@@ -104,14 +108,21 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
     
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_main, menu);
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_settings:
-            return true;
+        Intent nextIntent;
+        switch (item.getItemId()) {        
+            case R.id.menu_profile:
+                if(AccountUtils.hasAccount(getActivity())){
+                    nextIntent = new Intent(getActivity(), ProfileActivity.class);
+                } else {
+                    nextIntent = new Intent(getActivity(), LoginActivity.class);
+                }
+                getActivity().startActivity(nextIntent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,5 +1,6 @@
 package com.nyuen.five00dp;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.fivehundredpx.api.FiveHundredException;
 import com.fivehundredpx.api.auth.AccessToken;
 import com.fivehundredpx.api.tasks.XAuth500pxTask;
@@ -36,6 +37,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements XAuth
             Toast.makeText(this, "Can only have 1 account", Toast.LENGTH_SHORT).show();
             finish();
         }
+        
         initUi();
     }
 

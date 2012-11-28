@@ -167,7 +167,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         
         mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
         if (!mPhoto.user.userpic_url.equals("/graphics/userpic.png")) {
-            mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView);
+            mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView, R.drawable.ic_userpic);
         }
 
         if(mPhoto.user.upgrade_status > 0) {
