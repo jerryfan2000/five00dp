@@ -11,8 +11,7 @@
         android:id="@+id/headerPhotoView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffffff"
-        android:minHeight="128dp" />
+        android:background="#ffffffff" />
 
     <LinearLayout
         android:layout_width="match_parent"

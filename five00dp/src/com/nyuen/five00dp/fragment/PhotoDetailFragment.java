@@ -1,5 +1,6 @@
 package com.nyuen.five00dp.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
@@ -9,9 +10,11 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -165,7 +168,15 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         TextView favsCountView = (TextView) mHeaderView.findViewById(R.id.favsCountView);
         TextView ratingView = (TextView) mHeaderView.findViewById(R.id.ratingView);
         
+        // Calculate min height for the photo
+        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        int width = display.getWidth();
+        int minHeight = mPhoto.height * width / mPhoto.width;
+        headerPhotoView.setMinimumHeight(minHeight);
+        
         mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
+        
         if (!mPhoto.user.userpic_url.equals("/graphics/userpic.png")) {
             mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView, R.drawable.ic_userpic);
         }
