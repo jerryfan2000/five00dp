@@ -1,25 +1,23 @@
 package com.nyuen.five00dp.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.nyuen.five00dp.R;
-import com.nyuen.five00dp.structure.Comment;
-import com.nyuen.five00dp.structure.CommentResponse;
-import com.nyuen.five00dp.structure.Photo;
-import com.nyuen.five00dp.structure.User;
-import com.nyuen.five00dp.util.ImageFetcher;
-
 import android.content.Context;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nyuen.five00dp.R;
+import com.nyuen.five00dp.structure.Comment;
+import com.nyuen.five00dp.structure.CommentResponse;
+import com.nyuen.five00dp.structure.User;
+import com.nyuen.five00dp.util.ImageFetcher;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommentAdapter extends BaseAdapter {
     
@@ -90,9 +88,10 @@ public class CommentAdapter extends BaseAdapter {
         User user = getItem(position).user;
         mImageFetcher.loadImage(user.userpic_url, holder.commentUserPhotoView, R.drawable.ic_userpic);
         
-        if(user.upgrade_status > 0) {
-            if(user.upgrade_status == 1)
+        if (user.upgrade_status > 0) {
+            if (user.upgrade_status == 1) {
                 holder.imageViewUserAwesome.setImageResource(R.drawable.ic_plus);
+            }
             holder.imageViewUserAwesome.setVisibility(View.VISIBLE);
         } else {
             holder.imageViewUserAwesome.setVisibility(View.GONE);
