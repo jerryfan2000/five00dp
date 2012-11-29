@@ -16,12 +16,8 @@
 
 package com.nyuen.five00dp.util;
 
-import java.lang.ref.WeakReference;
-import java.util.Hashtable;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
+import static com.nyuen.five00dp.util.LogUtils.LOGD;
+import static com.nyuen.five00dp.util.LogUtils.makeLogTag;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -36,8 +32,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.ImageView;
 
-import static com.nyuen.five00dp.util.LogUtils.LOGD;
-import static com.nyuen.five00dp.util.LogUtils.makeLogTag;
+import java.lang.ref.WeakReference;
+import java.util.Hashtable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class wraps up completing some arbitrary long running work when loading a bitmap to an
@@ -420,7 +420,7 @@ public abstract class ImageWorker {
                             new BitmapDrawable(mResources, bitmap)
                     });
             //noinspection deprecation
-            imageView.setBackgroundDrawable(imageView.getDrawable());
+//            imageView.setBackgroundDrawable(imageView.getDrawable());
             imageView.setImageDrawable(td);
             td.startTransition(FADE_IN_TIME);
         } else {
