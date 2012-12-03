@@ -62,7 +62,7 @@ public class PhotoAdapter extends BaseAdapter {
         Resources resources = context.getResources();
         
         // Calculate sizes
-        WIDTH_ONE = display.getWidth();
+        WIDTH_ONE = Math.min(display.getWidth(), display.getHeight());
         WIDTH_HALF = WIDTH_ONE / 2;
         MARGIN_ONE = resources.getDimensionPixelSize(R.dimen.image_grid_margin);
         MARGIN_TWO = MARGIN_ONE + MARGIN_ONE;
@@ -98,16 +98,14 @@ public class PhotoAdapter extends BaseAdapter {
         return position;
     }
 
-    public void setPhotos(List<Photo> photos) {
+    public void setPhotos(ArrayList<Photo> photos) {
         mPhotoCount = 0;
         mPhotos.clear();
         appendPhotos(photos);
     }
 
-    public void appendPhotos(List<Photo> photos) {  
-        for (Photo ph : photos) {
-            mPhotos.add(ph);
-        }
+    public void appendPhotos(ArrayList<Photo> photos) {  
+        mPhotos.addAll(photos);
 
         // Retrieve a list of patterns 
         List<Pattern> patterns = Pattern.getPatternList();

@@ -159,11 +159,11 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
     
     private void updateList(PhotoListResponse response) {
         if (mPage == 1) {
-            mImageAdapter.setPhotos(Arrays.asList(response.photos));     
+            mImageAdapter.setPhotos(response.photos);     
             setListAdapter(mImageAdapter);    
             getListView().setOnScrollListener(this);
         } else {   
-            mImageAdapter.appendPhotos(Arrays.asList(response.photos));
+            mImageAdapter.appendPhotos(response.photos);
             mImageAdapter.notifyDataSetChanged();
         }
     }
@@ -183,6 +183,9 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         }
 
         protected void onPostExecute(PhotoListResponse response) {
+            if(getActivity() == null)
+                return;
+            
             mLoadingView.setVisibility(View.GONE);
             mLoading = false;
             if (response != null) {

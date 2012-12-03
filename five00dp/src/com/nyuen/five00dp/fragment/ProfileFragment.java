@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -31,6 +32,10 @@ public class ProfileFragment extends SherlockFragment {
         
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
        
+        ActionBar actionBar = getSherlockActivity().getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Profile");
+        }
         
         getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }

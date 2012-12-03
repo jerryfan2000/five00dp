@@ -38,6 +38,7 @@ import com.nyuen.five00dp.util.FontUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class PhotoDetailFragment extends SherlockListFragment implements AbsListView.OnScrollListener {
@@ -294,8 +295,8 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     }
     
 
-    private void updateCommentsList(Comment[] comments, int totalPages) {
-        mPhotoDetailAdapter.appendComments(Arrays.asList(comments));
+    private void updateCommentsList(ArrayList<Comment> comments, int totalPages) {
+        mPhotoDetailAdapter.appendComments(comments);
         mPhotoDetailAdapter.notifyDataSetChanged();
         mTotalPage = totalPages;
         getListView().setOnScrollListener(this);
@@ -308,6 +309,9 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         }
 
         protected void onPostExecute(PhotoDetailResponse response) {
+            if(getActivity() == null)
+                return;
+            
             if (response != null) {
                 mPhoto = response.photo;
                 updateHeaderView();
@@ -328,6 +332,9 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         }
 
         protected void onPostExecute(CommentResponse response) {
+            if(getActivity() == null)
+                return;
+            
             mLoadingView.setVisibility(View.GONE);
             mLoadingComments = false;
             if (response != null) {
