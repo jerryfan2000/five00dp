@@ -25,18 +25,14 @@ import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.fragment.PhotoDetailFragment;
 import com.nyuen.five00dp.fragment.PhotoListFragment;
 import com.nyuen.five00dp.structure.Photo;
-import com.nyuen.five00dp.structure.PhotoPatternContainer;
-import com.nyuen.five00dp.structure.PhotoPatternContainer.Pattern;
+import com.nyuen.five00dp.structure.PhotoTestPatternContainer.Pattern;
+import com.nyuen.five00dp.structure.PhotoTestPatternContainer;
 import com.nyuen.five00dp.util.ImageFetcher;
 
 public class PhotoAdapter extends BaseAdapter {
 
     private final int WIDTH_ONE;
-    private final int WIDTH_HALF;
     private final int MARGIN_ONE;
-    private final int MARGIN_TWO;
-    private final int MARGIN_HALF;
-    private final int MARGIN_THREE_HALF;
 
     private final LayoutInflater mInflater;
     private final ImageFetcher mImageFetcher;
@@ -49,8 +45,7 @@ public class PhotoAdapter extends BaseAdapter {
     };
 
     private List<Photo> mPhotos;
-    private List<PhotoPatternContainer> mContainers;
-    private RelativeLayout.LayoutParams[] mParams;
+    private List<PhotoTestPatternContainer> mContainers;
 
     private int mListItemCount;
     private int mPhotoCount;
@@ -63,18 +58,13 @@ public class PhotoAdapter extends BaseAdapter {
         
         // Calculate sizes
         WIDTH_ONE = Math.min(display.getWidth(), display.getHeight());
-        WIDTH_HALF = WIDTH_ONE / 2;
         MARGIN_ONE = resources.getDimensionPixelSize(R.dimen.image_grid_margin);
-        MARGIN_TWO = MARGIN_ONE + MARGIN_ONE;
-        MARGIN_HALF = MARGIN_ONE / 2;
-        MARGIN_THREE_HALF = MARGIN_HALF * 3;
 
         // Instantiate members
         mImageFetcher = imageFetcher;
         mInflater = LayoutInflater.from(context);
-        mContainers = new ArrayList<PhotoPatternContainer>();
+        mContainers = new ArrayList<PhotoTestPatternContainer>();
         mPhotos = new ArrayList<Photo>();
-        mParams = new RelativeLayout.LayoutParams[16];
 
         // Attach click listener for each photo
         mOnPhotoClickListener = new OnClickListener() {
@@ -86,8 +76,6 @@ public class PhotoAdapter extends BaseAdapter {
             }
         };   
 
-        // Instantiate layout params
-        setParams();
     }
 
     public int getCount() {
@@ -115,7 +103,7 @@ public class PhotoAdapter extends BaseAdapter {
         Iterator<Pattern> iterator = patterns.iterator();
         while (iterator.hasNext()) {
             Pattern p = iterator.next();
-            PhotoPatternContainer c = new PhotoPatternContainer(p);
+            PhotoTestPatternContainer c = new PhotoTestPatternContainer(p);
             mContainers.add(c);
 
             for (int i = 0; i < p.getCount(); i++) {
@@ -134,75 +122,6 @@ public class PhotoAdapter extends BaseAdapter {
     @Override
     public boolean isEnabled(int position) {
         return false;
-    }
-
-    // Set the LayoutParams that will be used in getView() 
-    public void setParams() {
-        // Pattern.ONE
-        mParams[0] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_ONE - MARGIN_TWO);
-
-        mParams[0].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_ONE, 0);
-
-        // Pattern.TWO_VERTICAL
-        mParams[1] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_ONE - MARGIN_TWO);
-        mParams[2] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_ONE - MARGIN_TWO);
-
-        mParams[1].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_HALF, 0);
-        mParams[2].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_ONE, 0);
-
-        mParams[2].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-
-        // Pattern.TWO_HORIZONTAL
-        mParams[3] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
-        mParams[4] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
-
-        mParams[3].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
-        mParams[4].setMargins(MARGIN_ONE, MARGIN_HALF, MARGIN_ONE, 0);
-
-        mParams[4].addRule(RelativeLayout.BELOW, R.id.imageView0);
-
-        // Pattern.THREE_VERTICAL
-        mParams[8] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_ONE - MARGIN_TWO);
-        mParams[9] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-        mParams[10] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-
-        mParams[8].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_HALF, 0);
-        mParams[9].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
-        mParams[10].setMargins(MARGIN_HALF, MARGIN_HALF, MARGIN_ONE, 0);
-
-        mParams[9].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-        mParams[10].addRule(RelativeLayout.BELOW, R.id.imageView1);
-        mParams[10].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-
-        // Pattern.THREE_HORIZONTAL
-        mParams[5] = new RelativeLayout.LayoutParams(WIDTH_ONE - MARGIN_TWO, WIDTH_HALF - MARGIN_THREE_HALF);
-        mParams[6] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-        mParams[7] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-
-        mParams[5].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
-        mParams[6].setMargins(MARGIN_ONE, MARGIN_HALF, MARGIN_HALF, 0);
-        mParams[7].setMargins(MARGIN_HALF, MARGIN_HALF, MARGIN_ONE, 0);
-
-        mParams[6].addRule(RelativeLayout.BELOW, R.id.imageView0);
-        mParams[7].addRule(RelativeLayout.BELOW, R.id.imageView0);
-        mParams[7].addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);
-
-
-        // Pattern.FOUR
-        mParams[11] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-        mParams[12] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-        mParams[13] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-        mParams[14] = new RelativeLayout.LayoutParams(WIDTH_HALF - MARGIN_THREE_HALF, WIDTH_HALF - MARGIN_THREE_HALF);
-
-        mParams[11].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_HALF, MARGIN_HALF);
-        mParams[12].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_ONE, MARGIN_HALF);
-        mParams[13].setMargins(MARGIN_ONE, MARGIN_HALF, MARGIN_HALF, 0);
-        mParams[14].setMargins(MARGIN_HALF, MARGIN_HALF, MARGIN_ONE, 0);
-
-        mParams[12].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
-        mParams[13].addRule(RelativeLayout.BELOW, R.id.imageView0);
-        mParams[14].addRule(RelativeLayout.BELOW, R.id.imageView1);
-        mParams[14].addRule(RelativeLayout.RIGHT_OF, R.id.imageView2);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -226,12 +145,13 @@ public class PhotoAdapter extends BaseAdapter {
         }
 
         ImageView[] imageViews = holder.imageViews;
-        PhotoPatternContainer photoContainer = mContainers.get(position);
+        PhotoTestPatternContainer photoContainer = mContainers.get(position);
         Pattern pattern = photoContainer.getPattern();
+        RelativeLayout.LayoutParams[] params = pattern.getParams(WIDTH_ONE, MARGIN_ONE);
         List<Integer> photoIndices = photoContainer.getPhotosIdx();
 
         // Loop through each imageView and retrieve the specific photo url
-        // Then, load the image with imageFetcher
+        // Then, load the image with imageFetcher 
         for (int i = 0; i < 4; i++) {
             if (i < photoIndices.size()) {
                 imageViews[i].setVisibility(View.VISIBLE);
@@ -247,29 +167,10 @@ public class PhotoAdapter extends BaseAdapter {
         }
 
         // Set LayoutParams based on the pattern
-        if (pattern == Pattern.ONE) {
-            imageViews[0].setLayoutParams(mParams[0]);
-        } else if (pattern == Pattern.TWO_VERTICAL) {
-            imageViews[0].setLayoutParams(mParams[1]);
-            imageViews[1].setLayoutParams(mParams[2]);
-        } else if (pattern == Pattern.TWO_HORIZONTAL) {
-            imageViews[0].setLayoutParams(mParams[3]);
-            imageViews[1].setLayoutParams(mParams[4]);
-        } else if (pattern == Pattern.THREE_HORIZONTAL) {
-            imageViews[0].setLayoutParams(mParams[5]);
-            imageViews[1].setLayoutParams(mParams[6]);
-            imageViews[2].setLayoutParams(mParams[7]);
-        } else if (pattern == Pattern.THREE_VERTICAL) {
-            imageViews[0].setLayoutParams(mParams[8]);
-            imageViews[1].setLayoutParams(mParams[9]);
-            imageViews[2].setLayoutParams(mParams[10]);
-        } else {
-            imageViews[0].setLayoutParams(mParams[11]);
-            imageViews[1].setLayoutParams(mParams[12]);
-            imageViews[2].setLayoutParams(mParams[13]);
-            imageViews[3].setLayoutParams(mParams[14]);
+        for (int i = 0; i < params.length; i++) {
+            imageViews[i].setLayoutParams(params[i]);
         }
-
+        
         return convertView;
     }
 

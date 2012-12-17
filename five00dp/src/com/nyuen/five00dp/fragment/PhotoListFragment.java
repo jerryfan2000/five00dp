@@ -28,12 +28,10 @@ import com.nyuen.five00dp.util.AccountUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
-import java.util.Arrays;
-
 public class PhotoListFragment extends SherlockListFragment implements AbsListView.OnScrollListener {
     
     private static final String TAG = PhotoListFragment.class.getSimpleName();
-    public final int IMAGE_PER_PAGE = 15;
+    public final int IMAGE_PER_PAGE = 25;
     public static final int IMAGE_SIZE = 4;
     
     private PhotoAdapter mImageAdapter;
