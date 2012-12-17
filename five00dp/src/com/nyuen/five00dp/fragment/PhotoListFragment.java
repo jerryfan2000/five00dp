@@ -23,6 +23,7 @@ import com.nyuen.five00dp.ProfileActivity;
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.adapter.PhotoAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
+import com.nyuen.five00dp.base.SlidingBaseActivity;
 import com.nyuen.five00dp.structure.PhotoListResponse;
 import com.nyuen.five00dp.util.AccountUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
@@ -52,6 +53,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         if (actionBar != null) {
             actionBar.setDisplayUseLogoEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
         
         getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
@@ -109,7 +111,10 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent nextIntent;
-        switch (item.getItemId()) {        
+        switch (item.getItemId()) {    
+            case android.R.id.home:
+                ((SlidingBaseActivity) getActivity()).toggle();
+            return true;
             case R.id.menu_profile:
                 if (AccountUtils.hasAccount(getActivity())){
                     nextIntent = new Intent(getActivity(), ProfileActivity.class);

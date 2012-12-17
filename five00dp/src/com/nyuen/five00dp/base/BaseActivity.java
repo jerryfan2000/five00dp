@@ -2,8 +2,6 @@ package com.nyuen.five00dp.base;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nyuen.five00dp.R;
-import com.slidingmenu.lib.SlidingMenu;
-import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
 import android.content.Intent;
 import android.net.Uri;
