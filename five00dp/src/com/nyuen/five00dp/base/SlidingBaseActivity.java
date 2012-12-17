@@ -1,6 +1,5 @@
 package com.nyuen.five00dp.base;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nyuen.five00dp.R;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -10,18 +9,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-public abstract class BaseActivity extends SherlockFragmentActivity {
+public abstract class SlidingBaseActivity extends SlidingFragmentActivity {
     private Fragment mFragment;
+    private Fragment mMenuFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
+        setBehindContentView(R.layout.sliding_menu_frame);
 
         if (savedInstanceState == null) {
             performFragmentTransaction();
         } else {
             mFragment = getSupportFragmentManager().findFragmentByTag("single_pane");
+            mMenuFragment= getSupportFragmentManager().findFragmentByTag("menu_pane");
         }
     }
     
@@ -31,9 +33,16 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_frame, mFragment, "single_pane")
                 .commit();
+        
+        mMenuFragment = onCreateMenuPane();
+        mMenuFragment.setArguments(intentToFragmentArguments(getIntent()));
+        getSupportFragmentManager().beginTransaction()       
+                .add(R.id.sliding_menu_frame, mMenuFragment, "menu_pane")
+                .commit();        
     }
     
     protected abstract Fragment onCreatePane();
+    protected abstract Fragment onCreateMenuPane();
     
     protected int getLayoutId() {
         return R.layout.fragment_activity;
