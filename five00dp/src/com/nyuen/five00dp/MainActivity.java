@@ -37,7 +37,7 @@ public class MainActivity extends SlidingBaseActivity {
     
     @Override
     protected Fragment onCreatePane() {
-        return new PhotoListFragment();
+        return new PhotoListFragment();//new MenuFragment();
     }
     
     @Override
