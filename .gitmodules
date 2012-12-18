@@ -7,4 +7,4 @@
 	url = git@github.com:500px/500px-android-sdk.git
 [submodule "SlidingMenu"]
 	path = SlidingMenu
-	url = git@github.com:jfeinstein10/SlidingMenu.git
+	url = git@github.com:nathan-yuen/SlidingMenu.git
