@@ -43,7 +43,7 @@ public class ProfileFragment extends SherlockFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //return inflater.inflate(R.layout.profile_fragment, container, false);
-        return inflater.inflate(R.layout.coming_soon, container, false);
+        return inflater.inflate(R.layout.fragment_coming_soon, container, false);
     }
 
     @Override

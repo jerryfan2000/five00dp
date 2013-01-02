@@ -23,24 +23,25 @@ import com.nyuen.five00dp.ProfileActivity;
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.adapter.PhotoAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
-import com.nyuen.five00dp.base.SlidingBaseActivity;
+import com.nyuen.five00dp.base.BaseSlidingActivity;
 import com.nyuen.five00dp.structure.PhotoListResponse;
 import com.nyuen.five00dp.util.AccountUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
-public class PhotoListFragment extends SherlockListFragment implements AbsListView.OnScrollListener {
+public class PhotoStreamFragment extends SherlockListFragment implements AbsListView.OnScrollListener {
     
-    private static final String TAG = PhotoListFragment.class.getSimpleName();
-    public final int IMAGE_PER_PAGE = 25;
-    public static final int IMAGE_SIZE = 4;
+    private static final String TAG = PhotoStreamFragment.class.getSimpleName();
+    
+    public static final int IMAGE_PER_PAGE = 25;
+    public static final int DEFAULT_IMAGE_SIZE = 4;
     
     private PhotoAdapter mImageAdapter;
     private ImageFetcher mImageFetcher;
-    
-    private boolean mLoading = false;
     private View mLoadingView;
+    
     private int mPage = 1;
+    private boolean mLoading = false;
     private String mFeature = "popular";
     
     @Override
@@ -49,6 +50,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         setRetainInstance(true);
         setHasOptionsMenu(true);
         
+        // ActionBar customisation
         ActionBar actionBar = getSherlockActivity().getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayUseLogoEnabled(true);
@@ -56,14 +58,18 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         
-        getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
         getSherlockActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
+   
+        // Instantiate members
+        mImageFetcher = UIUtils.getImageFetcher(getActivity());
+        mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.list_footer, null);
+        mFeature = "popular";
         
-        mFeature = "Popular";
-        String[] featureString = {getString(R.string.popular), getString(R.string.editor), getString(R.string.upcoming), getString(R.string.fresh)};
+        // Attach callback for feature list 
+        String[] featureString = getResources().getStringArray(R.array.feature);
         ArrayAdapter<String> featureOptionAdapter = new ArrayAdapter<String>(getActivity(), R.layout.feature_action_bar, featureString);
-        getSherlockActivity().getSupportActionBar().setListNavigationCallbacks(featureOptionAdapter, new OnNavigationListener() {
-            
+        getSherlockActivity().getSupportActionBar().setListNavigationCallbacks(featureOptionAdapter, new OnNavigationListener() {         
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
                 mPage = 1;
@@ -82,14 +88,12 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
                     break;
                 }
                 mImageAdapter = new PhotoAdapter(getActivity(), mImageFetcher);
-                    new LoadPhotoTask().execute();
+                new LoadPhotoTask().execute();
                 return false;
             }
         });
         
-        mImageFetcher = UIUtils.getImageFetcher(getActivity());
-        mLoadingView = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, null);
-        mImageAdapter = new PhotoAdapter(getActivity(), mImageFetcher);
+        
     }
     
     @Override
@@ -113,8 +117,12 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         Intent nextIntent;
         switch (item.getItemId()) {    
             case android.R.id.home:
-                ((SlidingBaseActivity) getActivity()).toggle();
-            return true;
+                ((BaseSlidingActivity) getActivity()).toggle();
+                return true;
+            case R.id.menu_refresh:
+                mPage = 1;
+                new LoadPhotoTask().execute();
+                return true;
             case R.id.menu_profile:
                 if (AccountUtils.hasAccount(getActivity())){
                     nextIntent = new Intent(getActivity(), ProfileActivity.class);
@@ -162,9 +170,10 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
     
     private void updateList(PhotoListResponse response) {
         if (mPage == 1) {
+            mImageAdapter = new PhotoAdapter(getActivity(), mImageFetcher);
             mImageAdapter.setPhotos(response.photos);     
-            setListAdapter(mImageAdapter);    
-            getListView().setOnScrollListener(this);
+            setListAdapter(mImageAdapter);
+            getListView().setOnScrollListener(this);           
         } else {   
             mImageAdapter.appendPhotos(response.photos);
             mImageAdapter.notifyDataSetChanged();
@@ -175,6 +184,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         protected void onPreExecute() {
             mLoading = true;
             mLoadingView.setVisibility(View.VISIBLE);
+            
             if (mPage == 1) {
                 getSherlockActivity().findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
                 getSherlockActivity().findViewById(android.R.id.list).setVisibility(View.INVISIBLE);
@@ -182,7 +192,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
         }
 
         protected PhotoListResponse doInBackground(Void... params) {
-            return ApiHelper.getPhotoStream(mFeature, IMAGE_PER_PAGE, IMAGE_SIZE, mPage);
+            return ApiHelper.getPhotoStream(mFeature, IMAGE_PER_PAGE, DEFAULT_IMAGE_SIZE, mPage);
         }
 
         protected void onPostExecute(PhotoListResponse response) {
@@ -191,6 +201,7 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
             
             mLoadingView.setVisibility(View.GONE);
             mLoading = false;
+            
             if (response != null) {
                 updateList(response);
                 mPage++;
@@ -200,5 +211,6 @@ public class PhotoListFragment extends SherlockListFragment implements AbsListVi
                ((TextView) getSherlockActivity().findViewById(R.id.emptyErrorView)).setVisibility(View.VISIBLE);
             }
         }
+        
     }
 }

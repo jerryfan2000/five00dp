@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="menu">
-        <item>Flow</item>
+        <item>Home</item>
         <item>Profile</item>
-        <item>A</item>
-        <item>B</item>
-        <item>C</item>
+        <item>Test</item>
+        <item>Test</item>
+        <item>Test</item>
+    </string-array>
+    
+    <string-array name="feature">
+        <item>Popular</item>
+        <item>Editor\'s Choice</item>
+        <item>Upcoming</item>
+        <item>Fresh</item>
     </string-array>
 </resources>

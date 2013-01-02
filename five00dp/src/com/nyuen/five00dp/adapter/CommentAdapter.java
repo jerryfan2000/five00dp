@@ -69,7 +69,7 @@ public class CommentAdapter extends BaseAdapter {
         
         if (convertView == null) {
             holder = new PhotoDetailHolder();
-            convertView = mInflater.inflate(R.layout.comment_list_item, null, false);
+            convertView = mInflater.inflate(R.layout.list_cell_photo_comment, null, false);
             
             holder.commentUserPhotoView = (ImageView) convertView.findViewById(R.id.commentUserPhotoView);
             holder.imageViewUserAwesome = (ImageView) convertView.findViewById(R.id.imageViewUserStatus);
@@ -99,7 +99,7 @@ public class CommentAdapter extends BaseAdapter {
         
         holder.commentBodyView.setText(Html.fromHtml(comment.body));
         holder.commentUserNameView.setText(user.fullname);
-        holder.likeCountView.setText(""+0);
+        holder.likeCountView.setText("" + 0);
         
         return convertView;
     }

@@ -34,7 +34,7 @@ public abstract class BaseActivity extends SherlockFragmentActivity {
     protected abstract Fragment onCreatePane();
     
     protected int getLayoutId() {
-        return R.layout.fragment_activity;
+        return R.layout.activity_fragment_frame;
     }
 
     public Fragment getFragment() {

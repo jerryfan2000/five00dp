@@ -28,7 +28,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements XAuth
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity);
+        setContentView(R.layout.activity_login);
 
         if (AccountUtils.hasAccount(this)) {
             Toast.makeText(this, "Can only have 1 account", Toast.LENGTH_SHORT).show();

@@ -67,9 +67,9 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
-        mHeaderView = inflater.inflate(R.layout.photo_header, null);
-        mHeaderExifView = inflater.inflate(R.layout.photo_header_exif, null);
-        mLoadingView = inflater.inflate(R.layout.loading_footer, null);
+        mHeaderView = inflater.inflate(R.layout.header_photo_detail, null);
+        mHeaderExifView = inflater.inflate(R.layout.header_photo_exif, null);
+        mLoadingView = inflater.inflate(R.layout.list_footer, null);
         mPhoto = (Photo) getArguments().getParcelable(INTENT_EXTRA_PHOTO);
         mPhotoDetailAdapter = new CommentAdapter(getActivity(), mImageFetcher);
 
@@ -85,7 +85,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.photo_detail_fragment, container, false);   
+        return inflater.inflate(R.layout.fragment_photo_detail, container, false);   
     }
 
     @Override

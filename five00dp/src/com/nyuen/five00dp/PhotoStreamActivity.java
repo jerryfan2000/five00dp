@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.nyuen.five00dp.R;
-import com.nyuen.five00dp.base.SlidingBaseActivity;
+import com.nyuen.five00dp.base.BaseSlidingActivity;
 import com.nyuen.five00dp.fragment.MenuFragment;
-import com.nyuen.five00dp.fragment.PhotoListFragment;
+import com.nyuen.five00dp.fragment.PhotoStreamFragment;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 
-public class MainActivity extends SlidingBaseActivity {
+public class PhotoStreamActivity extends BaseSlidingActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class MainActivity extends SlidingBaseActivity {
     
     @Override
     protected Fragment onCreatePane() {
-        return new PhotoListFragment();
+        return new PhotoStreamFragment();
     }
     
     @Override

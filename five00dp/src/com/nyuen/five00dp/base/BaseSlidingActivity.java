@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-public abstract class SlidingBaseActivity extends SlidingFragmentActivity {
+public abstract class BaseSlidingActivity extends SlidingFragmentActivity {
     private Fragment mFragment;
     private Fragment mMenuFragment;
 
@@ -45,7 +45,7 @@ public abstract class SlidingBaseActivity extends SlidingFragmentActivity {
     protected abstract Fragment onCreateMenuPane();
     
     protected int getLayoutId() {
-        return R.layout.fragment_activity;
+        return R.layout.activity_fragment_frame;
     }
 
     public Fragment getFragment() {
