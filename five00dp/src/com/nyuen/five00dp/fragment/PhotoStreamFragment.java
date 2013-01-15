@@ -98,7 +98,7 @@ public class PhotoStreamFragment extends SherlockListFragment implements AbsList
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_photo_stream, container, false);
     }
     
     @Override

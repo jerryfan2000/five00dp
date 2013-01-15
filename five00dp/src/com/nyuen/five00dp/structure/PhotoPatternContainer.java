@@ -82,7 +82,7 @@ public class PhotoPatternContainer {
                 params[0].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_HALF, MARGIN_ONE);
                 params[1].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_HALF, MARGIN_ONE);
                 params[2].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_ONE, MARGIN_ONE);
-                
+
                 params[1].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
                 params[2].addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);           
             }else if(this.equals(Pattern.THREE_ABA)) {                
@@ -94,7 +94,7 @@ public class PhotoPatternContainer {
                 params[0].setMargins(MARGIN_ONE, MARGIN_ONE, MARGIN_HALF, MARGIN_ONE);
                 params[1].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_HALF, MARGIN_ONE);
                 params[2].setMargins(MARGIN_HALF, MARGIN_ONE, MARGIN_ONE, MARGIN_ONE);
-                
+
                 params[1].addRule(RelativeLayout.RIGHT_OF, R.id.imageView0);
                 params[2].addRule(RelativeLayout.RIGHT_OF, R.id.imageView1);           
             }else if(this.equals(Pattern.THREE_VERTICAL)) {
@@ -160,20 +160,17 @@ public class PhotoPatternContainer {
             return params;
         }
 
-        private static List<Pattern> randomList;
-        
         public static List<Pattern> getPatternList() {
-            if(randomList == null) {               
-                randomList.add(Pattern.ONE);
-                randomList.add(Pattern.TWO_VERTICAL);
-                randomList.add(Pattern.TWO_HORIZONTAL);
-                randomList.add(Pattern.FOUR);
-                randomList.add(Pattern.FOUR_VERTICAL);
-                randomList.add(Pattern.THREE_AAB);
-                randomList.add(Pattern.THREE_ABA);
-                randomList.add(Pattern.THREE_VERTICAL);
-                randomList.add(Pattern.THREE_HORIZONTAL);
-            }
+            List<Pattern> randomList = new ArrayList<Pattern>();            
+            randomList.add(Pattern.ONE);
+            randomList.add(Pattern.TWO_VERTICAL);
+            randomList.add(Pattern.TWO_HORIZONTAL);
+            randomList.add(Pattern.FOUR);
+            randomList.add(Pattern.FOUR_VERTICAL);
+            randomList.add(Pattern.THREE_AAB);
+            randomList.add(Pattern.THREE_ABA);
+            randomList.add(Pattern.THREE_VERTICAL);
+            randomList.add(Pattern.THREE_HORIZONTAL);
             Collections.shuffle(randomList);
             return randomList;
         }
