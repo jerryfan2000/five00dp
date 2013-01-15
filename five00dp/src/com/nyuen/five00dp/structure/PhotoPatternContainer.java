@@ -160,20 +160,22 @@ public class PhotoPatternContainer {
             return params;
         }
 
-
+        private static List<Pattern> randomList;
+        
         public static List<Pattern> getPatternList() {
-            List<Pattern> list = new ArrayList<Pattern>();
-            list.add(Pattern.ONE);
-            list.add(Pattern.TWO_VERTICAL);
-            list.add(Pattern.TWO_HORIZONTAL);
-            list.add(Pattern.FOUR);
-            list.add(Pattern.FOUR_VERTICAL);
-            list.add(Pattern.THREE_AAB);
-            list.add(Pattern.THREE_ABA);
-            list.add(Pattern.THREE_VERTICAL);
-            list.add(Pattern.THREE_HORIZONTAL);
-            Collections.shuffle(list);
-            return list;
+            if(randomList == null) {               
+                randomList.add(Pattern.ONE);
+                randomList.add(Pattern.TWO_VERTICAL);
+                randomList.add(Pattern.TWO_HORIZONTAL);
+                randomList.add(Pattern.FOUR);
+                randomList.add(Pattern.FOUR_VERTICAL);
+                randomList.add(Pattern.THREE_AAB);
+                randomList.add(Pattern.THREE_ABA);
+                randomList.add(Pattern.THREE_VERTICAL);
+                randomList.add(Pattern.THREE_HORIZONTAL);
+            }
+            Collections.shuffle(randomList);
+            return randomList;
         }
     }
 
