@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="8dp" >
 
-    <ImageView
+    <com.nyuen.five00dp.view.FocusableImageView
         android:id="@+id/commentUserPhotoView"
         android:layout_width="48dp"
         android:layout_height="48dp"

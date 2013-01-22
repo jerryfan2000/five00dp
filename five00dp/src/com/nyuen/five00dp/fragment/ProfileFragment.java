@@ -1,27 +1,43 @@
 package com.nyuen.five00dp.fragment;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.api.ApiHelper;
+import com.nyuen.five00dp.structure.Photo;
+import com.nyuen.five00dp.structure.ProfileResponse;
 import com.nyuen.five00dp.structure.User;
+import com.nyuen.five00dp.util.FontUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
 
 public class ProfileFragment extends SherlockFragment {
     private static final String TAG = ProfileFragment.class.getSimpleName();
 
+    public static final String INTENT_PROFILE_ID = TAG + ".INTENT_PROFILE_ID";
+    
     private ImageFetcher mImageFetcher;
-
+    private ImageView mProfileImage;
+    
+    private Integer mProfileID;
+    private User mUserProfile;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +48,8 @@ public class ProfileFragment extends SherlockFragment {
         
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
        
+        mProfileID = (Integer) getArguments().getInt(INTENT_PROFILE_ID, 0);
+        
         ActionBar actionBar = getSherlockActivity().getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle("Profile");
@@ -42,8 +60,7 @@ public class ProfileFragment extends SherlockFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.profile_fragment, container, false);
-        return inflater.inflate(R.layout.fragment_coming_soon, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
     @Override
@@ -55,9 +72,34 @@ public class ProfileFragment extends SherlockFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.menu_photo_details, menu);
+        inflater.inflate(R.menu.menu_profile, menu); 
     }  
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            getActivity().finish();
+            return true;
+        case R.id.menu_profile_share:
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            String shareTitle = mUserProfile.fullname;
+            String shareBody = "http://500px.com/" + mUserProfile.username;
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareTitle);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, "" + getString(R.string.share_via)));
+            return true;
+        case R.id.menu_profile_browser:      
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+            intent.setData(Uri.parse("http://500px.com/" + mUserProfile.username));
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onPause() {
@@ -71,18 +113,57 @@ public class ProfileFragment extends SherlockFragment {
         mImageFetcher.closeCache();
     }
     
+    private void updateHeader(User user) {
+        mProfileImage = (ImageView) getActivity().findViewById(R.id.imageViewProfileImage);
+        
+        TextView profileNameView = (TextView) getActivity().findViewById(R.id.textViewProfileName);
+        TextView profileAffection = (TextView) getActivity().findViewById(R.id.textViewProfileAffection);
+        TextView profileBio = (TextView) getActivity().findViewById(R.id.textViewProfileBio);
+        TextView profileViews = (TextView) getActivity().findViewById(R.id.textViewProfileViews);
+        TextView profileLikes = (TextView) getActivity().findViewById(R.id.textViewProfileLikes);
+        TextView profileFavs = (TextView) getActivity().findViewById(R.id.textViewProfileFavs);
+        TextView profileComms = (TextView) getActivity().findViewById(R.id.textViewProfileComms);
+        
+        ImageView profileStatusView = (ImageView) getActivity().findViewById(R.id.imageViewProfileStatus);
+        
+        profileNameView.setText(user.fullname);
+        
+        FontUtils.setTypefaceRobotoLight(getActivity(), profileAffection);
+        profileAffection.setText("" + user.affection);     
+        
+        if(!TextUtils.isEmpty(user.about)) {
+            profileBio.setText(user.about);
+        }
+        
+        Log.e(TAG, "" + user.upgrade_status);
+        if (user.upgrade_status > 0) {
+            if (user.upgrade_status == 1) {
+                profileStatusView.setImageResource(R.drawable.ic_plus);
+            }
+            profileStatusView.setVisibility(View.VISIBLE);
+        } else {
+            profileStatusView.setVisibility(View.GONE);
+        }
+        
+        mImageFetcher.loadImage(user.userpic_url, mProfileImage, R.drawable.ic_userpic);   
+    }
     
-    private class LoadProfileTask extends AsyncTask<Void, Void, User> {
+    private class LoadProfileTask extends AsyncTask<Void, Void, ProfileResponse> {
         protected void onPreExecute() {
             
         }
 
-        protected User doInBackground(Void... params) {
-            return ApiHelper.getProfile(501056);
+        protected ProfileResponse doInBackground(Void... params) {
+            //android.os.Debug.waitForDebugger();
+            if(mProfileID == 0)
+                return ApiHelper.getMyProfile(getActivity());
+            else
+                return ApiHelper.getUserProfile(mProfileID, getActivity());
         }
 
-        protected void onPostExecute(User response) {
-
+        protected void onPostExecute(ProfileResponse response) {
+            mUserProfile = response.user;
+            updateHeader(response.user);
         }
     }
 }

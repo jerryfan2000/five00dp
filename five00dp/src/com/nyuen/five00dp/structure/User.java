@@ -15,6 +15,7 @@ public class User implements Parcelable {
     public String country;
     public String fullname;
     public String userpic_url;
+    public String about;
     public int upgrade_status;
     public boolean fotomoto_on; 
     public String locale;
@@ -46,6 +47,7 @@ public class User implements Parcelable {
         country = ParcelUtils.readStringFromParcel(in);
         fullname = ParcelUtils.readStringFromParcel(in);
         userpic_url = ParcelUtils.readStringFromParcel(in);
+        about = ParcelUtils.readStringFromParcel(in);
         upgrade_status = in.readInt();
         
 //        fotomoto_on 
@@ -80,6 +82,7 @@ public class User implements Parcelable {
         ParcelUtils.writeStringToParcel(dest, lastname);
         ParcelUtils.writeStringToParcel(dest, city);
         ParcelUtils.writeStringToParcel(dest, country);
+        ParcelUtils.writeStringToParcel(dest, about);
         ParcelUtils.writeStringToParcel(dest, fullname);
         ParcelUtils.writeStringToParcel(dest, userpic_url);
         dest.writeInt(upgrade_status);

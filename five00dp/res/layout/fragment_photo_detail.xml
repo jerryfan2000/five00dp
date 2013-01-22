@@ -10,7 +10,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true" >
     </ListView>
-    
+
+    <LinearLayout
+        android:id="@+id/userActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/ab_solid_five00dp">
+
+        <Button
+            android:id="@+id/btnPhotoLike"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/drawer_button" />
+
+        <ImageButton
+            android:id="@+id/btnPhotoFav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@android:drawable/ic_delete" />
+        
+       <Button
+            android:id="@+id/btnPhotoFav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Comment" />
+    </LinearLayout>
+
 </RelativeLayout>

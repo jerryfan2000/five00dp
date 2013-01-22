@@ -68,7 +68,7 @@
             android:layout_marginRight="8dp"
             android:drawableBottom="@drawable/pulse"
             android:gravity="center_horizontal"
-            android:text="99.9"
+            android:text=""
             android:textColor="#333333"
             android:textSize="21sp" />
 

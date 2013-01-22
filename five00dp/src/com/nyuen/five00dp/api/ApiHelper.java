@@ -1,6 +1,9 @@
 package com.nyuen.five00dp.api;
 
+import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.fivehundredpx.api.PxApi;
@@ -8,20 +11,19 @@ import com.google.gson.Gson;
 import com.nyuen.five00dp.structure.CommentResponse;
 import com.nyuen.five00dp.structure.PhotoDetailResponse;
 import com.nyuen.five00dp.structure.PhotoListResponse;
+import com.nyuen.five00dp.structure.ProfileResponse;
 import com.nyuen.five00dp.structure.User;
 import com.nyuen.five00dp.util.AccountUtils;
 
 public class ApiHelper {
     private static final String TAG = ApiHelper.class.getSimpleName();
+    private static final String KEY_TOKEN = "auth_token";
 
     private static PxApi getApi(Context context){
         PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
         
         if(AccountUtils.hasAccount(context)) {
-//            pxapi = new PxApi(accessToken, FiveHundred.CONSUMER_KEY, FiveHundred.CONSUMER_SECRET)
-        }
-            
-        
+        }        
         return pxapi;
     }
     
@@ -89,14 +91,25 @@ public class ApiHelper {
         }
     }
     
-    public static User getProfile(int userId){        
-        PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
-        String url = "/user/" + userId + "?";
+    public static ProfileResponse getMyProfile(Context context){        
+        PxApi pxapi = new PxApi(AccountUtils.getAccessToken(context), FiveHundred.CONSUMER_KEY, FiveHundred.CONSUMER_SECRET);
+        String url = "/users";
         try {
-            //20 comments per page
-            User out = new Gson().fromJson(
-                    pxapi.get(url).toString(), 
-                    User.class);
+            String json = pxapi.get(url).toString();
+            ProfileResponse out = new Gson().fromJson(json, ProfileResponse.class);
+            return out;
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+            return null;
+        }
+    }
+    
+    public static ProfileResponse getUserProfile(int userID, Context context){        
+        PxApi pxapi = new PxApi(AccountUtils.getAccessToken(context), FiveHundred.CONSUMER_KEY, FiveHundred.CONSUMER_SECRET);
+        String url = "/users/show?id=" + userID;
+        try {
+            String json = pxapi.get(url).toString();
+            ProfileResponse out = new Gson().fromJson(json, ProfileResponse.class);
             return out;
         } catch (Exception e) {
             Log.e(TAG, e.toString());

@@ -3,7 +3,9 @@ package com.nyuen.five00dp;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,8 @@ import com.nyuen.five00dp.util.UIUtils;
 
 public class LoginActivity extends AccountAuthenticatorActivity implements XAuth500pxTask.Delegate{
     private static final String TAG = "LoginActivity";
+    private static final String KEY_TOKEN = "auth_token";
+    private static final String KEY_TOKEN_SECRET = "auth_token_secret";
 
     AccessToken accessToken;
 
@@ -94,12 +98,12 @@ public class LoginActivity extends AccountAuthenticatorActivity implements XAuth
 
         String username = tvUsername.getText().toString();
         String password = tvPassword.getText().toString();
-        Log.w(TAG, "success "+result);
 
         Bundle userData = new Bundle();
-        userData.putString("token", result.getToken());
-        userData.putString("tokenSecret", result.getTokenSecret());
-
+        userData.putString(KEY_TOKEN, result.getToken());
+        userData.putString(KEY_TOKEN_SECRET, result.getTokenSecret());
+        Log.e(TAG, result.getToken());
+                
         Account account = new Account(username, getString(R.string.account_type));
         AccountManager am = AccountManager.get(this);
 
@@ -107,8 +111,7 @@ public class LoginActivity extends AccountAuthenticatorActivity implements XAuth
             Bundle bundle = new Bundle();
             bundle.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
             bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
-            setAccountAuthenticatorResult(bundle);        
-            
+            setAccountAuthenticatorResult(bundle);                  
             setResult(RESULT_OK);
 
             finish();

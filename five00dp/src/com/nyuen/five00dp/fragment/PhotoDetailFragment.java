@@ -114,7 +114,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         case android.R.id.home:
             getActivity().finish();
             return true;
-        case R.id.menu_share:
+        case R.id.menu_photo_share:
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             String shareTitle = mPhoto.name;
@@ -122,7 +122,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareTitle);
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "" + getString(R.string.share_via)));
-            return true;
+            return true;    
         }
         return super.onOptionsItemSelected(item);
     }
@@ -186,7 +186,8 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         if (mPhoto.user.upgrade_status > 0) {
             if (mPhoto.user.upgrade_status == 1) {
                 imageViewStatus.setImageResource(R.drawable.ic_plus);
-            }
+            } else if (mPhoto.user.upgrade_status == 2) 
+                imageViewStatus.setImageResource(R.drawable.ic_awesome);
             imageViewStatus.setVisibility(View.VISIBLE);
         } else {
             imageViewStatus.setVisibility(View.GONE);

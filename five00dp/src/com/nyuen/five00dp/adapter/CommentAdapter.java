@@ -1,18 +1,25 @@
 package com.nyuen.five00dp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nyuen.five00dp.PhotoDetailActivity;
+import com.nyuen.five00dp.ProfileActivity;
 import com.nyuen.five00dp.R;
+import com.nyuen.five00dp.fragment.PhotoDetailFragment;
+import com.nyuen.five00dp.fragment.ProfileFragment;
 import com.nyuen.five00dp.structure.Comment;
 import com.nyuen.five00dp.structure.CommentResponse;
+import com.nyuen.five00dp.structure.Photo;
 import com.nyuen.five00dp.structure.User;
 import com.nyuen.five00dp.util.ImageFetcher;
 
@@ -26,11 +33,23 @@ public class CommentAdapter extends BaseAdapter {
     
     private List<Comment> mComments;
     
-    public CommentAdapter(Context context, ImageFetcher imageFetcher) {
+    private OnClickListener mOnProfileClickListener;
+    
+    public CommentAdapter(final Context context, ImageFetcher imageFetcher) {
                
         mImageFetcher = imageFetcher;
         mInflater = LayoutInflater.from(context);
         mComments = new ArrayList<Comment>();
+        
+        mOnProfileClickListener = new OnClickListener() {   
+            @Override
+            public void onClick(View v) {
+                Integer profileID = (Integer) v.getTag();
+                Intent photoDetailIntent = new Intent(context, ProfileActivity.class);
+                photoDetailIntent.putExtra(ProfileFragment.INTENT_PROFILE_ID, profileID);
+                context.startActivity(photoDetailIntent);
+            }
+        };
     }
 
     @Override
@@ -97,6 +116,8 @@ public class CommentAdapter extends BaseAdapter {
             holder.imageViewUserAwesome.setVisibility(View.GONE);
         }
         
+        holder.commentUserPhotoView.setTag(Integer.valueOf(user.id));
+        holder.commentUserPhotoView.setOnClickListener(mOnProfileClickListener);
         holder.commentBodyView.setText(Html.fromHtml(comment.body));
         holder.commentUserNameView.setText(user.fullname);
         holder.likeCountView.setText("" + 0);
