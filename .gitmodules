@@ -8,3 +8,6 @@
 [submodule "SlidingMenu"]
 	path = SlidingMenu
 	url = git@github.com:nathan-yuen/SlidingMenu.git
+[submodule "PhotoView"]
+	path = PhotoView
+	url = git@github.com:chrisbanes/PhotoView.git
