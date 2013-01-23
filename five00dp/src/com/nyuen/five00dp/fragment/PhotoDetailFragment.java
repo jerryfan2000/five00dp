@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.WebView.FindListener;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -124,7 +123,6 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             btnLike.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO Auto-generated method stub
                     new VotePhotoTask().execute();
                 }
             });
@@ -251,10 +249,17 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 //                intent.addCategory(Intent.CATEGORY_BROWSABLE);
 //                intent.setData(Uri.parse("http://500px.com/photo/" + mPhoto.id));
 //                startActivity(intent);
-                PhotoDialogFragment photoDialog = new PhotoDialogFragment(mPhoto.image_url);           
-                android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.anim.cardstack_open_enter, R.anim.cardstack_open_exit);             
-                photoDialog.show(ft, "photo_dialog");    
+                
+//                PhotoDialogFragment photoDialog = new PhotoDialogFragment(mPhoto.image_url);           
+//                FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.setCustomAnimations(R.anim.cardstack_open_enter, R.anim.cardstack_open_exit);             
+//                photoDialog.show(ft, "photo_dialog");  
+                
+                
+                WebDialogFragment webDialog = new WebDialogFragment("http://mobilesyrup.com/");
+                FragmentManager fm = getFragmentManager();         
+                webDialog.show(fm, "photo_dialog");  
+                
             }
         });
     }
