@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 @SuppressLint("ValidFragment")
-public class PhotoViewFragment extends DialogFragment {
+public class PhotoDialogFragment extends DialogFragment {
     
     private ImageView mImage;
     private ImageFetcher mImageFetcher;
@@ -25,14 +25,14 @@ public class PhotoViewFragment extends DialogFragment {
     
     private String mUrl;
     
-    public PhotoViewFragment(String url) {
+    public PhotoDialogFragment(String url) {
         mUrl = url;
     }
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NO_TITLE, android.R.style.Theme_Translucent_NoTitleBar); // remove title from dialogfragment
+        setStyle(STYLE_NO_TITLE, R.style.PhotoDialog);
         setCancelable(true);
         mImageFetcher = UIUtils.getImageFetcher(getActivity());
     }
@@ -44,6 +44,7 @@ public class PhotoViewFragment extends DialogFragment {
         mImage = (ImageView) view.findViewById(R.id.imageViewDialog);
         
         mImageFetcher.loadImage(mUrl, mImage);
+        mImageFetcher.setImageFadeIn(true);
         
         mAttacher = new PhotoViewAttacher(mImage);
         mAttacher.setScaleType(ScaleType.FIT_CENTER);

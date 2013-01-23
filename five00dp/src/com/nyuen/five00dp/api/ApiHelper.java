@@ -113,12 +113,9 @@ public class ApiHelper {
     
     public static PhotoResponse votePhoto(Context context, int photoID, int vote) {
         PxApi pxapi = new PxApi(AccountUtils.getAccessToken(context), FiveHundred.CONSUMER_KEY, FiveHundred.CONSUMER_SECRET);
-        String url = "photos/" + photoID +"/";
+        String url = "/photos/" + photoID +"/vote";
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
-        //params.add(new BasicNameValuePair("id", "" + photoID));
         params.add(new BasicNameValuePair("vote", "" + vote));
-//        Log.e(TAG, "" + vote);
-//        Log.e(TAG, url);
         try {
             String json = pxapi.post(url, params).toString();
             PhotoResponse out = new Gson().fromJson(json, PhotoResponse.class);

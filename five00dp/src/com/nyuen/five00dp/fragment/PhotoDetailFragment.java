@@ -1,5 +1,6 @@
 package com.nyuen.five00dp.fragment;
 
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -250,9 +251,10 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 //                intent.addCategory(Intent.CATEGORY_BROWSABLE);
 //                intent.setData(Uri.parse("http://500px.com/photo/" + mPhoto.id));
 //                startActivity(intent);
-                FragmentManager fm = getFragmentManager();
-                PhotoViewFragment photoDialog = new PhotoViewFragment(mPhoto.image_url);
-                photoDialog.show(fm, "photo_dialog");
+                PhotoDialogFragment photoDialog = new PhotoDialogFragment(mPhoto.image_url);           
+                android.support.v4.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.setCustomAnimations(R.anim.cardstack_open_enter, R.anim.cardstack_open_exit);             
+                photoDialog.show(ft, "photo_dialog");    
             }
         });
     }
