@@ -1,9 +1,8 @@
 package com.nyuen.five00dp.api;
 
-import android.accounts.AccountManager;
+import java.util.ArrayList;
+
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.fivehundredpx.api.PxApi;
@@ -11,21 +10,16 @@ import com.google.gson.Gson;
 import com.nyuen.five00dp.structure.CommentResponse;
 import com.nyuen.five00dp.structure.PhotoDetailResponse;
 import com.nyuen.five00dp.structure.PhotoListResponse;
+import com.nyuen.five00dp.structure.PhotoResponse;
 import com.nyuen.five00dp.structure.ProfileResponse;
-import com.nyuen.five00dp.structure.User;
 import com.nyuen.five00dp.util.AccountUtils;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 public class ApiHelper {
     private static final String TAG = ApiHelper.class.getSimpleName();
     private static final String KEY_TOKEN = "auth_token";
-
-    private static PxApi getApi(Context context){
-        PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
-        
-        if(AccountUtils.hasAccount(context)) {
-        }        
-        return pxapi;
-    }
     
     public static PhotoListResponse getPhotoStream(String feature, int rpp, int size, int page){
         PxApi pxapi = new PxApi(FiveHundred.CONSUMER_KEY);
@@ -110,6 +104,24 @@ public class ApiHelper {
         try {
             String json = pxapi.get(url).toString();
             ProfileResponse out = new Gson().fromJson(json, ProfileResponse.class);
+            return out;
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+            return null;
+        }
+    }
+    
+    public static PhotoResponse votePhoto(Context context, int photoID, int vote) {
+        PxApi pxapi = new PxApi(AccountUtils.getAccessToken(context), FiveHundred.CONSUMER_KEY, FiveHundred.CONSUMER_SECRET);
+        String url = "photos/" + photoID +"/";
+        ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+        //params.add(new BasicNameValuePair("id", "" + photoID));
+        params.add(new BasicNameValuePair("vote", "" + vote));
+//        Log.e(TAG, "" + vote);
+//        Log.e(TAG, url);
+        try {
+            String json = pxapi.post(url, params).toString();
+            PhotoResponse out = new Gson().fromJson(json, PhotoResponse.class);
             return out;
         } catch (Exception e) {
             Log.e(TAG, e.toString());

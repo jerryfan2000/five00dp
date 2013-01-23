@@ -7,16 +7,20 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebView.FindListener;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +29,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.nyuen.five00dp.ProfileActivity;
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.adapter.CommentAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
@@ -33,6 +38,8 @@ import com.nyuen.five00dp.structure.CommentResponse;
 import com.nyuen.five00dp.structure.Photo;
 import com.nyuen.five00dp.structure.Photo.Category;
 import com.nyuen.five00dp.structure.PhotoDetailResponse;
+import com.nyuen.five00dp.structure.PhotoResponse;
+import com.nyuen.five00dp.util.AccountUtils;
 import com.nyuen.five00dp.util.DateHelper;
 import com.nyuen.five00dp.util.FontUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
@@ -54,6 +61,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     private View mHeaderView;
     private View mHeaderExifView;
     private View mLoadingView;
+    private View mUserActionBar;
     private Photo mPhoto;
     private int mPage = 1;
     private int mTotalPage = 2;
@@ -97,10 +105,29 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         
         updateHeaderView();
         updateHeaderExifView();
+        updateUserActionBar();
         
         setListAdapter(mPhotoDetailAdapter);
 
         new LoadPhotoDetailTask().execute();
+    }
+
+    private void updateUserActionBar() {
+        if(AccountUtils.hasAccount(getActivity())) {
+            mUserActionBar = getActivity().findViewById(R.id.userActionBar);
+            mUserActionBar.setVisibility(View.VISIBLE);
+
+            ImageButton btnLike = (ImageButton) getActivity().findViewById(R.id.btnPhotoLike);
+            ImageButton btnFav = (ImageButton) getActivity().findViewById(R.id.btnPhotoFav);
+            
+            btnLike.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    new VotePhotoTask().execute();
+                }
+            });
+        }
     }
 
     @Override
@@ -175,9 +202,18 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         Display display = wm.getDefaultDisplay();
         int width = display.getWidth();
         int minHeight = mPhoto.height * width / mPhoto.width;
-        headerPhotoView.setMinimumHeight(minHeight);
         
+        headerPhotoView.setMinimumHeight(minHeight);
+                
         mImageFetcher.loadImage(mPhoto.image_url, headerPhotoView);
+        headerUserPhotoView.setOnClickListener(new OnClickListener() { 
+            @Override
+            public void onClick(View v) {
+                Intent photoDetailIntent = new Intent(getActivity(), ProfileActivity.class);
+                photoDetailIntent.putExtra(ProfileFragment.INTENT_PROFILE_ID, mPhoto.user.id);
+                startActivity(photoDetailIntent);
+            }
+        });
         
         if (!mPhoto.user.userpic_url.equals("/graphics/userpic.png")) {
             mImageFetcher.loadImage(mPhoto.user.userpic_url, headerUserPhotoView, R.drawable.ic_userpic);
@@ -197,19 +233,26 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         viewsCountView.setText(getString(R.string.num_views, mPhoto.times_viewed));
         votesCountView.setText(getString(R.string.num_votes, mPhoto.votes_count));
         favsCountView.setText(getString(R.string.num_favorites, mPhoto.favorites_count));
-        headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
-        headerDescriptionView.setMovementMethod(LinkMovementMethod.getInstance());
+        if(!TextUtils.isEmpty(mPhoto.description)) {
+            headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
+            headerDescriptionView.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            headerDescriptionView.setVisibility(View.GONE);
+        }
         ratingView.setText(String.valueOf(mPhoto.rating));
 
         FontUtils.setTypefaceRobotoLight(getActivity(), headerDescriptionView, ratingView);
 
-        headerPhotoView.setOnClickListener(new View.OnClickListener(){
+        headerPhotoView.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                intent.setData(Uri.parse("http://500px.com/photo/" + mPhoto.id));
-                startActivity(intent);
+//                Intent intent = new Intent();
+//                intent.setAction(Intent.ACTION_VIEW);
+//                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+//                intent.setData(Uri.parse("http://500px.com/photo/" + mPhoto.id));
+//                startActivity(intent);
+                FragmentManager fm = getFragmentManager();
+                PhotoViewFragment photoDialog = new PhotoViewFragment(mPhoto.image_url);
+                photoDialog.show(fm, "photo_dialog");
             }
         });
     }
@@ -303,6 +346,22 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         getListView().setOnScrollListener(this);
     }
 
+    private class VotePhotoTask extends AsyncTask<Void, Void, PhotoResponse> {
+
+        protected PhotoResponse doInBackground(Void... params) {
+            return ApiHelper.votePhoto(getActivity(), mPhoto.id, (!mPhoto.voted)? 1:0);
+        }
+
+        protected void onPostExecute(PhotoResponse response) {
+            if(getActivity() == null)
+                return;
+            
+            if (response != null) {
+                mPhoto = response.photo;
+            } 
+        }
+    }
+    
     private class LoadPhotoDetailTask extends AsyncTask<Void, Void, PhotoDetailResponse> {
 
         protected PhotoDetailResponse doInBackground(Void... params) {

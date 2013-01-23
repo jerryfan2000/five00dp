@@ -28,7 +28,6 @@
             android:layout_toRightOf="@+id/imageViewProfileImage"
             android:gravity="center_vertical|center_horizontal"
             android:minLines="2"
-            android:text="Kounoupis Anastasios"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
@@ -58,7 +57,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="9999"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="40sp" />
 
@@ -67,13 +65,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_horizontal|center_vertical"
-                    android:text="Affection"
+                    android:text="@string/affection"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
@@ -116,7 +114,7 @@
         android:gravity="left|center_vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:text="About"
+        android:text="@string/about"
         android:textAllCaps="true"
         android:textColor="#333"
         android:textSize="14sp"

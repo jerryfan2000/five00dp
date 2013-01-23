@@ -18,21 +18,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:layout_alignParentBottom="true"
-        android:background="@drawable/ab_solid_five00dp">
+        android:background="@drawable/ab_solid_five00dp"
+        android:visibility="gone">
 
-        <Button
+        <ImageButton
             android:id="@+id/btnPhotoLike"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/drawer_button" />
+            android:src="@android:drawable/ic_menu_add" 
+            android:onClick=""/>
 
         <ImageButton
             android:id="@+id/btnPhotoFav"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@android:drawable/ic_delete" />
+            android:src="@drawable/ic_heart" />
         
        <Button
             android:id="@+id/btnPhotoFav"
