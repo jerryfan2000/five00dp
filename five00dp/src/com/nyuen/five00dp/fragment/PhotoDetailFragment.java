@@ -142,6 +142,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 btnLike.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ((ImageButton) v).setImageResource(R.drawable.ic_action_liked);
                         v.setClickable(false);
                         new VotePhotoTask().execute();
                     }
@@ -194,10 +195,6 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     }
 
     private void updateVotes() {
-        ImageButton btnLike = (ImageButton) getActivity().findViewById(R.id.btnPhotoLike);
-        btnLike.setImageResource(R.drawable.ic_action_liked);
-        btnLike.setClickable(false);
-
         //        TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
         //        votesCountView.setText(getString(R.string.num_views, mPhoto.votes_count));
 
@@ -300,8 +297,8 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 return t;
             }
         });   
-        votesCountView.setInAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_fast));
-        votesCountView.setOutAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_fast));
+        votesCountView.setInAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
+        votesCountView.setOutAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
         votesCountView.setText(getString(R.string.num_votes, mPhoto.votes_count));
 
         favsCountView.setText(getString(R.string.num_favorites, mPhoto.favorites_count));
@@ -470,7 +467,11 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 mPhoto = response.photo;
                 updateVotes();
                 Toast.makeText(getActivity(), R.string.voted, Toast.LENGTH_SHORT).show();
-            } 
+            } else {
+                ImageButton btnLike = (ImageButton) getActivity().findViewById(R.id.btnPhotoLike);
+                btnLike.setEnabled(true);
+                btnLike.setImageResource(R.drawable.ic_action_like);
+            }
         }
     }
 
