@@ -157,11 +157,11 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                     new FavPhotoTask().execute();
                 }
             });
-            
+
             etComment.setOnClickListener(new OnClickListener() {               
                 Builder builder = new AlertDialog.Builder(getActivity());       
                 AlertDialog commentDialog;
-                
+
                 @Override
                 public void onClick(View v) {
                     builder.setMessage("Post Comment");
@@ -198,19 +198,19 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         btnLike.setImageResource(R.drawable.ic_action_liked);
         btnLike.setClickable(false);
 
-//        TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
-//        votesCountView.setText(getString(R.string.num_views, mPhoto.votes_count));
-        
+        //        TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
+        //        votesCountView.setText(getString(R.string.num_views, mPhoto.votes_count));
+
         TextSwitcher votesCountView = (TextSwitcher) mHeaderView.findViewById(R.id.votesCountView);
-        
-        
+
+
         TextView currentTextView = (TextView)(votesCountView.getNextView().equals(
                 votesCountView.getChildAt(0)) ? 
                         votesCountView.getChildAt(1) : votesCountView.getChildAt(0)
-              );
-        
-        currentTextView.setTextColor(Color.WHITE);
-        ((TextView) votesCountView.getNextView()).setTextColor(Color.RED);
+                );
+
+        currentTextView.setTextColor(Color.RED);
+        ((TextView) votesCountView.getNextView()).setTextColor(Color.parseColor("#9C9A9B"));
         votesCountView.setText(getString(R.string.num_views, mPhoto.votes_count));
     }
 
@@ -289,18 +289,21 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 
         headerUserNameView.setText(mPhoto.user.fullname);
         viewsCountView.setText(getString(R.string.num_views, mPhoto.times_viewed));
-        
+
         votesCountView.setFactory(new ViewFactory() {
             @Override
             public View makeView() {
                 TextView t = new TextView(getActivity());
+                t.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_vote, 0, 0, 0);
+                t.setTextSize(12);
+                t.setTextColor(Color.parseColor("#9C9A9B"));
                 return t;
             }
         });   
-        votesCountView.setInAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
-        votesCountView.setOutAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
+        votesCountView.setInAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_fast));
+        votesCountView.setOutAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_fast));
         votesCountView.setText(getString(R.string.num_votes, mPhoto.votes_count));
-        
+
         favsCountView.setText(getString(R.string.num_favorites, mPhoto.favorites_count));
         if(!TextUtils.isEmpty(mPhoto.description)) {
             headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
@@ -508,10 +511,10 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         }
     }
 
-    
+
     private class LoadPhotoDetailTask extends AsyncTask<String, Void, PhotoDetailResponse> {
         String flag;
-        
+
         protected PhotoDetailResponse doInBackground(String... params) {
             flag = params[0];
             return ApiHelper.getFullPhoto(getActivity(), mPhoto.id);
@@ -521,9 +524,9 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             //android.os.Debug.waitForDebugger();
             if(getActivity() == null)
                 return;
-            
+
             if(response == null) {}
-            
+
             if (flag.equals("INIT")) {
                 mPhoto = response.photo;
                 //updateHeaderView();
@@ -531,7 +534,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 updateUserActionBar();
                 updateCommentsList(response.comments, 2);
             } else if (flag.equals("VOTE")) {
-                
+
             }
         }
     }
