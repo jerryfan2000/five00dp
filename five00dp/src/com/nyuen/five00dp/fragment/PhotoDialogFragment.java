@@ -1,5 +1,6 @@
 package com.nyuen.five00dp.fragment;
 
+import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
@@ -9,7 +10,6 @@ import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 @SuppressLint("ValidFragment")
-public class PhotoDialogFragment extends DialogFragment {
+public class PhotoDialogFragment extends SherlockDialogFragment {
     
     private ImageView mImage;
     private ImageFetcher mImageFetcher;

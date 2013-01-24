@@ -24,7 +24,7 @@ import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.adapter.PhotoAdapter;
 import com.nyuen.five00dp.api.ApiHelper;
 import com.nyuen.five00dp.base.BaseSlidingActivity;
-import com.nyuen.five00dp.structure.PhotoListResponse;
+import com.nyuen.five00dp.response.PhotoListResponse;
 import com.nyuen.five00dp.util.AccountUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;

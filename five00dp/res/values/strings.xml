@@ -24,4 +24,10 @@
     <string name="affection">Affection</string>
     <string name="about">About</string>
     <string name="comment">Comment</string>
+    <string name="voted">Voted!</string>
+    <string name="faved">Favorite added!</string>
+    <string name="unfaved">Favorite removed!</string>
+    <string name="my_profile">My Profile</string>
+    <string name="profile">Profile</string>
+    
 </resources>

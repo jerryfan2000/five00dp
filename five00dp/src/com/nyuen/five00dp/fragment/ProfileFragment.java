@@ -20,9 +20,10 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.nyuen.five00dp.R;
 import com.nyuen.five00dp.api.ApiHelper;
+import com.nyuen.five00dp.response.ProfileResponse;
 import com.nyuen.five00dp.structure.Photo;
-import com.nyuen.five00dp.structure.ProfileResponse;
 import com.nyuen.five00dp.structure.User;
+import com.nyuen.five00dp.util.AccountUtils;
 import com.nyuen.five00dp.util.FontUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
@@ -52,7 +53,13 @@ public class ProfileFragment extends SherlockFragment {
         
         ActionBar actionBar = getSherlockActivity().getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Profile");
+            if(mProfileID == 0)
+                actionBar.setTitle(R.string.my_profile);
+            else
+                actionBar.setTitle(R.string.profile);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayUseLogoEnabled(true);
+
         }
         
         getSherlockActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -119,10 +126,10 @@ public class ProfileFragment extends SherlockFragment {
         TextView profileNameView = (TextView) getActivity().findViewById(R.id.textViewProfileName);
         TextView profileAffection = (TextView) getActivity().findViewById(R.id.textViewProfileAffection);
         TextView profileBio = (TextView) getActivity().findViewById(R.id.textViewProfileBio);
-        TextView profileViews = (TextView) getActivity().findViewById(R.id.textViewProfileViews);
-        TextView profileLikes = (TextView) getActivity().findViewById(R.id.textViewProfileLikes);
-        TextView profileFavs = (TextView) getActivity().findViewById(R.id.textViewProfileFavs);
-        TextView profileComms = (TextView) getActivity().findViewById(R.id.textViewProfileComms);
+//        TextView profileViews = (TextView) getActivity().findViewById(R.id.textViewProfileViews);
+//        TextView profileLikes = (TextView) getActivity().findViewById(R.id.textViewProfileLikes);
+//        TextView profileFavs = (TextView) getActivity().findViewById(R.id.textViewProfileFavs);
+//        TextView profileComms = (TextView) getActivity().findViewById(R.id.textViewProfileComms);
         
         ImageView profileStatusView = (ImageView) getActivity().findViewById(R.id.imageViewProfileStatus);
         
@@ -157,8 +164,12 @@ public class ProfileFragment extends SherlockFragment {
             //android.os.Debug.waitForDebugger();
             if(mProfileID == 0)
                 return ApiHelper.getMyProfile(getActivity());
-            else
-                return ApiHelper.getUserProfile(mProfileID, getActivity());
+            else {
+                if(AccountUtils.hasAccount(getActivity()))
+                    return ApiHelper.getUserProfileWithAccount(mProfileID, getActivity());
+                else
+                    return ApiHelper.getUserProfile(mProfileID);
+            }
         }
 
         protected void onPostExecute(ProfileResponse response) {

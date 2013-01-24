@@ -84,8 +84,8 @@ public class Photo implements Parcelable {
     public String highest_rating_date;
     public boolean store_download;
     public boolean store_print;
-    public boolean voted;
-    public boolean favorited;
+    public boolean voted = false;
+    public boolean favorited = false;
     public boolean purchased;
 
     public Photo (Parcel in) {

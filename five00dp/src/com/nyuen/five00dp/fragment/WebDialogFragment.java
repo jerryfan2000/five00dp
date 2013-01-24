@@ -1,10 +1,10 @@
 package com.nyuen.five00dp.fragment;
 
+import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.nyuen.five00dp.R;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
-public class WebDialogFragment extends DialogFragment {
+public class WebDialogFragment extends SherlockDialogFragment {
 
     private WebView mWebView;
     private TextView mUrlView;
@@ -28,8 +28,6 @@ public class WebDialogFragment extends DialogFragment {
     private ImageButton mSwitchAgent;
     private String mUrl;
     private boolean mIsMobile = true;
-    private String mAgent;
-
 
     public WebDialogFragment(String url) {
         mUrl = url;
@@ -88,7 +86,6 @@ public class WebDialogFragment extends DialogFragment {
         settings.setLoadsImagesAutomatically(true);
         settings.setBlockNetworkImage(false);
         settings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-        settings.setUserAgentString("Mozilla/5.0 (Linux; U; Android 2.3.3; en-gb; Nexus S Build/GRI20) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");
         
         mProgressBar = (ProgressBar) view.findViewById(R.id.pbWeb);
 

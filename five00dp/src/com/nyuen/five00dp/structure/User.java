@@ -45,9 +45,9 @@ public class User implements Parcelable {
         lastname = ParcelUtils.readStringFromParcel(in);
         city = ParcelUtils.readStringFromParcel(in);
         country = ParcelUtils.readStringFromParcel(in);
-        fullname = ParcelUtils.readStringFromParcel(in);
-        userpic_url = ParcelUtils.readStringFromParcel(in);
         about = ParcelUtils.readStringFromParcel(in);
+        fullname = ParcelUtils.readStringFromParcel(in);
+        userpic_url = ParcelUtils.readStringFromParcel(in);        
         upgrade_status = in.readInt();
         
 //        fotomoto_on 
