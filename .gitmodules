@@ -1,13 +1,3 @@
-[submodule "ActionBarSherlock"]
-	path = ../ActionBarSherlock
-	url = git://github.com/JakeWharton/ActionBarSherlock.git
-	ignore = dirty
 [submodule "500px-android-sdk"]
 	path = 500px-android-sdk
 	url = git@github.com:nathan-yuen/500px-android-sdk.git
-[submodule "SlidingMenu"]
-	path = SlidingMenu
-	url = git@github.com:nathan-yuen/SlidingMenu.git
-[submodule "PhotoView"]
-	path = PhotoView
-	url = git@github.com:chrisbanes/PhotoView.git
