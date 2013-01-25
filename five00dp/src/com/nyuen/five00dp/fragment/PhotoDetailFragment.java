@@ -56,6 +56,7 @@ import com.nyuen.five00dp.util.DateHelper;
 import com.nyuen.five00dp.util.FontUtils;
 import com.nyuen.five00dp.util.ImageFetcher;
 import com.nyuen.five00dp.util.UIUtils;
+import com.nyuen.five00dp.view.FadeInTextSwitcher;
 
 import java.util.ArrayList;
 
@@ -165,7 +166,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 
                 @Override
                 public void onClick(View v) {
-                    builder.setMessage("Post Comment");
+                    builder.setTitle("Post Comment");
                     builder.setPositiveButton("Post", new OkOnClickListener());
                     builder.setNegativeButton("Cancel", new CancelOnClickListener());
                     builder.setView(getActivity().getLayoutInflater().inflate(R.layout.dialog_photo_comment, null));
@@ -195,20 +196,8 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
     }
 
     private void updateVotes() {
-        //        TextView votesCountView = (TextView) mHeaderView.findViewById(R.id.votesCountView);
-        //        votesCountView.setText(getString(R.string.num_views, mPhoto.votes_count));
-
-        TextSwitcher votesCountView = (TextSwitcher) mHeaderView.findViewById(R.id.votesCountView);
-
-
-        TextView currentTextView = (TextView)(votesCountView.getNextView().equals(
-                votesCountView.getChildAt(0)) ? 
-                        votesCountView.getChildAt(1) : votesCountView.getChildAt(0)
-                );
-
-        currentTextView.setTextColor(Color.RED);
-        ((TextView) votesCountView.getNextView()).setTextColor(Color.parseColor("#9C9A9B"));
-        votesCountView.setText(getString(R.string.num_views, mPhoto.votes_count));
+        FadeInTextSwitcher votesCountView = (FadeInTextSwitcher) mHeaderView.findViewById(R.id.votesCountView);
+        votesCountView.setText(getString(R.string.num_votes, mPhoto.votes_count));
     }
 
     private void updateFavs() {
@@ -279,29 +268,16 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         ImageView imageViewStatus = (ImageView) mHeaderView.findViewById(R.id.imageViewStatus);
         TextView headerUserNameView = (TextView) mHeaderView.findViewById(R.id.headerUserNameView);
         TextView headerDescriptionView = (TextView) mHeaderView.findViewById(R.id.headerDescriptionView);
-        TextView viewsCountView = (TextView) mHeaderView.findViewById(R.id.viewsCountView);
-        TextSwitcher votesCountView = (TextSwitcher) mHeaderView.findViewById(R.id.votesCountView);
-        TextView favsCountView = (TextView) mHeaderView.findViewById(R.id.favsCountView);
+        FadeInTextSwitcher viewsCountView = (FadeInTextSwitcher) mHeaderView.findViewById(R.id.viewsCountView);
+        FadeInTextSwitcher votesCountView = (FadeInTextSwitcher) mHeaderView.findViewById(R.id.votesCountView);
+        FadeInTextSwitcher favsCountView = (FadeInTextSwitcher) mHeaderView.findViewById(R.id.favsCountView);
         TextView ratingView = (TextView) mHeaderView.findViewById(R.id.ratingView);
 
         headerUserNameView.setText(mPhoto.user.fullname);
         viewsCountView.setText(getString(R.string.num_views, mPhoto.times_viewed));
-
-        votesCountView.setFactory(new ViewFactory() {
-            @Override
-            public View makeView() {
-                TextView t = new TextView(getActivity());
-                t.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_vote, 0, 0, 0);
-                t.setTextSize(12);
-                t.setTextColor(Color.parseColor("#9C9A9B"));
-                return t;
-            }
-        });   
-        votesCountView.setInAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
-        votesCountView.setOutAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
         votesCountView.setText(getString(R.string.num_votes, mPhoto.votes_count));
-
         favsCountView.setText(getString(R.string.num_favorites, mPhoto.favorites_count));
+
         if(!TextUtils.isEmpty(mPhoto.description)) {
             headerDescriptionView.setText(Html.fromHtml(mPhoto.description));
             headerDescriptionView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -311,7 +287,6 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
         ratingView.setText(String.valueOf(mPhoto.rating));
 
         FontUtils.setTypefaceRobotoLight(getActivity(), headerDescriptionView, ratingView);
-
 
         // Calculate min height for the photo
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);

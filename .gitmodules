@@ -1,5 +1,5 @@
 [submodule "ActionBarSherlock"]
-	path = ActionBarSherlock
+	path = ../ActionBarSherlock
 	url = git://github.com/JakeWharton/ActionBarSherlock.git
 	ignore = dirty
 [submodule "500px-android-sdk"]

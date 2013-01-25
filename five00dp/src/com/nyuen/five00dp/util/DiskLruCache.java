@@ -47,6 +47,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import android.util.Log;
+
 /**
  ******************************************************************************
  * Taken from the JB source code, can be found in:
@@ -638,6 +640,8 @@ public final class DiskLruCache implements Closeable {
 
         for (int i = 0; i < valueCount; i++) {
             File file = entry.getCleanFile(i);
+            Log.e("File_NULL", "" + (file == null));
+            Log.e("File_Exist", "" + file.exists());
             if (!file.delete()) {
                 throw new IOException("failed to delete " + file);
             }

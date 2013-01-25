@@ -54,7 +54,6 @@
                 android:id="@+id/headerUserNameView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User Name"
                 android:textColor="#333"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -77,37 +76,56 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
+            <com.nyuen.five00dp.view.FadeInTextSwitcher
                 android:id="@+id/viewsCountView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:drawableLeft="@drawable/ic_view"
-                android:gravity="center_vertical"
-                android:textColor="#9C9A9B"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
 
-            <TextSwitcher
+                <TextView
+                    android:id="@android:id/text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:drawableLeft="@drawable/ic_view"
+                    android:gravity="center_vertical"
+                    android:textColor="#9C9A9B"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </com.nyuen.five00dp.view.FadeInTextSwitcher>
+
+            <com.nyuen.five00dp.view.FadeInTextSwitcher
                 android:id="@+id/votesCountView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:drawableLeft="@drawable/ic_vote"
-                android:gravity="center_vertical"
-                android:textColor="#9C9A9B"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
 
-            <TextView
+                <TextView
+                    android:id="@android:id/text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:drawableLeft="@drawable/ic_vote"
+                    android:gravity="center_vertical"
+                    android:textColor="#9C9A9B"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </com.nyuen.five00dp.view.FadeInTextSwitcher>
+
+            <com.nyuen.five00dp.view.FadeInTextSwitcher
                 android:id="@+id/favsCountView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_fav"
-                android:gravity="center_vertical"
-                android:textColor="#9C9A9B"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+
+                <TextView
+                    android:id="@android:id/text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_fav"
+                    android:gravity="center_vertical"
+                    android:textColor="#9C9A9B"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </com.nyuen.five00dp.view.FadeInTextSwitcher>
+            
         </LinearLayout>
     </LinearLayout>
 
@@ -118,7 +136,6 @@
         android:paddingBottom="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:text="Description"
         android:textColor="#333"
         android:textSize="12sp" />
 

@@ -68,10 +68,8 @@ public class ApiHelper {
         String url = "/photos/" + photoId + "?";
 
         try {
-            String a = pxapi.get(url).toString();
-            Log.e(TAG, a);
             PhotoDetailResponse out = new Gson().fromJson(
-                    a, 
+                    pxapi.get(url).toString(), 
                     PhotoDetailResponse.class);
             return out;
         } catch (Exception e) {

@@ -22,7 +22,7 @@ import android.util.Log;
  * Helper methods that make logging more consistent throughout the app.
  */
 public class LogUtils {
-    private static final String LOG_PREFIX = "maizehkg_";
+    private static final String LOG_PREFIX = "five00dp_";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
     private static final int MAX_LOG_TAG_LENGTH = 23;
 
