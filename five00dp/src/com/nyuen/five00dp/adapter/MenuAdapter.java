@@ -22,13 +22,13 @@ public class MenuAdapter extends BaseAdapter {
     public MenuAdapter(Context context) {
 
         mInflater = LayoutInflater.from(context);       
-        //mMenuItem = Arrays.asList(context.getResources().getStringArray(R.array.menu));
-        mMenuItem = new ArrayList<String>();
-        mMenuItem.add("Home");
-        mMenuItem.add("Profile");
-        mMenuItem.add("A");
-        mMenuItem.add("B");
-        mMenuItem.add("C");
+        mMenuItem = Arrays.asList(context.getResources().getStringArray(R.array.category));
+//        mMenuItem = new ArrayList<String>();
+//        mMenuItem.add("Home");
+//        mMenuItem.add("Profile");
+//        mMenuItem.add("A");
+//        mMenuItem.add("B");
+//        mMenuItem.add("C");
     }
 
     @Override

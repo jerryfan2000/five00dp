@@ -43,7 +43,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
@@ -52,10 +52,19 @@
 
             <TextView
                 android:id="@+id/headerUserNameView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#333"
-                android:textSize="14sp"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            
+            <TextView
+                android:id="@+id/headerDateView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Testing"
+                android:textColor="#333"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -69,64 +78,70 @@
             android:gravity="center_horizontal"
             android:text=""
             android:textColor="#333333"
-            android:textSize="21sp" />
+            android:textSize="24sp" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" 
+        android:paddingBottom="4dp">
 
-            <com.nyuen.five00dp.view.FadeInTextSwitcher
-                android:id="@+id/viewsCountView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
+        <com.nyuen.five00dp.view.FadeInTextSwitcher
+            android:id="@+id/viewsCountView"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
 
-                <TextView
-                    android:id="@android:id/text1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:drawableLeft="@drawable/ic_view"
-                    android:gravity="center_vertical"
-                    android:textColor="#9C9A9B"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </com.nyuen.five00dp.view.FadeInTextSwitcher>
+            <TextView
+                android:id="@android:id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|left"
+                android:drawableLeft="@drawable/ic_view"
+                android:drawablePadding="4dp"
+                android:textColor="#9C9A9B"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </com.nyuen.five00dp.view.FadeInTextSwitcher>
 
-            <com.nyuen.five00dp.view.FadeInTextSwitcher
-                android:id="@+id/votesCountView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
+        <com.nyuen.five00dp.view.FadeInTextSwitcher
+            android:id="@+id/votesCountView"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
 
-                <TextView
-                    android:id="@android:id/text1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:drawableLeft="@drawable/ic_vote"
-                    android:gravity="center_vertical"
-                    android:textColor="#9C9A9B"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </com.nyuen.five00dp.view.FadeInTextSwitcher>
+            <TextView
+                android:id="@android:id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|left"
+                android:drawableLeft="@drawable/ic_vote"
+                android:drawablePadding="4dp"
+                android:textColor="#9C9A9B"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </com.nyuen.five00dp.view.FadeInTextSwitcher>
 
-            <com.nyuen.five00dp.view.FadeInTextSwitcher
-                android:id="@+id/favsCountView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
+        <com.nyuen.five00dp.view.FadeInTextSwitcher
+            android:id="@+id/favsCountView"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" >
 
-                <TextView
-                    android:id="@android:id/text1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_fav"
-                    android:gravity="center_vertical"
-                    android:textColor="#9C9A9B"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </com.nyuen.five00dp.view.FadeInTextSwitcher>
-            
-        </LinearLayout>
+            <TextView
+                android:id="@android:id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|left"
+                android:drawableLeft="@drawable/ic_fav"
+                android:drawablePadding="4dp"
+                android:textColor="#9C9A9B"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </com.nyuen.five00dp.view.FadeInTextSwitcher>
     </LinearLayout>
 
     <TextView

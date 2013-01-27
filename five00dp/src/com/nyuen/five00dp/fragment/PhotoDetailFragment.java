@@ -155,6 +155,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
             btnFav.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ((ImageButton) v).setImageResource(!mPhoto.favorited ? R.drawable.ic_action_faved : R.drawable.ic_action_fav);
                     v.setClickable(false);
                     new FavPhotoTask().execute();
                 }
@@ -202,7 +203,8 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 
     private void updateFavs() {
         ImageButton btnFav = (ImageButton) getActivity().findViewById(R.id.btnPhotoFav);
-        btnFav.setImageResource(mPhoto.favorited ? R.drawable.ic_action_faved : R.drawable.ic_action_fav);
+        FadeInTextSwitcher favsCountView = (FadeInTextSwitcher) mHeaderView.findViewById(R.id.favsCountView);
+        favsCountView.setText(getString(R.string.num_favorites, mPhoto.favorites_count));
         btnFav.setClickable(true);
     }
 
@@ -465,8 +467,7 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
 
             if (response != null && response.status == 200) {
                 mPhoto.favorited = !mPhoto.favorited;   
-                updateFavs();
-                Toast.makeText(getActivity(), mPhoto.favorited ? R.string.faved:R.string.unfaved, Toast.LENGTH_SHORT).show();
+                new LoadPhotoDetailTask().execute("FAV");
             } 
         }
     }
@@ -511,6 +512,10 @@ public class PhotoDetailFragment extends SherlockListFragment implements AbsList
                 updateCommentsList(response.comments, 2);
             } else if (flag.equals("VOTE")) {
 
+            } else if (flag.equals("FAV")) {
+                mPhoto = response.photo;
+                updateFavs();
+                Toast.makeText(getActivity(), mPhoto.favorited ? R.string.faved:R.string.unfaved, Toast.LENGTH_SHORT).show();
             }
         }
     }
